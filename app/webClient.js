@@ -1,16 +1,31 @@
 var enums = require("./enums.js");
 module.exports = exports = webClient;
 
-function webClient(io, clients){
+function webClient(io, clients, gameserver){
 	io.on('connection', function(socket){
-		console.log('A webClient has connected.');
-        socket.emit('chat', 'Hi Client.');
+        var game = gameserver;
+        onConnect(socket, gameserver);
+        socket.on('chat', onChat);
+        socket.on('spawn', onSpawn);
+        socket.on('disconnect', onDisconnect);
 
-        socket.on('chat', function(msg){onChat.call(this, msg);});
+        function onConnect(){
+            console.log('A webClient has connected.');
+            //socket.emit('chat', 'Hi Client.');
+            game.join(socket);
+        }
+        function onDisconnect(){
+            console.log('A webClient has disconnected.');
+            game.leave(socket);
+        }
+        function onChat(msg){
+            console.log(msg);
+        }
+        function onSpawn(msg){
+            //console.log(msg);
+            game.spawn(socket, msg);
+        }
 	}); // end io connection callback
 
 	return this;
 } // end webClient
-function onChat(msg){
-    console.log(msg);
-}

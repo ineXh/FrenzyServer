@@ -27,8 +27,6 @@ var Engine = (function(global) {
     gameobjects = new GameObjects();
 
 
-
-
 	animate();
 })(this);
 
@@ -37,22 +35,15 @@ function update(){
          dt  = (now - lastTime),
          t   = (now - startTime);
     time = {t:t, dt: dt};
-
-    gameobjects.update(time);
     lastTime = now;
 
-
     if(assetsloaded){
-    	//menu.update(time);
+    	characters.update();
     }
 }
 
 function animate() {
 	update();
-
-
     renderer.render(stage0);
-
-
 	requestAnimationFrame( animate );
 }

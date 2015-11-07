@@ -3,14 +3,20 @@ function Communications(){
 }
 Communications.prototype = {
 	init: function(){
-		//this.socket = io.connect('http://10.224.63.243:90/');
-		this.socket = io.connect('http://104.197.217.162:8080/');
-		this.socket.on('chat', function(msg){
-			console.log('chat')
-			this.emit('chat', 'hey')
-		});
+		this.socket = io.connect('http://10.224.63.243:90/');
+		//this.socket = io.connect('http://104.197.217.162:8080/');
+		this.socket.on('chat', onChat);
+		this.socket.on('spawn', onSpawn);
+
 	},
 	update: function(time){
 
 	},
 }; // end Communications
+
+function onChat(msg){
+	console.log(msg)
+}
+function onSpawn(msg){
+	characters.spawn({x: msg.x, y: msg.y}, CharacterType.Cow);
+}

@@ -11,7 +11,7 @@ GameObjects.prototype = {
 	onassetsloaded : function(){
 		console.log("onassetsloaded")
 		cow_texture = new PIXI.Texture.fromImage("assets/cow.png");
-
+        characters = new Characters();
 
 		assetsloaded = true;
 	},

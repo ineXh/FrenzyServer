@@ -20,6 +20,7 @@ var gamestate;
 // Modules
 var communication;
 var gameobjects;
+var characters;
 var gameitems;
 var menu;
 var path;

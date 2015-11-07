@@ -17,10 +17,8 @@ app.use(express.static('public'));
 // routes ==================================================
 require('./app/routes')(app); // pass our application into our routes
 
-console.log('hi')
-
-var server = app.listen(8080, function(){
-    console.log('listening on *:8080');
+var server = app.listen(port, function(){
+    console.log('listening on *:' + port);
 })
 var communication = require('./app/communication.js')(app, server);
 

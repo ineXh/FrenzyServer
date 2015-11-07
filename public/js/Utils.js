@@ -3,12 +3,12 @@ function getMouse(event, touchobj){
 	//console.log(touchobj)
 	MousePos.px = MousePos.x;
 	MousePos.py = MousePos.y;
-	if(touchobj != undefined){		
+	if(touchobj != undefined){
 		MousePos.x = touchobj.clientX;
 		MousePos.y = touchobj.clientY;
 		//console.log(touchobj)
-		
-		
+
+
 	}else if(event.clientX != undefined) {
 		//console.log(event)
 		MousePos.x = event.clientX;//data.global.x;
@@ -25,7 +25,7 @@ function getMouse(event, touchobj){
 	MousePos.stage_y = MousePos.y - stage.y;
 
 }
-function onMouseStart(event){	  		
+function onMouseStart(event){
 	//console.log("mouse start")
 	getMouse(event, undefined);
 	MousePos.sx = MousePos.x;
@@ -35,37 +35,39 @@ function onMouseStart(event){
 	//gameobjects.particles.spawn({x: MousePos.x, y:MousePos.y, });
 	/*gameobjects.particles.spawn({x: MousePos.x, y:MousePos.y,
 								text: "BAM!",
-								 lifespan_d: 5, 
+								 lifespan_d: 5,
 								 ax: getRandomArbitrary(-1, 1)*-width*0.001,
 								 ay: getRandomArbitrary(0.5, 1)*-height*0.002},
 								 ParticleType.TEXT);*/
 	//addHitText(MousePos);
 	MousePos.touched = true;
-	
+
 
 }
 function onMouseMove(event){
 	getMouse(event, undefined);
 
 	/*gameobjects.particles.spawn({x: MousePos.x, y:MousePos.y,
-								 lifespan_d: 15, 
+								 lifespan_d: 15,
 								 ax: getRandomArbitrary(-1, 1)*-width*0.001,
 								 ay: getRandomArbitrary(-0.5, 1)*-height*0.001},
 								 ParticleType.FLAME);
-	
+
 */
 
 }
-function onTouchStart(event){	
-	//console.log(event.changedTouches[0]); 		
+function onTouchStart(event){
+	//console.log(event.changedTouches[0]);
 	getMouse(event, event.changedTouches[0]);
 	MousePos.sx = MousePos.x;
 	MousePos.sy = MousePos.y;
 	//console.log(MousePos);
 	MousePos.touched = true;
-	if(gamestate == GameState.InPlay)
-	path.startPath(MousePos.x, MousePos.y);
-	
+	//if(gamestate == GameState.InPlay)
+	//path.startPath(MousePos.x, MousePos.y);
+	characters.spawn({x: MousePos.x, y:MousePos.y}, CharacterType.Cow);
+	communication.socket.emit('spawn', {x: MousePos.x, y:MousePos.y});
+
 }
 function onTouchMove(event){
 	getMouse(event, event.changedTouches[0]);
@@ -81,7 +83,7 @@ function onTouchEnd(event){
 	//path.drawPath();
 }
 function backButtonTap(){
-	
+
 }
 
 function stayinBorder(pos){
@@ -95,7 +97,7 @@ function stayinBorder(pos){
 }
 function findDist(a, b) {
   return PVector.dist(a, b);
-} // end findDist  
+} // end findDist
 function intersectCR(cx,cy,cr,rx,ry,rw,rh){
 	var circleDistance = new PVector(0,0);
 	circleDistance.x = Math.abs(cx-rx);
@@ -104,7 +106,7 @@ function intersectCR(cx,cy,cr,rx,ry,rw,rh){
 	if(circleDistance.y > (rh/2 + cr)) return false;
 	if(circleDistance.x <= (rw/2)) return true;
 	if(circleDistance.y <= (rh/2)) return true;
-	  
+
 	var cornerDistance_sq = (circleDistance.x - rw/2)*(circleDistance.x - rw/2) + (circleDistance.y - rh/2)*(circleDistance.y - rh/2);
 	return (cornerDistance_sq <= (cr*cr));
 } // end intersectCR
@@ -152,9 +154,9 @@ function getRandomInt(min, max) {
 function getBound(r){
 	if(r.anchor == undefined){
 		r.anchor = {x: 0.5, y: 0.5};
-	}	
+	}
 	//console.log(r)
-	r.right = (r.x + Math.abs(r.width)*(1-r.anchor.x));	
+	r.right = (r.x + Math.abs(r.width)*(1-r.anchor.x));
 	//console.log(r.right)
 	r.left = (r.x - Math.abs(r.width)*(r.anchor.x));
 	r.bot = (r.y + Math.abs(r.height)*(1-r.anchor.y));
@@ -242,7 +244,7 @@ function isBetween(p, a, b){
   var crossproduct = (p.y - a.y) * (b.x - a.x) - (p.x - a.x) * (b.y - a.y);
   if (Math.abs(crossproduct) > 1) return false;
   var dotproduct = (p.x - a.x) *(b.x - a.x) + (p.y - a.y) * (b.y - a.y);
-  var squaredlengthba = (b.x - a.x) * (b.x - a.x) + (b.y - a.y) * (b.y - a.y);  
+  var squaredlengthba = (b.x - a.x) * (b.x - a.x) + (b.y - a.y) * (b.y - a.y);
   if (dotproduct < 0) return false;
   if ( dotproduct > squaredlengthba) return false;
   return true;
