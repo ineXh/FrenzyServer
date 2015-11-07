@@ -5,11 +5,11 @@ module.exports = exports = Communication;
 // //////////////////////
 var clients = [];
 
-function Communication(app){
-	this.http = require('http').Server(app);
-	this.io = require('socket.io')(this.http);
-  
-	this.webClient = require('./webClient')(this.io, clients);
+function Communication(app, server){
+	//this.http = require('http').Server(app);
+	this.io = require('socket.io')(server);
+
+	this.webClient = require('./webClient.js')(this.io, clients);
 
 	return this;
 } // end Communication

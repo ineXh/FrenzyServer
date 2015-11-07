@@ -19,10 +19,12 @@ require('./app/routes')(app); // pass our application into our routes
 
 console.log('hi')
 
-var communication = require('./app/Communication')(app);
-communication.http.listen(90, function(){
- 	console.log('listening on *:90');
- });
+var server = app.listen(8080, function(){
+    console.log('listening on *:8080');
+})
+var communication = require('./app/communication.js')(app, server);
+
+
 
 
 
