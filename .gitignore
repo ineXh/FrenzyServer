@@ -3,3 +3,7 @@
 node_modules/*
 *.log
 *.xlsx
+*.class
+*.zip
+*.jar
+*.apk
