@@ -4,6 +4,7 @@ var spring = 0.1;
 var GrassBGColor = RGBColor(168, 220, 163);
 var GrassColor 	 = RGBColor(40, 140, 40);
 var GrassColor2 = 0x699e5f;
+var LightCyan = 0xe0ffff;
 var LightBlue = 0x9aaee6;
 var LightOrange = 0xffac4c;
 var LightYellow = 0xfffb45;
