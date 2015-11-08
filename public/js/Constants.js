@@ -8,6 +8,11 @@ var LightCyan = 0xe0ffff;
 var LightBlue = 0x9aaee6;
 var LightOrange = 0xffac4c;
 var LightYellow = 0xfffb45;
+var Red = 0xff0000;
+var Blue = 0x0000ff;
+var Green = 0x00ff00;
+var Teal = 0x008080;
+var Purple = 0x800080;
 
 var TitleYellow = 0xffd422;
 var SkyColor = RGBColor(51, 153, 255);
@@ -27,6 +32,12 @@ GameState.GameOver		= 100;
 function GameItemType() {}
 GameItemType.Fence = 0;
 GameItemType.Hut = 1;
+
+function StartLocation(){}
+StartLocation.NW = 0;
+StartLocation.NE = 1;
+StartLocation.SW = 2;
+StartLocation.SE = 3;
 
 function MovementSetType(){}
 MovementSetType.Charge = 0;

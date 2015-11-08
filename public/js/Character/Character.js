@@ -27,11 +27,13 @@ Characters.prototype = {
 			}
 		}
 	}, // end update
-	spawn: function(input, type){
-		var character = this.pool.borrowCharacter(type);
+	spawn: function(input){
+		var character = this.pool.borrowCharacter(input.type);
 		if(character != null){
+			communication.socket.emit('spawn', input);
+
 			character.init(input);
-			this.characters[type].push(character);
+			this.characters[input.type].push(character);
 		}
   	},
   	clean_all : function(){

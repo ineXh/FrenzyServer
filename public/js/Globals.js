@@ -4,6 +4,8 @@ var scope_width, scope_height;
 var center;
 var renderer;
 
+
+
 // Container Frames
 // Overall Stage
 var stage0;
@@ -12,13 +14,13 @@ var stage;
 // In game Path
 var path_container;
 
-
 var startTime, lastTime;
 var time;
-var gamestate;
+
 
 // Modules
 var communication;
+var game;
 var gameobjects;
 var characters;
 var gameitems;
@@ -30,3 +32,9 @@ var assetsloaded = false;
 var arrow_head_texture;
 var arrow_line_texture;
 var cow_texture;
+
+// Game Variables
+var gamestate;
+var team = -1;
+var teamcolor;
+var startlocation = -1;

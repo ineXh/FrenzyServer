@@ -1,4 +1,4 @@
-var MousePos = {x: 0, y:0, x_pct: 0, y_pct: 0, px: 0, py: 0, sx: 0, sy: 0, 
+var MousePos = {x: 0, y:0, x_pct: 0, y_pct: 0, px: 0, py: 0, sx: 0, sy: 0,
 				stage_x: 0, stage_y: 0, stage_x_pct:0, stage_y_pct:0, clicked: false, touched: false};
 function getMouse(event, touchobj){
 	//console.log(touchobj)
@@ -68,13 +68,12 @@ function onTouchStart(event){
 	MousePos.touched = true;
 	//if(gamestate == GameState.InPlay)
 	path.startPath(MousePos.x, MousePos.y);
-	characters.spawn({x: MousePos.stage_x_pct*stage_width, y:MousePos.stage_y_pct*stage_height}, CharacterType.Cow);
-	communication.socket.emit('spawn', {x: MousePos.stage_x_pct, y:MousePos.stage_y_pct});
-
+	/*characters.spawn({x: MousePos.stage_x_pct*stage_width, y:MousePos.stage_y_pct*stage_height}, CharacterType.Cow);
+	communication.socket.emit('spawn', {x: MousePos.stage_x_pct, y:MousePos.stage_y_pct});*/
 }
 function onTouchMove(event){
 	getMouse(event, event.changedTouches[0]);
-	//if(gamestate == GameState.InPlay) 
+	//if(gamestate == GameState.InPlay)
 	path.updatePath(MousePos.x, MousePos.y);
 }
 function onTouchEnd(event){
@@ -82,7 +81,7 @@ function onTouchEnd(event){
 	//getMouse(event);
 	getMouse(event, event.changedTouches[0]);
 	MousePos.touched = false;
-	//if(gamestate == GameState.InPlay) 
+	//if(gamestate == GameState.InPlay)
 	path.endPath(MousePos.x, MousePos.y);
 	//path.addPoint(MousePos.x, MousePos.y);
 	//path.drawPath();

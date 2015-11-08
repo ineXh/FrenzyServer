@@ -16,6 +16,7 @@ GameObjects.prototype = {
 		arrow_head_texture = PIXI.Texture.fromFrame("arrow_head.png");
         characters = new Characters();
         path = new Path();
+        communication = new Communications();
 
 		assetsloaded = true;
 	},
