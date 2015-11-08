@@ -1,5 +1,5 @@
 var walldamp = -1;
-var damping = 0.99;
+var damping = 1;
 var spring = 0.1;
 var GrassBGColor = RGBColor(168, 220, 163);
 var GrassColor 	 = RGBColor(40, 140, 40);
@@ -98,14 +98,7 @@ function Direction(){}
 Direction.Left = -1;
 Direction.Right = 1;
 
-function Team(){}
-Team.Team0 = 0;
-Team.Team1 = 1;
-Team.Team2 = 2;
-Team.Team3 = 3;
-Team.Team4 = 4;
-Team.Team5 = 5;
-Team.Team6 = 6;
+
 
 function ArmType(){}
 ArmType.Head = 0;

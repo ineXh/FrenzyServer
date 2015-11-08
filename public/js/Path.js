@@ -1,24 +1,24 @@
 
-function Path(){  
+function Path(){
   this.points = [];
   this.line_pool = [];
   this.radius = 5;
-  this.outer_radius = 80;
+  this.outer_radius = dim / 20;
   //this.gap = 50;
-  this.maxline = 3;
+  this.maxline = 1;
   this.num_lines = 0;
   this.path_started = false;
 
   this.init();
-  
+
 }
-Path.prototype = {   
+Path.prototype = {
   init: function(){
     this.debug = true;
     //path_container = new PIXI.Container();
     //stage0.addChild(path_container);
     this.path = new PIXI.Container();
-    stage0.addChild(this.path);
+    stage.addChild(this.path);
     for(var i = 0; i < this.maxline; i++){
       this.line_pool.push(this.createArrow());
     }
@@ -33,7 +33,7 @@ Path.prototype = {
     arrow_line.anchor.x = 0.0;
     arrow_line.anchor.y = 0.5;
 
-    this.scale =  width/20 / arrow_line.width; 
+    this.scale =  width/20 / arrow_line.width;
     arrow_line.scale.set(this.scale);
     arrow_line.width = 0;
     arrow_line.x = 0;
@@ -72,8 +72,8 @@ Path.prototype = {
     else{
       this.returnfirstline();
       return this.line_pool.shift();
-    } 
-    
+    }
+
   },
   returnfirstline : function(){
     this.points.splice(0,1);
@@ -82,6 +82,7 @@ Path.prototype = {
     this.num_lines--;
   },
   startPath:function(x,y){
+    //console.log('startpath')
     this.path_started = true;
     this.addPoint(x,y);
     var line = this.borrowline();
@@ -125,7 +126,7 @@ Path.prototype = {
         dot = new PIXI.Sprite(arrow_dot_texture);
         dot.anchor.x = 0.5;
         dot.anchor.y = 0.5;
-        this.scale =  (this.gap)*3 / dot.width; 
+        this.scale =  (this.gap)*3 / dot.width;
         dot.scale.set(this.scale);
         dot.x = (p1.x - p0.x) * j / (num_dots + 1) + p0.x;
         dot.y = (p1.y - p0.y) * j/ (num_dots + 1) + p0.y;
@@ -141,10 +142,25 @@ Path.prototype = {
     path_container.addChild(this.path);
   },
   follow : function(character){
-    //console.log('follow')
-    //if(team != p.team && p.team != Team.Neutral) return (new PVector(0,0));    
+    var followforce = new PVector(0,0);
+    for(var i = 0; i < this.num_lines; i++){
+      var p0 = this.points[i*2];
+      var p1 = this.points[i*2+1];
+      var normal = getNormalPoint(character.pos, p0, p1);
+      if(isBetween(normal, p0, p1) && withinDist(normal, character.pos, this.outer_radius)){
+        var vel_line = PVector.sub(p1, p0);
+        vel_line.normalize();
+        var tempfollowforce = vel_line;
+        followforce.add(tempfollowforce);
+      }
+    }
+    followforce.normalize();
+    followforce.mult(character.maxspeed);
+    return followforce;
+    /*//console.log('follow')
+    //if(team != p.team && p.team != Team.Neutral) return (new PVector(0,0));
     //if(!p.exist) return (new PVector(0,0));
-    
+
     // Predict location 50 (arbitrary choice) frames ahead
     var predict = character.vel.clone();
     predict.normalize();
@@ -154,7 +170,7 @@ Path.prototype = {
     // Look at the line segment
     //PVector a = p.start;
     //PVector b = p.end;
-    
+
     var followforce = new PVector(0,0);
     for (var i = 0; i < this.points.length - 1; i++) {
       var p0 = this.points[i];
@@ -163,10 +179,10 @@ Path.prototype = {
       //println("i: " + i);
       //println("a: " + a);
       //println("b: " + b);
-      //println("tempfollowforce: " + tempfollowforce);
+      //console.log(tempfollowforce);
       followforce.add(tempfollowforce);
     }
-    return followforce;
+    return followforce;*/
   },
   calculatefollowforce : function(a, b, predictLoc, character){
     //console.log("a: " + a);
@@ -188,11 +204,11 @@ Path.prototype = {
     // Only if the distance is greater than the path's radius do we bother to steer
     //console.log("follow distance: " + distance);
     //console.log("this.radius: " + this.radius);
-    if (distance > this.radius && distance < this.outer_radius) { 
+    if (distance > this.radius && distance < this.outer_radius) {
       //console.log('within path bound')
-      //if(millis() - FollowTime < 100) return (new PVector(0,0)); 
+      //if(millis() - FollowTime < 100) return (new PVector(0,0));
       //println("after follow time");
-      //FollowTime = millis();    
+      //FollowTime = millis();
       var followforce = seek(character, target);
       followforce.mult(1);
       //console.log(followforce)
@@ -200,16 +216,16 @@ Path.prototype = {
       //println("followforce: " + followforce);
       return followforce;
     }else if(distance <= this.radius){
-      //FollowTime = millis();   
+      //FollowTime = millis();
         var followforce = (b.clone());//seek(target);
         followforce.sub(a);
         followforce.limit(1);
         //followforce.mult(followforce_Scale*1);
         //println("followforce: " + followforce);
-        //if(followforce.x <= 0) println("followforce: " + followforce); 
+        //if(followforce.x <= 0) println("followforce: " + followforce);
         return followforce;
     }
-    
+
     // Draw the debugging stuff
     var debug = true;//false;//true;//false;
     /*if (debug) {
@@ -228,7 +244,7 @@ Path.prototype = {
       //noStroke();
       ellipse(target.x+dir.x, target.y+dir.y, 8, 8);
     }*/
-    return new PVector(0,0); 
+    return new PVector(0,0);
   } // end calculatefollowforce
 } // end Path
 
@@ -240,7 +256,7 @@ function seek(character, target) {
     desired.mult(character.maxspeed);
     // Steering = Desired minus velocity
     var steer = PVector.sub(desired, character.vel);
-    steer.limit(character.maxforce);  // Limit to maximum steering force    
+    steer.limit(character.maxforce);  // Limit to maximum steering force
     //console.log(steer)
     return steer;
   } // end seek

@@ -2,17 +2,18 @@ var enums = require("./enums.js");
 module.exports = exports = webClient;
 
 function webClient(io, clients, gameserver){
-    var client = this;
+    //var client = this;
     var game = gameserver;
 	io.on('connection', function(socket){
-        client.socket = socket;
+        var client = socket;
+        client.characters = characterlist();
+        client.path_points = [];
 
         onConnect(socket, gameserver);
         socket.on('chat', onChat);
         socket.on('client info', onClientInfo);
         socket.on('path', onPath);
         socket.on('spawn', onSpawn);
-
         socket.on('disconnect', onDisconnect);
 
         function onConnect(){
@@ -40,9 +41,15 @@ function webClient(io, clients, gameserver){
         function onSpawn(msg){
             msg.x = msg.x / client.stage_width;
             msg.y = msg.y / client.stage_height;
+            client.characters[msg.type].push(msg)
             game.spawn(client, msg);
         }
 	}); // end io connection callback
 
 	return this;
 } // end webClient
+function characterlist(){
+    var list = [];
+    list[enums.Cow] = [];
+    return list;
+}

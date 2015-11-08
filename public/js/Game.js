@@ -1,4 +1,10 @@
 function Game(){
+    this.teams = [];
+    this.teams.push(new Team(0));
+    this.teams.push(new Team(1));
+    this.teams.push(new Team(2));
+    this.teams.push(new Team(3));
+
     this.init();
 }
 Game.prototype = {
@@ -6,12 +12,15 @@ Game.prototype = {
 
     },
     update: function(){
-
+        this.teams.forEach(function(team){
+            team.update();
+        })
+    },
+    getTeam: function(team){
+        return this.teams[team];
     },
     startgame: function(){
-    //stage.width = width;
-    //stage.height = height;
-    switch(startlocation){
+    switch(startlocation){ //
         case StartLocation.NW:
             stage.x = 0;
             stage.y = 0;
@@ -29,8 +38,46 @@ Game.prototype = {
             stage.y = -stage_height + height;
             break;
     }
-    characters.spawn({  x: -stage.x + width/2, y: -stage.y + height/2,
-                    type: CharacterType.Cow});
+    var input = {  x: -stage.x + width/2, y: -stage.y + height/2,
+                    type: CharacterType.Cow, team: myteam, color: myteamcolor};
+    var character = characters.spawn(input);
+    this.getTeam(myteam).characters[input.type].push(character);
+    console.log(input)
+    communication.socket.emit('spawn', input);
+    //center = characters.characters[CharacterType.Cow][0].pos;
+    center = this.getTeam(myteam).characters[CharacterType.Cow][0].pos;
 
     }
 }; // end Game
+function Team(team){
+    this.team = team;
+    this.path = new Path();
+    this.init();
+}
+Team.prototype = {
+    init: function(){
+        this.characters = characters.pool.initList();
+    },
+    clean: function(){
+
+    },
+    update: function(){
+        for (var i = 0; i < this.characters.length; i++) {
+            if(this.characters[i] == undefined) continue;
+            for(var j = this.characters[i].length - 1; j >= 0; j--) {
+                var c = this.characters[i][j];
+                c.update(this.path);
+                if(c.isDead()){
+                    this.clean(c);
+                    var index = this.characters[c.type].indexOf(i);
+                    if(index > -1){
+                        var val = this.characters[c.type][index];
+                        this.characters[c.type].splice(index,1);
+                    }
+                    this.characters.splice(i,1);
+                }
+            }
+        }
+    } // end update
+} // end Team
+

@@ -15,7 +15,8 @@ GameObjects.prototype = {
 		arrow_line_texture = PIXI.Texture.fromFrame("arrow_line.png");
 		arrow_head_texture = PIXI.Texture.fromFrame("arrow_head.png");
         characters = new Characters();
-        path = new Path();
+        //path = new Path();
+        game = new Game();
         communication = new Communications();
 
 		assetsloaded = true;

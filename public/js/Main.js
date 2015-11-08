@@ -48,7 +48,7 @@ var Engine = (function(global) {
 
 
     gameobjects = new GameObjects();
-    game = new Game();
+
 
 
 
@@ -62,8 +62,23 @@ function update(){
     time = {t:t, dt: dt};
     lastTime = now;
 
+    if(center != undefined){
+        if(center.x > (-stage.x + width/2 + scope_width)){
+            stage.x = -(center.x - width/2 - scope_width);
+        }
+        if(center.x < (-stage.x + width/2 - scope_width)){
+            stage.x = -(center.x - width/2 + scope_width);
+        }
+        if(center.y > (-stage.y + height/2 + scope_height)){
+            stage.y = -(center.y - height/2 - scope_height);
+        }
+        if(center.y < (-stage.y + height/2 - scope_height)){
+            stage.y = -(center.y - height/2 + scope_height);
+        }
+    }
     if(assetsloaded){
-    	characters.update();
+    	//characters.update();
+        game.update();
     }
 }
 

@@ -35,6 +35,6 @@ var cow_texture;
 
 // Game Variables
 var gamestate;
-var team = -1;
-var teamcolor;
+var myteam = -1;
+var myteamcolor;
 var startlocation = -1;

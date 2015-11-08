@@ -20,3 +20,12 @@ define("SE", 3);
 // Client Status
 define("Ready", 50);
 define("NotReady", 51);
+
+// Color
+define('Red', 0xFF0000)
+define('Blue', 0x0000FF)
+define('Teal', 0x008080)
+define('Purple', 0x800080)
+
+// Character Types
+define('Cow', 4)

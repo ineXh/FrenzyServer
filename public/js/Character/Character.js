@@ -30,10 +30,9 @@ Characters.prototype = {
 	spawn: function(input){
 		var character = this.pool.borrowCharacter(input.type);
 		if(character != null){
-			communication.socket.emit('spawn', input);
-
 			character.init(input);
-			this.characters[input.type].push(character);
+			return character;
+			//this.characters[input.type].push(character);
 		}
   	},
   	clean_all : function(){
@@ -194,16 +193,22 @@ Cow.prototype.create = function(){
 	this.sprite.scale.set(this.scale);
 	this.sprite.anchor.x = 0.5;
 	this.sprite.anchor.y = 0.5;
+	this.maxspeed = 2*stage_width/1000;
 }
 Cow.prototype.init = function(input){
-	this.maxspeed = 2*stage_width/1000;
+	this.team = input.team;
+	this.sprite.tint = input.color;
 	this.pos.x = input.x;
 	this.pos.y = input.y;
 	stage.addChild(this.sprite);
 }
-Cow.prototype.update = function(time){
-	this.move(time);
+Cow.prototype.update = function(path){
+	applyForce.call(this, path.follow(this));
+	this.vel = this.accel;
+    this.vel.limit(this.maxspeed);
+    this.pos.add(this.vel);
+    this.accel.mult(0);
+	//this.move(time);
 	this.sprite.position.x = this.pos.x;
 	this.sprite.position.y = this.pos.y;
 }
-

@@ -9,6 +9,7 @@ Communications.prototype = {
 
 		this.socket.on('chat', onChat);
 		this.socket.on('start info', onStartInfo);
+		this.socket.on('spawn existing', onSpawnExisting);
 		this.socket.on('spawn', onSpawn);
 
 	},
@@ -26,13 +27,26 @@ function onChat(msg){
 }
 function onSpawn(msg){
 	console.log('onSpawn')
-	characters.spawn({x: msg.x*stage_width, y: msg.y*stage_height,
-					type: CharacterType.Cow});
+	console.log(msg)
+	var character = characters.spawn({x: msg.x*stage_width, y: msg.y*stage_height,
+					type: msg.type, team: msg.team, color: msg.color});
+	game.getTeam(msg.team).characters[msg.type].push(character);
+
+}
+function onSpawnExisting(msg){
+	console.log('onSpawnExisting')
+	console.log(msg)
+	for(var i = 0; i < msg.characters.length; i++){
+		var character = characters.spawn({x: msg.characters[i].x*stage_width, y: msg.characters[i].y*stage_height,
+					type: msg.characters[i].type, team: msg.team, color: msg.color});
+		game.getTeam(msg.team).characters[msg.characters[i].type].push(character);
+	}
+
 }
 function onStartInfo(msg){
 	gamestate = GameState.InPlay;
-	team = msg.team;
-	teamcolor = msg.color;
+	myteam = msg.team;
+	myteamcolor = msg.color;
 	startlocation = msg.location;
 	game.startgame();
 }
