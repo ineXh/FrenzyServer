@@ -65,11 +65,11 @@ gameServer.prototype = {
         })
     }, // end spawn_existing
     path: function(player, input){
-        console.log('path')
+        //console.log('path')
         var msg = {team: player.team, points: input};
         this.players.forEach(function(p){
             if(p != player){
-                console.log('player ' + p.team + ' to path.')
+                //console.log('player ' + p.team + ' to path.')
                 p.emit('path', msg)
             }
         });

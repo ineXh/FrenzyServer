@@ -37,7 +37,7 @@ function webClient(io, clients, gameserver){
             client.stage_height = msg.stage_height;
         }
         function onPath(msg){
-            console.log(msg);
+            //console.log(msg);
             if(client.path_points.length >= 2*maxline){
                 client.path_points.splice(0,2);
             }

@@ -193,7 +193,7 @@ Cow.prototype.create = function(){
 	this.sprite.scale.set(this.scale);
 	this.sprite.anchor.x = 0.5;
 	this.sprite.anchor.y = 0.5;
-	this.maxspeed = 2*stage_width/1000;
+	this.maxspeed = 4*stage_width/1000;
 }
 Cow.prototype.init = function(input){
 	this.team = input.team;
