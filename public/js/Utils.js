@@ -67,21 +67,23 @@ function onTouchStart(event){
 	//console.log(MousePos);
 	MousePos.touched = true;
 	//if(gamestate == GameState.InPlay)
-	//path.startPath(MousePos.x, MousePos.y);
+	path.startPath(MousePos.x, MousePos.y);
 	characters.spawn({x: MousePos.stage_x_pct*stage_width, y:MousePos.stage_y_pct*stage_height}, CharacterType.Cow);
 	communication.socket.emit('spawn', {x: MousePos.stage_x_pct, y:MousePos.stage_y_pct});
 
 }
 function onTouchMove(event){
 	getMouse(event, event.changedTouches[0]);
-	if(gamestate == GameState.InPlay) path.updatePath(MousePos.x, MousePos.y);
+	//if(gamestate == GameState.InPlay) 
+	path.updatePath(MousePos.x, MousePos.y);
 }
 function onTouchEnd(event){
 	//console.log('onTouchEnd')
 	//getMouse(event);
 	getMouse(event, event.changedTouches[0]);
 	MousePos.touched = false;
-	if(gamestate == GameState.InPlay) path.endPath(MousePos.x, MousePos.y);
+	//if(gamestate == GameState.InPlay) 
+	path.endPath(MousePos.x, MousePos.y);
 	//path.addPoint(MousePos.x, MousePos.y);
 	//path.drawPath();
 }

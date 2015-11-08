@@ -15,11 +15,14 @@ function Path(){
 Path.prototype = {   
   init: function(){
     this.debug = true;
+    //path_container = new PIXI.Container();
+    //stage0.addChild(path_container);
     this.path = new PIXI.Container();
-    path_container.addChild(this.path);
+    stage0.addChild(this.path);
     for(var i = 0; i < this.maxline; i++){
       this.line_pool.push(this.createArrow());
     }
+
   }, // end init
   createArrow: function(){
     var line = new PIXI.Container();

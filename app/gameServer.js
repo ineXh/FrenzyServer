@@ -1,3 +1,4 @@
+var enums = require("./enums.js");
 module.exports = exports = gameServer;
 
 // //////////////////////

@@ -29,6 +29,4 @@ var assetsloaded = false;
 // Textures
 var arrow_head_texture;
 var arrow_line_texture;
-var arrow_dot_texture;
-var stick_texture;
 var cow_texture;

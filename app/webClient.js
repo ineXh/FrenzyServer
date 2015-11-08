@@ -6,7 +6,9 @@ function webClient(io, clients, gameserver){
         var game = gameserver;
         onConnect(socket, gameserver);
         socket.on('chat', onChat);
+        socket.on('path', onPath);
         socket.on('spawn', onSpawn);
+
         socket.on('disconnect', onDisconnect);
 
         function onConnect(){
@@ -20,6 +22,9 @@ function webClient(io, clients, gameserver){
         }
         function onChat(msg){
             console.log(msg);
+        }
+        function onPath(msg){
+            
         }
         function onSpawn(msg){
             //console.log(msg);
