@@ -83,6 +83,8 @@ function onTouchEnd(event){
 	MousePos.touched = false;
 	//if(gamestate == GameState.InPlay)
 	game.getTeam(myteam).path.endPath(MousePos.stage_x, MousePos.stage_y);
+
+	communication.socket.emit('path', game.getTeam(myteam).path.getLastTwoPoints());
 	//path.addPoint(MousePos.x, MousePos.y);
 	//path.drawPath();
 }

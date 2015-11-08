@@ -11,6 +11,7 @@ Communications.prototype = {
 		this.socket.on('start info', onStartInfo);
 		this.socket.on('spawn existing', onSpawnExisting);
 		this.socket.on('spawn', onSpawn);
+		this.socket.on('path', onPath);
 
 	},
 
@@ -27,7 +28,7 @@ function onChat(msg){
 }
 function onSpawn(msg){
 	console.log('onSpawn')
-	console.log(msg)
+	//console.log(msg)
 	var character = characters.spawn({x: msg.x*stage_width, y: msg.y*stage_height,
 					type: msg.type, team: msg.team, color: msg.color});
 	game.getTeam(msg.team).characters[msg.type].push(character);
@@ -35,13 +36,12 @@ function onSpawn(msg){
 }
 function onSpawnExisting(msg){
 	console.log('onSpawnExisting')
-	console.log(msg)
+	//console.log(msg)
 	for(var i = 0; i < msg.characters.length; i++){
 		var character = characters.spawn({x: msg.characters[i].x*stage_width, y: msg.characters[i].y*stage_height,
 					type: msg.characters[i].type, team: msg.team, color: msg.color});
 		game.getTeam(msg.team).characters[msg.characters[i].type].push(character);
 	}
-
 }
 function onStartInfo(msg){
 	gamestate = GameState.InPlay;
@@ -49,4 +49,11 @@ function onStartInfo(msg){
 	myteamcolor = msg.color;
 	startlocation = msg.location;
 	game.startgame();
+}
+function onPath(msg){
+	//console.log(msg)
+	game.getTeam(msg.team).path.startPath(	msg.points[0].x*stage_width,
+											msg.points[0].y*stage_height);
+	game.getTeam(msg.team).path.endPath(	msg.points[1].x*stage_width,
+											msg.points[1].y*stage_height);
 }

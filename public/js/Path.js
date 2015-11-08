@@ -5,9 +5,10 @@ function Path(){
   this.radius = 5;
   this.outer_radius = dim / 20;
   //this.gap = 50;
-  this.maxline = 1;
+  this.maxline = 2;
   this.num_lines = 0;
   this.path_started = false;
+
 
   this.init();
 
@@ -67,6 +68,13 @@ Path.prototype = {
   getEndLine : function(){
     return this.path.children[this.path.children.length-1];
   },
+  getLastTwoPoints: function(){
+    if(this.points.length <= 1) return null;
+    var data = [];
+    data.push(this.points[this.points.length-2]);
+    data.push(this.points[this.points.length-1]);
+    return data;
+  },
   borrowline : function(){
     if(this.line_pool.length >= 1)  return this.line_pool.shift();
     else{
@@ -76,8 +84,7 @@ Path.prototype = {
 
   },
   returnfirstline : function(){
-    this.points.splice(0,1);
-    this.points.splice(0,1);
+    this.points.splice(0,2);
     this.line_pool.push(this.path.children.shift());
     this.num_lines--;
   },

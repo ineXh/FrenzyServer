@@ -1,5 +1,6 @@
 var enums = require("./enums.js");
 module.exports = exports = webClient;
+var maxline = 2;
 
 function webClient(io, clients, gameserver){
     //var client = this;
@@ -36,7 +37,19 @@ function webClient(io, clients, gameserver){
             client.stage_height = msg.stage_height;
         }
         function onPath(msg){
-
+            console.log(msg);
+            if(client.path_points.length >= 2*maxline){
+                client.path_points.splice(0,2);
+            }
+            msg[0].x = msg[0].x / client.stage_width;
+            msg[0].y = msg[0].y / client.stage_height;
+            msg[1].x = msg[1].x / client.stage_width;
+            msg[1].y = msg[1].y / client.stage_height;
+            client.path_points.push({x: msg[0].x,
+                                     y: msg[0].y});
+            client.path_points.push({x: msg[1].x,
+                                     y: msg[1].y});
+            game.path(client, msg);
         }
         function onSpawn(msg){
             msg.x = msg.x / client.stage_width;
