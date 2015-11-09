@@ -15,7 +15,7 @@ function webClient(io, clients, gameserver){
         socket.on('client info', onClientInfo);
         socket.on('path', onPath);
         socket.on('spawn', onSpawn);
-        socket.on('sync', onSync);
+        socket.on('sync character', onSyncCharacter);
         socket.on('disconnect', onDisconnect);
 
         function onConnect(){
@@ -60,7 +60,7 @@ function webClient(io, clients, gameserver){
             msg.color = client.color;
             game.spawn(client, msg);
         }
-        function onSync(msg){
+        function onSyncCharacter(msg){
             //console.log('onSync')
             //console.log(client.characters)
             //console.log(msg)

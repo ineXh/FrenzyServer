@@ -71,7 +71,7 @@ Team.prototype = {
             for(var j = this.characters[i].length - 1; j >= 0; j--) {
                 var c = this.characters[i][j];
                 c.update(this.path);
-                this.sendSync();
+                this.sendSyncCharacter();
                 if(c.isDead()){
                     this.clean(c);
                     var index = this.characters[c.type].indexOf(i);
@@ -84,7 +84,7 @@ Team.prototype = {
             }
         }
     }, // end update
-    sendSync:function(){
+    sendSyncCharacter:function(){
         if(this.team != myteam) return;
         this.sync_count++;
         if(this.sync_count < this.sync_time) return;
@@ -99,7 +99,12 @@ Team.prototype = {
                 msg[i].push({x: c.pos.x/stage_width, y: c.pos.y/stage_height, type: c.type})
             }
         }
-        communication.socket.emit('sync', msg)
+        communication.socket.emit('sync character', msg)
+        this.sendSyncPath();
+    }, // emd sendSyncCharacter
+    sendSyncPath : function(){
+
     }
+
 } // end Team
 
