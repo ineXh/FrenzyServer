@@ -24,7 +24,7 @@ gameServer.prototype = {
         player.location = locations.shift();
         this.send_start_info(player);
         this.spawn_existing(player);
-        console.log('start location ' + player.location);
+        //console.log('start location ' + player.location);
     },
     leave: function(player){
         colors.push(player.color)
@@ -35,10 +35,10 @@ gameServer.prototype = {
         console.log('total players ' + this.players.length);
     },
     spawn: function(player, input){
-        console.log('spawn')
+        //console.log('spawn')
         this.players.forEach(function(p){
             if(p != player){
-                console.log('player ' + p.team + ' to spawn.')
+                //console.log('player ' + p.team + ' to spawn.')
                 p.emit('spawn', input)
             }
         });
@@ -73,5 +73,14 @@ gameServer.prototype = {
                 p.emit('path', msg)
             }
         });
-    }
+    },
+    sync: function(player, input){
+        var msg = {team: player.team, characters: input};
+        this.players.forEach(function(p){
+            if(p != player){
+                //console.log('player ' + p.team + ' to path.')
+                p.emit('sync', msg)
+            }
+        });
+    } // end sync
 } // end gameServer

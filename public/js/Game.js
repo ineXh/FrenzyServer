@@ -40,10 +40,11 @@ Game.prototype = {
     }
     var input = {  x: -stage.x + width/2, y: -stage.y + height/2,
                     type: CharacterType.Cow, team: myteam, color: myteamcolor};
+
     var character = characters.spawn(input);
     this.getTeam(myteam).characters[input.type].push(character);
-    console.log(input)
-    communication.socket.emit('spawn', input);
+    //console.log(input)
+    communication.socket.emit('spawn', {  x: input.x/stage_width, y: input.y/stage_height, type: CharacterType.Cow});
     //center = characters.characters[CharacterType.Cow][0].pos;
     center = this.getTeam(myteam).characters[CharacterType.Cow][0].pos;
 
@@ -51,7 +52,9 @@ Game.prototype = {
 }; // end Game
 function Team(team){
     this.team = team;
-    this.path = new Path();
+    this.path = new Path(team);
+    this.sync_count = 0;
+    this.sync_time = 200;
     this.init();
 }
 Team.prototype = {
@@ -62,11 +65,13 @@ Team.prototype = {
 
     },
     update: function(){
+
         for (var i = 0; i < this.characters.length; i++) {
             if(this.characters[i] == undefined) continue;
             for(var j = this.characters[i].length - 1; j >= 0; j--) {
                 var c = this.characters[i][j];
                 c.update(this.path);
+                this.sendSync();
                 if(c.isDead()){
                     this.clean(c);
                     var index = this.characters[c.type].indexOf(i);
@@ -78,6 +83,23 @@ Team.prototype = {
                 }
             }
         }
-    } // end update
+    }, // end update
+    sendSync:function(){
+        if(this.team != myteam) return;
+        this.sync_count++;
+        if(this.sync_count < this.sync_time) return;
+        //console.log('sendSync')
+        this.sync_count = 0;
+        var msg = [];
+        for (var i = 0; i < this.characters.length; i++) {
+            if(this.characters[i] == undefined) continue;
+            msg[i] = [];
+            for(var j = 0; j < this.characters[i].length;j++){
+                var c = this.characters[i][j];
+                msg[i].push({x: c.pos.x/stage_width, y: c.pos.y/stage_height, type: c.type})
+            }
+        }
+        communication.socket.emit('sync', msg)
+    }
 } // end Team
 

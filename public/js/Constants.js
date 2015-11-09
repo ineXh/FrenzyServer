@@ -117,10 +117,11 @@ SpriteType.RLeg = 5;
 SpriteType.Cloth = 6;
 
 function CharacterType() {}
+CharacterType.Cow       = 0;
+
 CharacterType.Alien		= 1;
 CharacterType.Piranha	= 2;
 CharacterType.Duck		= 3;
-CharacterType.Cow		= 4;
 CharacterType.Cat		= 5;
 CharacterType.Knight	= 6;
 CharacterType.Mole		= 7;

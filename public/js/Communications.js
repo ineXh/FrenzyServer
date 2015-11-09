@@ -12,6 +12,7 @@ Communications.prototype = {
 		this.socket.on('spawn existing', onSpawnExisting);
 		this.socket.on('spawn', onSpawn);
 		this.socket.on('path', onPath);
+		this.socket.on('sync', onSync);
 
 	},
 
@@ -28,7 +29,7 @@ function onChat(msg){
 }
 function onSpawn(msg){
 	console.log('onSpawn')
-	//console.log(msg)
+	console.log(msg)
 	var character = characters.spawn({x: msg.x*stage_width, y: msg.y*stage_height,
 					type: msg.type, team: msg.team, color: msg.color});
 	game.getTeam(msg.team).characters[msg.type].push(character);
@@ -51,9 +52,20 @@ function onStartInfo(msg){
 	game.startgame();
 }
 function onPath(msg){
-	//console.log(msg)
+	console.log(msg)
 	game.getTeam(msg.team).path.startPath(	msg.points[0].x*stage_width,
 											msg.points[0].y*stage_height);
 	game.getTeam(msg.team).path.endPath(	msg.points[1].x*stage_width,
 											msg.points[1].y*stage_height);
+}
+function onSync(msg){
+	//console.log(msg);
+	var team = game.getTeam(msg.team);
+	for(var i = 0; i < msg.characters.length; i++){
+		if(msg.characters[i] == undefined) continue;
+		for(var j = 0; j < msg.characters[i].length; j++){
+			team.characters[i][j].pos.x = msg.characters[i][j].x*stage_width;
+			team.characters[i][j].pos.y = msg.characters[i][j].y*stage_height;
+		}
+	}
 }

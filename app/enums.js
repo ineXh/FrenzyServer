@@ -28,4 +28,4 @@ define('Teal', 0x008080)
 define('Purple', 0x800080)
 
 // Character Types
-define('Cow', 4)
+define('Cow', 0)

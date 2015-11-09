@@ -15,6 +15,7 @@ function webClient(io, clients, gameserver){
         socket.on('client info', onClientInfo);
         socket.on('path', onPath);
         socket.on('spawn', onSpawn);
+        socket.on('sync', onSync);
         socket.on('disconnect', onDisconnect);
 
         function onConnect(){
@@ -52,11 +53,30 @@ function webClient(io, clients, gameserver){
             game.path(client, msg);
         }
         function onSpawn(msg){
-            msg.x = msg.x / client.stage_width;
-            msg.y = msg.y / client.stage_height;
+            //msg.x = msg.x / client.stage_width;
+            //msg.y = msg.y / client.stage_height;
             client.characters[msg.type].push(msg)
+            msg.team = client.team;
+            msg.color = client.color;
             game.spawn(client, msg);
         }
+        function onSync(msg){
+            //console.log('onSync')
+            //console.log(client.characters)
+            //console.log(msg)
+            for(var i = 0; i < client.characters.length; i++){
+                if(client.characters[i] == undefined) continue;
+                for(var j = 0; j < client.characters[i].length; j++){
+                    var c = client.characters[i][j];
+                    var m = msg[i][j];
+                    if(c != null && m != null){
+                        c.x = m.x;
+                        c.y = m.y;
+                    }
+                }
+            }
+            game.sync(client, msg);
+        } // end onSync
 	}); // end io connection callback
 
 	return this;

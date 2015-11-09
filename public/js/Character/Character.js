@@ -194,6 +194,7 @@ Cow.prototype.create = function(){
 	this.sprite.anchor.x = 0.5;
 	this.sprite.anchor.y = 0.5;
 	this.maxspeed = 4*stage_width/1000;
+	this.type = CharacterType.Cow;
 }
 Cow.prototype.init = function(input){
 	this.team = input.team;

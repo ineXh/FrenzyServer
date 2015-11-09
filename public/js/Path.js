@@ -1,14 +1,15 @@
 
-function Path(){
+function Path(team){
+  this.team = team;
   this.points = [];
   this.line_pool = [];
+  this.lines = [];
   this.radius = 5;
   this.outer_radius = dim / 20;
   //this.gap = 50;
-  this.maxline = 2;
+  this.maxline = 3;
   this.num_lines = 0;
   this.path_started = false;
-
 
   this.init();
 
@@ -66,7 +67,8 @@ Path.prototype = {
     return this.points[this.points.length-1];
   },
   getEndLine : function(){
-    return this.path.children[this.path.children.length-1];
+    //return this.path.children[this.path.children.length-1];
+    return this.lines[this.lines.length-1];
   },
   getLastTwoPoints: function(){
     if(this.points.length <= 1) return null;
@@ -85,7 +87,8 @@ Path.prototype = {
   },
   returnfirstline : function(){
     this.points.splice(0,2);
-    this.line_pool.push(this.path.children.shift());
+    //this.line_pool.push(this.path.children.shift());
+    this.line_pool.push(this.lines.shift());
     this.num_lines--;
   },
   startPath:function(x,y){
@@ -101,7 +104,8 @@ Path.prototype = {
     this.lastline.moveTo(x, y);*/
     //this.lastline.lineTo(x+50, y+50);
     //this.lastline.lineTo(x, y+100);
-    this.path.addChild(line);
+    this.lines.push(line);
+    if(this.team == myteam) this.path.addChild(line);
 
   }, // end startPath
   updatePath : function(x,y){
