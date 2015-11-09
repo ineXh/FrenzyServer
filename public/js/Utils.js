@@ -33,31 +33,21 @@ function onMouseStart(event){
 	getMouse(event, undefined);
 	MousePos.sx = MousePos.x;
 	MousePos.sy = MousePos.y;
-	document.addEventListener("mousemove", onMouseMove, false);
-	//gameobjects.bunnies.push(new Bunny(MousePos.x, MousePos.y))
-	//gameobjects.particles.spawn({x: MousePos.x, y:MousePos.y, });
-	/*gameobjects.particles.spawn({x: MousePos.x, y:MousePos.y,
-								text: "BAM!",
-								 lifespan_d: 5,
-								 ax: getRandomArbitrary(-1, 1)*-width*0.001,
-								 ay: getRandomArbitrary(0.5, 1)*-height*0.002},
-								 ParticleType.TEXT);*/
-	//addHitText(MousePos);
-	MousePos.touched = true;
+	//document.addEventListener("mousemove", onMouseMove, false);
 
+	MousePos.touched = true;
+	game.getTeam(myteam).path.startPath(MousePos.stage_x, MousePos.stage_y);
 
 }
 function onMouseMove(event){
 	getMouse(event, undefined);
+	game.getTeam(myteam).path.updatePath(MousePos.stage_x, MousePos.stage_y);
+}
+function onMouseUp(event){
+	getMouse(event, undefined);
+	game.getTeam(myteam).path.endPath(MousePos.stage_x, MousePos.stage_y);
 
-	/*gameobjects.particles.spawn({x: MousePos.x, y:MousePos.y,
-								 lifespan_d: 15,
-								 ax: getRandomArbitrary(-1, 1)*-width*0.001,
-								 ay: getRandomArbitrary(-0.5, 1)*-height*0.001},
-								 ParticleType.FLAME);
-
-*/
-
+	communication.socket.emit('path', game.getTeam(myteam).path.getLastTwoPoints());
 }
 function onTouchStart(event){
 	//console.log(event.changedTouches[0]);

@@ -12,6 +12,8 @@ var Engine = (function(global) {
 
     console.log('width ' + width + ' height ' + height + ' stage_width ' + stage_width + ' stage_height ' + stage_height)
 	document.addEventListener("mousedown", onMouseStart, true);
+    document.addEventListener("mouseup", onMouseUp, true);
+    document.addEventListener("mousemove", onMouseMove, true);
 	document.addEventListener("touchstart", onTouchStart, true);
 	document.addEventListener("touchend", onTouchEnd, true);
 	document.addEventListener("touchmove", onTouchMove, true);
