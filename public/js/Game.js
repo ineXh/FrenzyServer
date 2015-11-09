@@ -54,7 +54,7 @@ function Team(team){
     this.team = team;
     this.path = new Path(team);
     this.sync_count = 0;
-    this.sync_time = 200;
+    this.sync_time = 300;
     this.init();
 }
 Team.prototype = {
