@@ -1,6 +1,6 @@
 var enums = require("./enums.js");
 module.exports = exports = webClient;
-var maxline = 2;
+var maxline = 3;
 
 function webClient(io, clients, gameserver){
     //var client = this;
@@ -55,7 +55,11 @@ function webClient(io, clients, gameserver){
         function onSpawn(msg){
             //msg.x = msg.x / client.stage_width;
             //msg.y = msg.y / client.stage_height;
-            client.characters[msg.type].push(msg)
+            for(var i = 0; i < msg.characters.length; i++){
+                var character = msg.characters[i];
+                client.characters[character.type].push({x: character.x, y: character.y, type: character.type})
+            }
+
             msg.team = client.team;
             msg.color = client.color;
             game.spawn(client, msg);

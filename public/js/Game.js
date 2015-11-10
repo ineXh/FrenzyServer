@@ -9,9 +9,45 @@ function Game(){
 }
 Game.prototype = {
     init: function(){
-
+        this.collision_count = 0;
+        this.collision_time = 20;
+    },
+    checkcollisions :function(){
+        this.collision_count++;
+        if(this.collision_count < this.collision_time) return;
+        this.resetcollisioncounts();
+        for(var i = 0; i < this.teams.length; i++){
+            for(var j = 0; j < this.teams[i].characters.length; j++){
+                for(var k = 0; k < this.teams[i].characters[j].length; k++){
+                    var c = this.teams[i].characters[j][k];
+                    if(c.collision_count >= 4) continue;
+                    this.checkcollision(c);
+                }
+            }
+        }
+    },
+    checkcollision: function(c){
+      for(var i = 0; i < this.teams.length; i++){
+            for(var j = 0; j < this.teams[i].characters.length; j++){
+                for(var k = 0; k < this.teams[i].characters[j].length; k++){
+                    var c2 = this.teams[i].characters[j][k];
+                    if(c2.collision_count >= 4) continue;
+                    c.collide(c2);
+                }
+            }
+        }
+    },
+    resetcollisioncounts:function(){
+        for(var i = 0; i < this.teams.length; i++){
+            for(var j = 0; j < this.teams[i].characters.length; j++){
+                for(var k = 0; k < this.teams[i].characters[j].length; k++){
+                    this.teams[i].characters[j][k].collision_count = 0;
+                }
+            }
+        }
     },
     update: function(){
+        this.checkcollisions();
         this.teams.forEach(function(team){
             team.update();
         })
@@ -20,6 +56,8 @@ Game.prototype = {
         return this.teams[team];
     },
     startgame: function(){
+        //stage.width = width;
+        //stage.height = height;
     switch(startlocation){ //
         case StartLocation.NW:
             stage.x = 0;
@@ -38,23 +76,31 @@ Game.prototype = {
             stage.y = -stage_height + height;
             break;
     }
-    
-    spawnCow(-stage.x + width/2,-stage.y + height/2);
+    var msg = {team: myteam, color: myteamcolor, characters: []};
+    for(var i = 0; i < 10; i++){
+        for(var j = 0; j < 10; j++){
+            spawnCow(-stage.x + width/2 + width/20*j,-stage.y + height/2 + width/20*i, msg);
+        }
+    }
 
-    spawnCow(-stage.x + width/2 + width/50,-stage.y + height/2);
+    communication.socket.emit('spawn', msg);
+    //spawnCow(-stage.x + width/2,-stage.y + height/2);
+
+    //spawnCow(-stage.x + width/2 + width/50,-stage.y + height/2);
 
     center = this.getTeam(myteam).characters[CharacterType.Cow][0].pos;
 
     }
 }; // end Game
-function spawnCow(x,y){
+function spawnCow(x, y, msg){
     var input = {  x: x, y: y,
                     type: CharacterType.Cow, team: myteam, color: myteamcolor};
 
     var character = characters.spawn(input);
     game.getTeam(myteam).characters[input.type].push(character);
     //console.log(input)
-    communication.socket.emit('spawn', {  x: input.x/stage_width, y: input.y/stage_height, type: CharacterType.Cow});
+    msg.characters.push({  x: input.x/stage_width, y: input.y/stage_height, type: CharacterType.Cow});
+    //communication.socket.emit('spawn', {  x: input.x/stage_width, y: input.y/stage_height, type: CharacterType.Cow});
 }
 
 function Team(team){
@@ -71,6 +117,7 @@ Team.prototype = {
     clean: function(){
 
     },
+
     update: function(){
 
         for (var i = 0; i < this.characters.length; i++) {
@@ -103,7 +150,8 @@ Team.prototype = {
             msg[i] = [];
             for(var j = 0; j < this.characters[i].length;j++){
                 var c = this.characters[i][j];
-                msg[i].push({x: c.pos.x/stage_width, y: c.pos.y/stage_height, type: c.type})
+                msg[i].push({x: c.pos.x/stage_width, y: c.pos.y/stage_height,
+                vx:c.vel.x / stage_width, vy: c.vel.y / stage_height, type: c.type})
             }
         }
         communication.socket.emit('sync character', msg)

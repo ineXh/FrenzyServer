@@ -26,7 +26,7 @@ CharacterPool.prototype = {
     },
     createCow: function(){
         this.cows = [];
-        this.addCow(100);
+        this.addCow(5000);
     },
     addCow: function(amount){
         for(var i = 0; i < amount; i++){

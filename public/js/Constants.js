@@ -1,6 +1,6 @@
 var walldamp = -1;
 var damping = 1;
-var spring = 0.1;
+var spring = 0.01;
 var GrassBGColor = RGBColor(168, 220, 163);
 var GrassColor 	 = RGBColor(40, 140, 40);
 var GrassColor2 = 0x699e5f;
