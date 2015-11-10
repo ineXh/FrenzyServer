@@ -38,18 +38,25 @@ Game.prototype = {
             stage.y = -stage_height + height;
             break;
     }
-    var input = {  x: -stage.x + width/2, y: -stage.y + height/2,
-                    type: CharacterType.Cow, team: myteam, color: myteamcolor};
+    
+    spawnCow(-stage.x + width/2,-stage.y + height/2);
 
-    var character = characters.spawn(input);
-    this.getTeam(myteam).characters[input.type].push(character);
-    //console.log(input)
-    communication.socket.emit('spawn', {  x: input.x/stage_width, y: input.y/stage_height, type: CharacterType.Cow});
-    //center = characters.characters[CharacterType.Cow][0].pos;
+    spawnCow(-stage.x + width/2 + width/50,-stage.y + height/2);
+
     center = this.getTeam(myteam).characters[CharacterType.Cow][0].pos;
 
     }
 }; // end Game
+function spawnCow(x,y){
+    var input = {  x: x, y: y,
+                    type: CharacterType.Cow, team: myteam, color: myteamcolor};
+
+    var character = characters.spawn(input);
+    game.getTeam(myteam).characters[input.type].push(character);
+    //console.log(input)
+    communication.socket.emit('spawn', {  x: input.x/stage_width, y: input.y/stage_height, type: CharacterType.Cow});
+}
+
 function Team(team){
     this.team = team;
     this.path = new Path(team);
