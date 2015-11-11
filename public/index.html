@@ -10,14 +10,11 @@
     <script src="js/lib/jquery-ui.js"></script>
     <script src="js/lib/jquery.ui.touch-punch.min.js"></script>
     <script src="js/lib/bootstrap.min.js"></script>
-    <script src="//cdnjs.cloudflare.com/ajax/libs/lodash.js/3.5.0/lodash.min.js"></script>
-    <script src="js/lib/gridstack.js"></script>
 
     <link rel='stylesheet' type='text/css' href="css/bootstrap.min.css" />
     <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.2.0/css/font-awesome.min.css"/>
 
-    <link rel='stylesheet' type='text/css' href="css/gridstack.css" />
-    <link rel='stylesheet' type='text/css' href="css/gridstack-extra.css" />
+
     <link rel='stylesheet' type='text/css' href="css/styles.css" />
     <link href="//cdnjs.cloudflare.com/ajax/libs/jqueryui/1.10.2/css/lightness/jquery-ui-1.10.2.custom.min.css" rel="stylesheet">
 
@@ -33,55 +30,16 @@
 </head>
 <body>
     <!--<div id="chatmonitor" class="monitor col-md-6"></div>-->
-    <div class="col-md-6 grid-stack">
-        <div class="grid-stack-item"
-            data-gs-x="0" data-gs-y="0"
-            data-gs-width="4" data-gs-height="1">
-                <div class="grid-stack-item-content"><img src="assets/cow.png" style="width:40%;height:40%;"></div>
-        </div>
-        <div class="grid-stack-item"
-            data-gs-x="4" data-gs-y="0"
-            data-gs-width="5" data-gs-height="1">
-                <div class="grid-stack-item-content"><img src="assets/cow.png" style="width:40%;height:40%;"></div>
-        </div>
-    </div>
-    <style>
-        #draggable { width: 150px; height: 150px; padding: 0.5em; }
-        </style>
+
     <script>
         $(function() {
           $( "#draggable" ).draggable();
           $( "#draggable" ).resizable();
         });
         </script>
-    <div id="draggable" class="ui-widget-content ui-draggable" style="position: relative; left: 92px; top: 14px;">
+    <div id="draggable" class="ui-widget-content ui-draggable">
         <p>Drag me around</p>
       </div>
-
-      <style>
-        #resizable { width: 150px; height: 150px; padding: 0.5em; }
-        #resizable h3 { text-align: center; margin: 0; }
-        </style>
-        <script>
-        $(function() {
-          $( "#resizable" ).resizable();
-        });
-        </script>
-        <div id="resizable" class="ui-widget-content ui-resizable" style="width: 252px; height: 264px;">
-        <h3 class="ui-widget-header">Resizable</h3>
-      <div class="ui-resizable-handle ui-resizable-e" style="z-index: 90;"></div><div class="ui-resizable-handle ui-resizable-s" style="z-index: 90;"></div><div class="ui-resizable-handle ui-resizable-se ui-icon ui-icon-gripsmall-diagonal-se" style="z-index: 90;"></div></div>
-
-
-
-        <script type="text/javascript">
-        $(function () {
-            var options = {
-                cell_height: 80,
-                vertical_margin: 10
-            };
-            $('.grid-stack').gridstack(options);
-        });
-        </script>
 
     <input id="name" type="text" name="firstname">
     <input id="submit" type="submit">

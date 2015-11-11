@@ -29,44 +29,58 @@ function getMouse(event, touchobj){
 
 }
 function onMouseStart(event){
-	//console.log("mouse start")
+	console.log("mouse start")
 	getMouse(event, undefined);
 	MousePos.sx = MousePos.x;
 	MousePos.sy = MousePos.y;
 	//document.addEventListener("mousemove", onMouseMove, false);
-
+    if(drag(MousePos.x, MousePos.y)){
+        return;
+    }
 	MousePos.touched = true;
 	game.getTeam(myteam).path.startPath(MousePos.stage_x, MousePos.stage_y);
 
 }
 function onMouseMove(event){
+    if(!MousePos.touched) return;
+    console.log("onMouseMove")
 	getMouse(event, undefined);
 	game.getTeam(myteam).path.updatePath(MousePos.stage_x, MousePos.stage_y);
 }
 function onMouseUp(event){
+    if(!MousePos.touched) return;
 	getMouse(event, undefined);
 	game.getTeam(myteam).path.endPath(MousePos.stage_x, MousePos.stage_y);
 
 	communication.socket.emit('path', game.getTeam(myteam).path.getLastTwoPoints());
 }
 function onTouchStart(event){
+
+    //$( "#draggable" ).position()
 	//console.log(event.changedTouches[0]);
 	getMouse(event, event.changedTouches[0]);
 	MousePos.sx = MousePos.x;
 	MousePos.sy = MousePos.y;
 	//console.log(MousePos);
-	MousePos.touched = true;
+	if(drag(MousePos.x, MousePos.y)){
+        return;
+    }
+    MousePos.touched = true;
+    console.log('touched')
 	//if(gamestate == GameState.InPlay)
 	game.getTeam(myteam).path.startPath(MousePos.stage_x, MousePos.stage_y);
 	/*characters.spawn({x: MousePos.stage_x_pct*stage_width, y:MousePos.stage_y_pct*stage_height}, CharacterType.Cow);
 	communication.socket.emit('spawn', {x: MousePos.stage_x_pct, y:MousePos.stage_y_pct});*/
 }
 function onTouchMove(event){
+    if(!MousePos.touched) return;
+    console.log('onTouchMove ' + MousePos.touched)
 	getMouse(event, event.changedTouches[0]);
 	//if(gamestate == GameState.InPlay)
 	game.getTeam(myteam).path.updatePath(MousePos.stage_x, MousePos.stage_y);
 }
 function onTouchEnd(event){
+    if(!MousePos.touched) return;
 	//console.log('onTouchEnd')
 	//getMouse(event);
 	getMouse(event, event.changedTouches[0]);
@@ -78,6 +92,16 @@ function onTouchEnd(event){
 	//path.addPoint(MousePos.x, MousePos.y);
 	//path.drawPath();
 }
+function drag(x,y){
+    var left = $( "#draggable" ).position().left;
+    var right = left + $( "#draggable" ).width();
+    var top = $( "#draggable" ).position().top;
+    var bot = top + $( "#draggable" ).height();
+    //console.log(( x > right || x < left || y > bot || y < top))
+    return !( x > right || x < left || y > bot || y < top);
+}
+
+
 function backButtonTap(){
 
 }
