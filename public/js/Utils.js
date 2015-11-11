@@ -43,7 +43,7 @@ function onMouseStart(event){
 }
 function onMouseMove(event){
     if(!MousePos.touched) return;
-    console.log("onMouseMove")
+    //console.log("onMouseMove")
 	getMouse(event, undefined);
 	game.getTeam(myteam).path.updatePath(MousePos.stage_x, MousePos.stage_y);
 }
@@ -94,9 +94,9 @@ function onTouchEnd(event){
 }
 function drag(x,y){
     var left = $( "#draggable" ).position().left;
-    var right = left + $( "#draggable" ).width();
+    var right = left + $( "#draggable" ).width()*1.2;
     var top = $( "#draggable" ).position().top;
-    var bot = top + $( "#draggable" ).height();
+    var bot = top + $( "#draggable" ).height()*1.2;
     //console.log(( x > right || x < left || y > bot || y < top))
     return !( x > right || x < left || y > bot || y < top);
 }

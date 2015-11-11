@@ -12,10 +12,12 @@
 .monitor {
 
     padding:5px;
-    left: 60%;
-            width:20%;
+    position:absolute;
+    /*left: 60%;*/
+            width:100%;
             background:#ddd; border-radius:5px; overflow-y: scroll;
-                       border:1px solid #CCC; margin-top:10px; height: 250px;}
+                       border:1px solid #CCC; margin-top:10px; margin-bottom:10px; height: 95%;
+                   }
 
 .grid-stack {
             background: lightgoldenrodyellow;
