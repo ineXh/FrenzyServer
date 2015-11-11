@@ -1,9 +1,26 @@
 <!DOCTYPE HTML>
 <html>
 <head>
-    <script src="js/socket.io-1.3.5.js"></script>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
 
-	<title>War Game</title>
+    <script src="js/lib/socket.io-1.3.5.js"></script>
+    <script src="js/lib/jquery.min.js"></script>
+    <script src="js/lib/jquery-ui.js"></script>
+    <script src="js/lib/jquery.ui.touch-punch.min.js"></script>
+    <script src="js/lib/bootstrap.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/lodash.js/3.5.0/lodash.min.js"></script>
+    <script src="js/lib/gridstack.js"></script>
+
+    <link rel='stylesheet' type='text/css' href="css/bootstrap.min.css" />
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.2.0/css/font-awesome.min.css"/>
+
+    <link rel='stylesheet' type='text/css' href="css/gridstack.css" />
+    <link rel='stylesheet' type='text/css' href="css/gridstack-extra.css" />
+    <link rel='stylesheet' type='text/css' href="css/styles.css" />
+
+    <title>War Game</title>
 	<style>
 		body {
 			margin: 0;
@@ -14,6 +31,33 @@
 
 </head>
 <body>
+    <!--<div id="chatmonitor" class="monitor col-md-6"></div>-->
+    <div class="col-md-6 grid-stack">
+        <div class="grid-stack-item"
+            data-gs-x="0" data-gs-y="0"
+            data-gs-width="4" data-gs-height="1">
+                <div class="grid-stack-item-content"><img src="assets/cow.png" style="width:40%;height:40%;"></div>
+        </div>
+        <div class="grid-stack-item"
+            data-gs-x="4" data-gs-y="0"
+            data-gs-width="5" data-gs-height="1">
+                <div class="grid-stack-item-content"><img src="assets/cow.png" style="width:40%;height:40%;"></div>
+        </div>
+
+    </div>
+
+        <script type="text/javascript">
+        $(function () {
+            var options = {
+                cell_height: 80,
+                vertical_margin: 10
+            };
+            $('.grid-stack').gridstack(options);
+        });
+        </script>
+
+    <input id="name" type="text" name="firstname">
+    <input id="submit" type="submit">
 	<script src="js/pvector.js"></script>
 	<script src="js/pixi.js"></script>
     <script src="js/Utils.js"></script>

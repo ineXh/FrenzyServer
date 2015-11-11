@@ -1,3 +1,4 @@
+var chatmonitor = $('#chatmonitor');
 function Communications(){
 	this.init();
 }
@@ -26,6 +27,7 @@ Communications.prototype = {
 
 function onChat(msg){
 	console.log(msg)
+
 }
 function onSpawn(msg){
 	//console.log('onSpawn')
