@@ -67,8 +67,8 @@ Ball.prototype = {
       this.vel.y -= ay;
       o.vel.x += ax;
       o.vel.y -= ax;
-      //this.collision_count++;
-      //o.collision_count++;
+      this.collision_count++;
+      o.collision_count++;
     }
     /*float dx = b.pos.x - pos.x;
       float dy = b.pos.y - pos.y;

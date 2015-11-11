@@ -10,7 +10,7 @@ function Game(){
 Game.prototype = {
     init: function(){
         this.collision_count = 0;
-        this.collision_time = 20;
+        this.collision_time = 40;
     },
     checkcollisions :function(){
         this.collision_count++;
@@ -77,8 +77,8 @@ Game.prototype = {
             break;
     }
     var msg = {team: myteam, color: myteamcolor, characters: []};
-    for(var i = 0; i < 10; i++){
-        for(var j = 0; j < 10; j++){
+    for(var i = 0; i < 5; i++){
+        for(var j = 0; j < 5; j++){
             spawnCow(-stage.x + width/2 + width/20*j,-stage.y + height/2 + width/20*i, msg);
         }
     }
@@ -106,6 +106,7 @@ function spawnCow(x, y, msg){
 function Team(team){
     this.team = team;
     this.path = new Path(team);
+
     this.sync_count = 0;
     this.sync_time = 200;
     this.init();
@@ -119,6 +120,7 @@ Team.prototype = {
     },
 
     update: function(){
+
 
         for (var i = 0; i < this.characters.length; i++) {
             if(this.characters[i] == undefined) continue;

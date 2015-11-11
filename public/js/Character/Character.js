@@ -204,7 +204,7 @@ Cow.prototype.init = function(input){
 	stage.addChild(this.sprite);
 }
 Cow.prototype.update = function(path){
-	applyForce.call(this, path.follow(this));
+	if(path != null) applyForce.call(this, path.follow(this));
 	this.vel = this.accel;
     this.vel.limit(this.maxspeed);
     this.pos.add(this.vel);
