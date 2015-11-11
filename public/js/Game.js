@@ -20,7 +20,7 @@ Game.prototype = {
             for(var j = 0; j < this.teams[i].characters.length; j++){
                 for(var k = 0; k < this.teams[i].characters[j].length; k++){
                     var c = this.teams[i].characters[j][k];
-                    if(!c.sprite.visible) continue;
+                    if(!c.sprite.visible && i != myteam) continue;
                     if(c.collision_count >= 4) continue;
 
                     this.checkcollision(c);
@@ -33,7 +33,7 @@ Game.prototype = {
             for(var j = 0; j < this.teams[i].characters.length; j++){
                 for(var k = 0; k < this.teams[i].characters[j].length; k++){
                     var c2 = this.teams[i].characters[j][k];
-                    if(!c2.sprite.visible) continue;
+                    if(!c2.sprite.visible && i != myteam) continue;
                     if(c2.collision_count >= 4) continue;
                     c.collide(c2);
                 }
@@ -61,7 +61,7 @@ Game.prototype = {
     startgame: function(){
         //stage.width = width;
         //stage.height = height;
-    switch(0){ // startlocation
+    switch(startlocation){ //
         case StartLocation.NW:
             stage.x = 0;
             stage.y = 0;
@@ -91,7 +91,7 @@ Game.prototype = {
 
     //spawnCow(-stage.x + width/2 + width/50,-stage.y + height/2);
 
-    //center = this.getTeam(myteam).characters[CharacterType.Cow][0].pos;
+    center = this.getTeam(myteam).characters[CharacterType.Cow][0].pos;
 
     }
 }; // end Game
@@ -109,9 +109,9 @@ function spawnCow(x, y, msg){
 function Team(team){
     this.team = team;
     this.path = new Path(team);
-
+    this.color = (team == 0)? Red: (team == 1)? Blue: (team == 2)? Teal: (team == 3)? Purple: Red;
     this.sync_count = 0;
-    this.sync_time = 200;
+    this.sync_time = 50;
     this.init();
 }
 Team.prototype = {
@@ -124,13 +124,13 @@ Team.prototype = {
 
     update: function(){
 
-
+        this.sendSyncCharacter();
         for (var i = 0; i < this.characters.length; i++) {
             if(this.characters[i] == undefined) continue;
             for(var j = this.characters[i].length - 1; j >= 0; j--) {
                 var c = this.characters[i][j];
                 c.update(this.path);
-                this.sendSyncCharacter();
+
                 if(c.isDead()){
                     this.clean(c);
                     var index = this.characters[c.type].indexOf(i);

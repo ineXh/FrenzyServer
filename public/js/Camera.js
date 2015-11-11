@@ -7,6 +7,9 @@ var getScreenPos = function(){
 }
 // assume stage is parent
 var onScreen = function(container){
+    //if(!(container instanceof PIXI.Container)) return true;
+    //if((container instanceof Path)) return true;
+    if(container._class  == 'path') return true;
     setBorder(container);
 
     var left = container.right < ScreenPos.left;
@@ -21,11 +24,25 @@ var onScreen = function(container){
     return !( right || left || bot || top);
 }
 var setBorder = function(container){
+
     container.left = container.x;
     container.right = container.x + container.width;
     container.top = container.y;
     container.bot = container.y + container.height;
-}
+    /*for(var i = 0; i < container.children.length; i++){
+        if((container.children[i] instanceof PIXI.Container)){
+            setBorder(container.children[i]);
+            if(container.children[i].left < container.left)
+                container.left = container.children[i].left;
+            if(container.children[i].right > container.right)
+                container.right = container.children[i].right;
+            if(container.children[i].top < container.top)
+                container.top = container.children[i].top;
+            if(container.children[i].bot > container.bot)
+                container.bot = container.children[i].bot;
+        }
+    }*/
+} // end setBorder
 var visiblecount = 0;
 var visibleCheck = function(){
      if(visiblecount%50 == 0){
@@ -38,4 +55,20 @@ var visibleCheck = function(){
         }
     }
     visiblecount++;
-}
+} // end visibleCheck
+var panCenter = function(){
+    if(center != undefined){
+        if(center.x > (-stage.x + width/2 + scope_width)){
+            stage.x = -(center.x - width/2 - scope_width);
+        }
+        if(center.x < (-stage.x + width/2 - scope_width)){
+            stage.x = -(center.x - width/2 + scope_width);
+        }
+        if(center.y > (-stage.y + height/2 + scope_height)){
+            stage.y = -(center.y - height/2 - scope_height);
+        }
+        if(center.y < (-stage.y + height/2 - scope_height)){
+            stage.y = -(center.y - height/2 + scope_height);
+        }
+    }
+} // end panCenter

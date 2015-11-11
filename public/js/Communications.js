@@ -43,6 +43,7 @@ function onSpawnExisting(msg){
 					type: msg.characters[i].type, team: msg.team, color: msg.color});
 		game.getTeam(msg.team).characters[msg.characters[i].type].push(character);
 	}
+	game.getTeam(msg.team).color = msg.color;
 }
 function onStartInfo(msg){
 	gamestate = GameState.InPlay;

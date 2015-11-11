@@ -3,10 +3,11 @@ var Engine = (function(global) {
 	startTime = Date.now();
 	width 	= window.innerWidth;
 	height 	= window.innerHeight;
-	stage_width = width*2;
-	stage_height = height*2;
+
 	dim = (width < height) ? width : height;
 	big_dim = (width < height) ? height : width;
+    stage_width = dim*2;
+    stage_height = dim*2;
 	scope_width = width*0.25;
 	scope_height = height*0.25;
 
@@ -54,12 +55,7 @@ var Engine = (function(global) {
         }
     }
 
-
-
     gameobjects = new GameObjects();
-
-
-
 
 	animate();
 })(this);
@@ -72,22 +68,8 @@ function update(){
     time = {t:t, dt: dt};
     lastTime = now;
 
-    /*if(center != undefined){
-        if(center.x > (-stage.x + width/2 + scope_width)){
-            stage.x = -(center.x - width/2 - scope_width);
-        }
-        if(center.x < (-stage.x + width/2 - scope_width)){
-            stage.x = -(center.x - width/2 + scope_width);
-        }
-        if(center.y > (-stage.y + height/2 + scope_height)){
-            stage.y = -(center.y - height/2 - scope_height);
-        }
-        if(center.y < (-stage.y + height/2 - scope_height)){
-            stage.y = -(center.y - height/2 + scope_height);
-        }
-    }*/
 
-
+    panCenter();
     visibleCheck();
 
     if(assetsloaded){

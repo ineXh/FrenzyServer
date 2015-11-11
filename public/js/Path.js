@@ -20,6 +20,7 @@ Path.prototype = {
     //path_container = new PIXI.Container();
     //stage0.addChild(path_container);
     this.path = new PIXI.Container();
+    this.path._class  = 'path';
     stage.addChild(this.path);
     for(var i = 0; i < this.maxline; i++){
       this.line_pool.push(this.createArrow());
@@ -105,7 +106,10 @@ Path.prototype = {
     //this.lastline.lineTo(x+50, y+50);
     //this.lastline.lineTo(x, y+100);
     this.lines.push(line);
-    if(this.team == myteam) this.path.addChild(line);
+    line.children[0].tint = game.getTeam(this.team).color;
+    line.children[1].tint = game.getTeam(this.team).color;
+    //if(this.team == myteam)
+      this.path.addChild(line);
 
   }, // end startPath
   updatePath : function(x,y){
@@ -118,6 +122,7 @@ Path.prototype = {
     this.getEndLine().rotation = Math.atan2(y-p0.y, x-p0.x);
   },
   endPath : function(x,y){
+    this.updatePath(x,y);
     this.addPoint(x,y);
     this.num_lines++;
     this.path_started = false;
