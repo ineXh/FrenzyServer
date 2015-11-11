@@ -3,8 +3,8 @@ var Engine = (function(global) {
 	startTime = Date.now();
 	width 	= window.innerWidth;
 	height 	= window.innerHeight;
-	stage_width = width*20;
-	stage_height = height*20;
+	stage_width = width*2;
+	stage_height = height*2;
 	dim = (width < height) ? width : height;
 	big_dim = (width < height) ? height : width;
 	scope_width = width*0.25;
@@ -35,8 +35,8 @@ var Engine = (function(global) {
     border_box.drawRect(0, 0, stage_width, stage_height);
     //stage.addChild(border_box);
 
-    var x_count = 40;
-    var y_count = 40;
+    var x_count = 10;
+    var y_count = 10;
     for(var i = 0; i < y_count; i++){
         for(var j = 0; j < x_count; j++){
             var container = new PIXI.Container();
@@ -63,7 +63,7 @@ var Engine = (function(global) {
 
 	animate();
 })(this);
-var count = 0;
+
 
 function update(){
 	 var now = Date.now(),
@@ -87,17 +87,8 @@ function update(){
         }
     }*/
 
-    if(count%20 == 0){
-        count = 0;
-        console.log('visible check')
-        getScreenPos();
-        for(var i = 0; i < stage.children.length; i++){
-            if(!onScreen(stage.children[i])) stage.children[i].visible = false;
-            else stage.children[i].visible = true;
-        }
-    }
-    count++;
 
+    visibleCheck();
 
     if(assetsloaded){
     	//characters.update();

@@ -20,7 +20,9 @@ Game.prototype = {
             for(var j = 0; j < this.teams[i].characters.length; j++){
                 for(var k = 0; k < this.teams[i].characters[j].length; k++){
                     var c = this.teams[i].characters[j][k];
+                    if(!c.sprite.visible) continue;
                     if(c.collision_count >= 4) continue;
+
                     this.checkcollision(c);
                 }
             }
@@ -31,6 +33,7 @@ Game.prototype = {
             for(var j = 0; j < this.teams[i].characters.length; j++){
                 for(var k = 0; k < this.teams[i].characters[j].length; k++){
                     var c2 = this.teams[i].characters[j][k];
+                    if(!c2.sprite.visible) continue;
                     if(c2.collision_count >= 4) continue;
                     c.collide(c2);
                 }
@@ -76,9 +79,9 @@ Game.prototype = {
             stage.y = -stage_height + height;
             break;
     }
-    /*var msg = {team: myteam, color: myteamcolor, characters: []};
-    for(var i = 0; i < 1; i++){
-        for(var j = 0; j < 1; j++){
+    var msg = {team: myteam, color: myteamcolor, characters: []};
+    for(var i = 0; i < 10; i++){
+        for(var j = 0; j < 10; j++){
             spawnCow(-stage.x + width/2 + width/20*j,-stage.y + height/2 + width/20*i, msg);
         }
     }
@@ -88,8 +91,8 @@ Game.prototype = {
 
     //spawnCow(-stage.x + width/2 + width/50,-stage.y + height/2);
 
-    center = this.getTeam(myteam).characters[CharacterType.Cow][0].pos;
-    */
+    //center = this.getTeam(myteam).characters[CharacterType.Cow][0].pos;
+
     }
 }; // end Game
 function spawnCow(x, y, msg){

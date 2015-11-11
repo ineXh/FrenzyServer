@@ -26,3 +26,16 @@ var setBorder = function(container){
     container.top = container.y;
     container.bot = container.y + container.height;
 }
+var visiblecount = 0;
+var visibleCheck = function(){
+     if(visiblecount%50 == 0){
+        visiblecount = 0;
+        //console.log('visible check')
+        getScreenPos();
+        for(var i = 0; i < stage.children.length; i++){
+            if(!onScreen(stage.children[i])) stage.children[i].visible = false;
+            else stage.children[i].visible = true;
+        }
+    }
+    visiblecount++;
+}
