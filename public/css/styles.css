@@ -11,12 +11,14 @@
 }
 .monitor {
 
-    padding:5px;
-    position:absolute;
+    padding:20px;
+    
+    /*position:absolute;*/
     /*left: 60%;*/
             width:100%;
             background:#ddd; border-radius:5px; overflow-y: scroll;
-                       border:1px solid #CCC; margin-top:10px; margin-bottom:10px; height: 95%;
+                       border:1px solid #CCC; /*margin-top:10px; margin-bottom:10px;*/ height: 100%;
+                       
                    }
 
 .grid-stack {
