@@ -58,7 +58,7 @@ Game.prototype = {
     startgame: function(){
         //stage.width = width;
         //stage.height = height;
-    switch(startlocation){ //
+    switch(0){ // startlocation
         case StartLocation.NW:
             stage.x = 0;
             stage.y = 0;
@@ -76,9 +76,9 @@ Game.prototype = {
             stage.y = -stage_height + height;
             break;
     }
-    var msg = {team: myteam, color: myteamcolor, characters: []};
-    for(var i = 0; i < 5; i++){
-        for(var j = 0; j < 5; j++){
+    /*var msg = {team: myteam, color: myteamcolor, characters: []};
+    for(var i = 0; i < 1; i++){
+        for(var j = 0; j < 1; j++){
             spawnCow(-stage.x + width/2 + width/20*j,-stage.y + height/2 + width/20*i, msg);
         }
     }
@@ -89,7 +89,7 @@ Game.prototype = {
     //spawnCow(-stage.x + width/2 + width/50,-stage.y + height/2);
 
     center = this.getTeam(myteam).characters[CharacterType.Cow][0].pos;
-
+    */
     }
 }; // end Game
 function spawnCow(x, y, msg){
