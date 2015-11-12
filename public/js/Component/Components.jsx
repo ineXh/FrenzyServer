@@ -15,7 +15,7 @@ var ChatMonitor = React.createClass({
         console.log(chatmonitor)
         var scrollStartPos = 0;
         $( "#draggable" ).draggable({ cancel: ".non-draggable" });
-        $( "#draggable" ).resizable();//{ cancel: "#chatmonitor" }
+        /*$( "#draggable" ).resizable();//{ cancel: "#chatmonitor" }
         $( "#chatmonitor" )[0].addEventListener("touchstart", function(event) {scrollStartPos=this.scrollTop+event.touches[0].pageY*1.5;
             event.preventDefault();
         },false);
@@ -24,9 +24,10 @@ var ChatMonitor = React.createClass({
             this.scrollTop=scrollStartPos-event.touches[0].pageY*1.5;
             event.preventDefault();
         },false);
-
+    */
         $(".inputchat")[0].addEventListener("touchstart", function(e) {
             console.log('inputchat')
+            console.log(e)
             /*var mdown = new MouseEvent("click", {
                  screenX: e.screenX,
                 screenY: e.screenY,
@@ -36,11 +37,12 @@ var ChatMonitor = React.createClass({
             });
             $(".inputchat")[0].dispatchEvent(mdown);*/
 
-            $(this)[0].selectionStart = $(this)[0].selectionEnd = $(this).val().length;
+            //$(this)[0].selectionStart = $(this)[0].selectionEnd = $(this).val().length;
+
             //$( "#draggable" ).draggable( "disable" );
 
         },false);
-        $(".inputchatsubmit")[0].addEventListener("touchstart", function(e) {
+        $(".inputchatsubmit")[0].addEventListener("mousedown", function(e) {
 
             //console.log('pressed')
             //console.log(this)
@@ -83,7 +85,7 @@ var ChatMonitor = React.createClass({
                 <p><span>asfd</span></p>
                 <p><span>asfd</span></p>
                 </div>
-                <form className="commentForm" onSubmit={this.handleSubmit}>
+                <form className="commentForm non-draggable" onSubmit={this.handleSubmit}>
                     <input className="inputchat" type="text" defaultValue="Hey!" ref="chatmsg"/>;
                     <input className="inputchatsubmit" type="submit" value="Post" />
                 </form>

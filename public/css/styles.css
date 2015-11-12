@@ -34,5 +34,10 @@
 }
 
 .msg{
+    position: absolute;
+    left: 20%;
+    top: 55%;
+    width:30%;
+    height: 10%;
     /*user-select: auto;*/
 }

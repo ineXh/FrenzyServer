@@ -11,13 +11,13 @@ var Engine = (function(global) {
 	scope_height = height*0.25;
 
     console.log('width ' + width + ' height ' + height + ' stage_width ' + stage_width + ' stage_height ' + stage_height)
-	document.addEventListener("mousedown", onMouseStart, true);
+	/*document.addEventListener("mousedown", onMouseStart, true);
     document.addEventListener("mouseup", onMouseUp, true);
     document.addEventListener("mousemove", onMouseMove, true);
 	document.addEventListener("touchstart", onTouchStart, true);
 	document.addEventListener("touchend", onTouchEnd, true);
 	document.addEventListener("touchmove", onTouchMove, true);
-	document.addEventListener("backbutton", backButtonTap, true);
+	document.addEventListener("backbutton", backButtonTap, true);*/
 
 	renderer = PIXI.autoDetectRenderer(width, height*1.0 ,{backgroundColor : LightCyan});
 	// view is canvas
