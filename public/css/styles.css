@@ -12,12 +12,17 @@
 #draggable { width: 250px; height: 250px; padding: 0.5em;
         position: absolute;
     left: 92px; top: 14px;
-    opacity: 1.0;
+    opacity: 0.4;
 }
-.draggable { width: 150px; height: 150px; padding: 0.5em;
-        position: absolute;
+.draggable {  padding: 0.5em;
     left: 292px; top: 54px;
-    opacity: 1.0;
+    opacity: 0.4;
+}
+#chatwindow {
+    position: absolute;
+    width: 250px; height: 150px;
+    left: 300px; top: 50px;
+    opacity: 0.8;
 }
 #chatmonitor {
     padding:10px;
@@ -31,6 +36,12 @@
     border-radius:5px; overflow-y: scroll;
     /*user-select: auto;*/
     border:1px solid #CCC; /*margin-bottom:10px;*/
+}
+#chatinput{
+    width:80%;
+}
+#chatsendbutton{
+
 }
 
 .msg{

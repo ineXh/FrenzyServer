@@ -7,15 +7,26 @@
 
 var ChatMonitor = React.createClass({
     getInitialState: function() {
-        return {value: 'Hello!'};
+        return {value: 'Hello!', count:0};
+    },
+    tick: function() {
+      this.setState({count: this.state.count + 1});
+    },
+    mountDrag:function(){
+
     },
     componentDidMount: function(){
         console.log('did mount')
-        var chatmonitor = this;
-        console.log(chatmonitor)
+        this.interval = setInterval(this.tick, 1000);
+
+
         var scrollStartPos = 0;
-        $( "#draggable" ).draggable({ cancel: ".non-draggable" });
-        /*$( "#draggable" ).resizable();//{ cancel: "#chatmonitor" }
+        $( "#chatwindow" ).draggable({ containment: "document", scroll: false, cancel: ".non-draggable" });
+        $( "#chatwindow" ).resizable({
+          maxHeight: 850,
+          maxWidth: 850,
+          minHeight: 150,
+          minWidth: 200});//{ cancel: "#chatmonitor" }
         $( "#chatmonitor" )[0].addEventListener("touchstart", function(event) {scrollStartPos=this.scrollTop+event.touches[0].pageY*1.5;
             event.preventDefault();
         },false);
@@ -24,30 +35,46 @@ var ChatMonitor = React.createClass({
             this.scrollTop=scrollStartPos-event.touches[0].pageY*1.5;
             event.preventDefault();
         },false);
-    */
+
         $(".inputchat")[0].addEventListener("touchstart", function(e) {
             console.log('inputchat')
             console.log(e)
+             $( "#chatwindow.ui-draggable" ).draggable( "disable" );
+             //removeListeners();
             /*var mdown = new MouseEvent("click", {
-                 screenX: e.screenX,
-                screenY: e.screenY,
-                clientX: e.clientX,
-                clientY: e.clientY,
+                 //screenX: e.screenX,
+                //screenY: e.screenY,
+                //clientX: e.clientX,
+                //clientY: e.clientY,
+                bubbles: true,
                 view: window
             });
-            $(".inputchat")[0].dispatchEvent(mdown);*/
+
+            e.target.dispatchEvent(mdown);*/
+            var cb = document.getElementById("chatinput"); //element to click on
+          cb.focus();
+            //simulateMouseEvent(e, 'click');
+        //    $(".inputchat")[0].dispatchEvent(mdown);
 
             //$(this)[0].selectionStart = $(this)[0].selectionEnd = $(this).val().length;
 
             //$( "#draggable" ).draggable( "disable" );
 
         },false);
-        $(".inputchatsubmit")[0].addEventListener("mousedown", function(e) {
+        $(".inputchat")[0].addEventListener("touchend", function(e) {
+          console.log('reenable')
+          $( "#chatwindow.ui-draggable" ).draggable( "enable" );
+          //addListeners();
+          //$( "#draggable" ).draggable({ cancel: ".non-draggable" });
+          //$( "#draggable" ).resizable();
+        },false);
+
+        //$(".chatsendbutton")[0].addEventListener("mousedown", function(e) {
 
             //console.log('pressed')
             //console.log(this)
             //chatmonitor.handleSubmit();
-        },false);
+        //},false);
 
         /*$( "#draggable input" )[0].addEventListener("touchstart", function(event) {
                 console.log('select')
@@ -75,8 +102,10 @@ var ChatMonitor = React.createClass({
     },
     render: function() {
         var value = this.state.value;
+        var count = this.state.count;
+          if(count%2 == 0)
           return (
-            <div id="draggable" className="ui-widget-content ui-draggable">
+            <div id="chatwindow" className="chat ui-widget-content ui-draggable">
                 <div id="chatmonitor" className="non-draggable">
                 <p><span>asfd</span></p>
                 <p><span>asfd</span></p>
@@ -86,12 +115,13 @@ var ChatMonitor = React.createClass({
                 <p><span>asfd</span></p>
                 </div>
                 <form className="commentForm non-draggable" onSubmit={this.handleSubmit}>
-                    <input className="inputchat" type="text" defaultValue="Hey!" ref="chatmsg"/>;
-                    <input className="inputchatsubmit" type="submit" value="Post" />
+                    <input id="chatinput" className="inputchat" type="text" defaultValue="Hey!" ref="chatmsg"/>;
+                    <input id="chatsendbutton" type="submit" value="Post" />
                 </form>
+                <div>Count: {this.state.count}</div>
             </div>
-
         );
+        else return(<div></div>);
     }
   });
 

@@ -96,11 +96,29 @@ function onTouchEnd(event){
 	//path.addPoint(MousePos.x, MousePos.y);
 	//path.drawPath();
 }
+function addListeners(){
+    renderer.view.addEventListener("mousedown", onMouseStart, true);
+    renderer.view.addEventListener("mouseup", onMouseUp, true);
+    renderer.view.addEventListener("mousemove", onMouseMove, true);
+    renderer.view.addEventListener("touchstart", onTouchStart, true);
+    renderer.view.addEventListener("touchend", onTouchEnd, true);
+    renderer.view.addEventListener("touchmove", onTouchMove, true);
+    renderer.view.addEventListener("backbutton", backButtonTap, true);
+}
+function removeListeners(){
+    renderer.view.removeEventListener("mousedown", onMouseStart, true);
+    renderer.view.removeEventListener("mouseup", onMouseUp, true);
+    renderer.view.removeEventListener("mousemove", onMouseMove, true);
+    renderer.view.removeEventListener("touchstart", onTouchStart, true);
+    renderer.view.removeEventListener("touchend", onTouchEnd, true);
+    renderer.view.removeEventListener("touchmove", onTouchMove, true);
+    renderer.view.removeEventListener("backbutton", backButtonTap, true);
+}
 function drag(x,y){
-    var left = $( "#draggable" ).position().left;
-    var right = left + $( "#draggable" ).width()*1.2;
-    var top = $( "#draggable" ).position().top;
-    var bot = top + $( "#draggable" ).height()*1.2;
+    var left = $( "#chatwindow" ).position().left;
+    var right = left + $( "#chatwindow" ).width()*1.2;
+    var top = $( "#chatwindow" ).position().top;
+    var bot = top + $( "#chatwindow" ).height()*1.2;
     //console.log(( x > right || x < left || y > bot || y < top))
     return !( x > right || x < left || y > bot || y < top);
 }
@@ -283,4 +301,39 @@ function applyForce(force) {
     //console.log("this.accel: ");
     //console.log(this.accel);
     this.accel.add(force);
+  }
+
+function simulateMouseEvent (event, simulatedType) {
+        //console.log(event)
+    // Ignore multi-touch events
+    if (event.touches.length > 1) {
+      return;
+    }
+
+    event.preventDefault();
+
+    var touch = event.changedTouches[0],
+        simulatedEvent = document.createEvent('MouseEvents');
+
+    // Initialize the simulated mouse event using the touch event's coordinates
+    simulatedEvent.initMouseEvent(
+      simulatedType,    // type
+      true,             // bubbles
+      true,             // cancelable
+      window,           // view
+      1,                // detail
+      touch.screenX,    // screenX
+      touch.screenY,    // screenY
+      touch.clientX,    // clientX
+      touch.clientY,    // clientY
+      false,            // ctrlKey
+      false,            // altKey
+      false,            // shiftKey
+      false,            // metaKey
+      0,                // button
+      null              // relatedTarget
+    );
+
+    // Dispatch the simulated event to the target element
+    event.target.dispatchEvent(simulatedEvent);
   }
