@@ -49,6 +49,7 @@ function onMouseMove(event){
 }
 function onMouseUp(event){
     if(!MousePos.touched) return;
+    console.log("mouse up")
 	getMouse(event, undefined);
 	game.getTeam(myteam).path.endPath(MousePos.stage_x, MousePos.stage_y);
 
@@ -58,6 +59,7 @@ function onTouchStart(event){
 
     //$( "#draggable" ).position()
 	//console.log(event.changedTouches[0]);
+    event.preventDefault();
 	getMouse(event, event.changedTouches[0]);
 	MousePos.sx = MousePos.x;
 	MousePos.sy = MousePos.y;
@@ -73,6 +75,7 @@ function onTouchStart(event){
 	communication.socket.emit('spawn', {x: MousePos.stage_x_pct, y:MousePos.stage_y_pct});*/
 }
 function onTouchMove(event){
+    event.preventDefault();
     if(!MousePos.touched) return;
     console.log('onTouchMove ' + MousePos.touched)
 	getMouse(event, event.changedTouches[0]);
@@ -80,6 +83,7 @@ function onTouchMove(event){
 	game.getTeam(myteam).path.updatePath(MousePos.stage_x, MousePos.stage_y);
 }
 function onTouchEnd(event){
+    event.preventDefault();
     if(!MousePos.touched) return;
 	//console.log('onTouchEnd')
 	//getMouse(event);

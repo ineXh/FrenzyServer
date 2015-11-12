@@ -34,6 +34,21 @@ gameServer.prototype = {
         if(index > -1) this.players.splice(index, 1);
         console.log('total players ' + this.players.length);
     },
+    sendChat : function(userName, userColor, msg){
+      var obj = {
+          time: (new Date()).getTime(),
+          text: htmlEntities(msg),
+          author: userName,
+          color: userColor,
+        };
+        //this.history.push(obj);
+        //this.history = this.history.slice(-100);
+
+        // broadcast message to all connected clients
+        //var json = JSON.stringify({ type:'message', data: obj });
+        //console.log(json)
+        this.io.emit('chat message', json);
+    },
     spawn: function(player, input){
         //console.log('spawn')
         this.players.forEach(function(p){

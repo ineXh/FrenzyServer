@@ -12,11 +12,17 @@
     <script src="js/lib/bootstrap.min.js"></script>
 
     <link rel='stylesheet' type='text/css' href="css/bootstrap.min.css" />
-    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.2.0/css/font-awesome.min.css"/>
+    <link rel="stylesheet" type='text/css' href="css/font-awesome.min.css"/>
 
 
     <link rel='stylesheet' type='text/css' href="css/styles.css" />
-    <link href="//cdnjs.cloudflare.com/ajax/libs/jqueryui/1.10.2/css/lightness/jquery-ui-1.10.2.custom.min.css" rel="stylesheet">
+    <link type='text/css' href="css/jquery-ui-1.10.2.custom.min.css" rel="stylesheet">
+
+    <script src="js/lib/react.js"></script>
+    <script src="js/lib/react-dom.js"></script>
+    <script src="js/lib/browser.js"></script>
+    <!--<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>-->
+    <script src="js/lib/marked.min.js"></script>
 
     <title>War Game</title>
 	<style>
@@ -29,20 +35,21 @@
 
 </head>
 <body>
-    <!--<div id="chatmonitor" class="monitor col-md-6"></div>-->
+    <!--<div id="chatmonitor" class="monitor col-md-6"></div>
+    <input className="non-draggable" type="text" placeholder="Your name" ref="author" />-->
+    <div id="content"></div>
+    <!--<div class="draggable">
+        <input class='msg' type="text">
+    </div>-->
 
-    <script>
-        $(function() {
-          $( "#draggable" ).draggable();
-          $( "#draggable" ).resizable();
-        });
-        </script>
-    <div id="draggable" class="ui-widget-content ui-draggable">
-        <div id="chatmonitor" class="monitor"></div>
+
+
+    <!--
       </div>
 
     <input id="name" type="text" name="firstname">
-    <input id="submit" type="submit">
+    <input id="submit" type="submit">-->
+    <script type="text/babel" src="js/Component/Components.jsx"></script>
 	<script src="js/pvector.js"></script>
 	<script src="js/pixi.js"></script>
     <script src="js/Utils.js"></script>

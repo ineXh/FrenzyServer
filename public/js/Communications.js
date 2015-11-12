@@ -27,6 +27,8 @@ Communications.prototype = {
 
 function onChat(msg){
 	console.log(msg)
+	addMessage(json.data.author, json.data.text,
+				   json.data.color, new Date(json.data.time));
 
 }
 function onSpawn(msg){
@@ -72,4 +74,8 @@ function onSync(msg){
 			team.characters[i][j].vel.y = msg.characters[i][j].vy*stage_height;
 		}
 	}
+}
+function addMessage(author, message, color, dt) {
+	chatmonitor.prepend('<p><span "style="color:' + color + '"></span><span style="color:' + color + '">' + author + '</span> @ ' + convertTime(dt)
+		 + ': ' + message + '</p>');
 }
