@@ -1,0 +1,54 @@
+#name{
+    position: absolute;
+    left: 10%;
+    top: 10%;
+     opacity: 0.4;
+}
+#submit{
+    position: absolute;
+    left: 10%;
+    top: 15%;
+}
+#draggable { width: 250px; height: 250px; padding: 0.5em;
+        position: absolute;
+    left: 92px; top: 14px;
+    opacity: 0.4;
+}
+.draggable {  padding: 0.5em;
+    left: 292px; top: 54px;
+    opacity: 0.4;
+}
+#chatwindow {
+    position: absolute;
+    width: 250px; height: 150px;
+    left: 300px; top: 50px;
+    opacity: 0.8;
+}
+#chatmonitor {
+    padding:10px;
+    position:relative;
+    /*left: 60%;*/
+    width:100%;
+    height: 55%;
+    background:#ddd;
+    margin-top:10px;
+    margin-bottom:10px;
+    border-radius:5px; overflow-y: scroll;
+    /*user-select: auto;*/
+    border:1px solid #CCC; /*margin-bottom:10px;*/
+}
+#chatinput{
+    width:80%;
+}
+#chatsendbutton{
+
+}
+
+.msg{
+    position: absolute;
+    left: 20%;
+    top: 55%;
+    width:30%;
+    height: 10%;
+    /*user-select: auto;*/
+}

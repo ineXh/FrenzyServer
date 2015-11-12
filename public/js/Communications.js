@@ -1,9 +1,11 @@
+var chatmonitor = $('#chatmonitor');
 function Communications(){
 	this.init();
 }
 Communications.prototype = {
 	init: function(){
 		this.socket = io.connect('http://localhost:80/');
+		//this.socket = io.connect('http://192.168.0.103:80/');
 		//this.socket = io.connect('http://104.197.217.162:80/');
 		this.sendClientInfo();
 
@@ -26,6 +28,9 @@ Communications.prototype = {
 
 function onChat(msg){
 	console.log(msg)
+	addMessage(json.data.author, json.data.text,
+				   json.data.color, new Date(json.data.time));
+
 }
 function onSpawn(msg){
 	//console.log('onSpawn')
@@ -71,4 +76,8 @@ function onSync(msg){
 			team.characters[i][j].vel.y = msg.characters[i][j].vy*stage_height;
 		}
 	}
+}
+function addMessage(author, message, color, dt) {
+	chatmonitor.prepend('<p><span "style="color:' + color + '"></span><span style="color:' + color + '">' + author + '</span> @ ' + convertTime(dt)
+		 + ': ' + message + '</p>');
 }

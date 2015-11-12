@@ -94,6 +94,10 @@ Path.prototype = {
   },
   startPath:function(x,y){
     //console.log('startpath')
+    if(this.path_started){
+      this.endPath(x,y);
+      return;
+    }
     this.path_started = true;
     this.addPoint(x,y);
     var line = this.borrowline();
@@ -124,6 +128,7 @@ Path.prototype = {
   endPath : function(x,y){
     this.updatePath(x,y);
     this.addPoint(x,y);
+
     this.num_lines++;
     this.path_started = false;
   },

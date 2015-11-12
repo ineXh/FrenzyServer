@@ -29,39 +29,55 @@ function getMouse(event, touchobj){
 
 }
 function onMouseStart(event){
-	//console.log("mouse start")
+	console.log("mouse start")
 	getMouse(event, undefined);
 	MousePos.sx = MousePos.x;
 	MousePos.sy = MousePos.y;
 	//document.addEventListener("mousemove", onMouseMove, false);
-
+    if(drag(MousePos.x, MousePos.y)){
+        return;
+    }
 	MousePos.touched = true;
 	game.getTeam(myteam).path.startPath(MousePos.stage_x, MousePos.stage_y);
 
 }
 function onMouseMove(event){
+    if(!MousePos.touched) return;
+    //console.log("onMouseMove")
 	getMouse(event, undefined);
 	game.getTeam(myteam).path.updatePath(MousePos.stage_x, MousePos.stage_y);
 }
 function onMouseUp(event){
+    if(!MousePos.touched) return;
+    console.log("mouse up")
 	getMouse(event, undefined);
 	game.getTeam(myteam).path.endPath(MousePos.stage_x, MousePos.stage_y);
 
 	communication.socket.emit('path', game.getTeam(myteam).path.getLastTwoPoints());
 }
 function onTouchStart(event){
+
+    //$( "#draggable" ).position()
 	//console.log(event.changedTouches[0]);
+    event.preventDefault();
 	getMouse(event, event.changedTouches[0]);
 	MousePos.sx = MousePos.x;
 	MousePos.sy = MousePos.y;
 	//console.log(MousePos);
-	MousePos.touched = true;
+	if(drag(MousePos.x, MousePos.y)){
+        return;
+    }
+    MousePos.touched = true;
+    console.log('touched')
 	//if(gamestate == GameState.InPlay)
 	game.getTeam(myteam).path.startPath(MousePos.stage_x, MousePos.stage_y);
 	/*characters.spawn({x: MousePos.stage_x_pct*stage_width, y:MousePos.stage_y_pct*stage_height}, CharacterType.Cow);
 	communication.socket.emit('spawn', {x: MousePos.stage_x_pct, y:MousePos.stage_y_pct});*/
 }
 function onTouchMove(event){
+    event.preventDefault();
+    if(!MousePos.touched) return;
+    console.log('onTouchMove ' + MousePos.touched)
 	getMouse(event, event.changedTouches[0]);
     //stage.x -= MousePos.px - MousePos.x;
     //stage.y -= MousePos.py - MousePos.y;
@@ -69,6 +85,8 @@ function onTouchMove(event){
 	game.getTeam(myteam).path.updatePath(MousePos.stage_x, MousePos.stage_y);
 }
 function onTouchEnd(event){
+    event.preventDefault();
+    if(!MousePos.touched) return;
 	//console.log('onTouchEnd')
 	//getMouse(event);
 	getMouse(event, event.changedTouches[0]);
@@ -80,6 +98,34 @@ function onTouchEnd(event){
 	//path.addPoint(MousePos.x, MousePos.y);
 	//path.drawPath();
 }
+function addListeners(){
+    renderer.view.addEventListener("mousedown", onMouseStart, true);
+    renderer.view.addEventListener("mouseup", onMouseUp, true);
+    renderer.view.addEventListener("mousemove", onMouseMove, true);
+    renderer.view.addEventListener("touchstart", onTouchStart, true);
+    renderer.view.addEventListener("touchend", onTouchEnd, true);
+    renderer.view.addEventListener("touchmove", onTouchMove, true);
+    renderer.view.addEventListener("backbutton", backButtonTap, true);
+}
+function removeListeners(){
+    renderer.view.removeEventListener("mousedown", onMouseStart, true);
+    renderer.view.removeEventListener("mouseup", onMouseUp, true);
+    renderer.view.removeEventListener("mousemove", onMouseMove, true);
+    renderer.view.removeEventListener("touchstart", onTouchStart, true);
+    renderer.view.removeEventListener("touchend", onTouchEnd, true);
+    renderer.view.removeEventListener("touchmove", onTouchMove, true);
+    renderer.view.removeEventListener("backbutton", backButtonTap, true);
+}
+function drag(x,y){
+    var left = $( "#chatwindow" ).position().left;
+    var right = left + $( "#chatwindow" ).width()*1.2;
+    var top = $( "#chatwindow" ).position().top;
+    var bot = top + $( "#chatwindow" ).height()*1.2;
+    //console.log(( x > right || x < left || y > bot || y < top))
+    return !( x > right || x < left || y > bot || y < top);
+}
+
+
 function backButtonTap(){
 
 }
@@ -257,4 +303,39 @@ function applyForce(force) {
     //console.log("this.accel: ");
     //console.log(this.accel);
     this.accel.add(force);
+  }
+
+function simulateMouseEvent (event, simulatedType) {
+        //console.log(event)
+    // Ignore multi-touch events
+    if (event.touches.length > 1) {
+      return;
+    }
+
+    event.preventDefault();
+
+    var touch = event.changedTouches[0],
+        simulatedEvent = document.createEvent('MouseEvents');
+
+    // Initialize the simulated mouse event using the touch event's coordinates
+    simulatedEvent.initMouseEvent(
+      simulatedType,    // type
+      true,             // bubbles
+      true,             // cancelable
+      window,           // view
+      1,                // detail
+      touch.screenX,    // screenX
+      touch.screenY,    // screenY
+      touch.clientX,    // clientX
+      touch.clientY,    // clientY
+      false,            // ctrlKey
+      false,            // altKey
+      false,            // shiftKey
+      false,            // metaKey
+      0,                // button
+      null              // relatedTarget
+    );
+
+    // Dispatch the simulated event to the target element
+    event.target.dispatchEvent(simulatedEvent);
   }

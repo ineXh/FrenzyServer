@@ -29,6 +29,7 @@ function webClient(io, clients, gameserver){
             game.leave(client);
         }
         function onChat(msg){
+            console.log('onChat')
             console.log(msg);
         }
         function onClientInfo(msg){
