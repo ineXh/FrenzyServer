@@ -5,7 +5,7 @@
         {author: "Jordan Walke", text: "This is *another* msg"}
     ];*/
 
-var ChatMonitor = React.createClass({
+window.ChatMonitor = React.createClass({
     getInitialState: function() {
         return {value: 'Hello!', count:0, chats: []};
     },
@@ -19,7 +19,8 @@ var ChatMonitor = React.createClass({
       console.log('get chat')
     },
     componentDidMount: function(){
-        this.socket = communications.socket;
+        console.log('didmount')
+        this.socket = communication.socket;
         this.socket.on('chat', this.onChat);
 
         console.log('did mount')
@@ -93,10 +94,14 @@ var ChatMonitor = React.createClass({
         );
 
     }
-  });
+});
 
+window.myChatMonitor = React.createFactory(ChatMonitor);
+window.render_myChatMonitor = function() {
+  ReactDOM.render(myChatMonitor({ foo: 'bar' }), document.getElementById('content'));
+}
 
-var Chat = React.createClass({
+window.Chat = React.createClass({
     rawMarkup: function() {
       var rawMarkup = marked(this.props.children.toString(), {sanitize: true});
       return { __html: rawMarkup };
@@ -115,10 +120,10 @@ var Chat = React.createClass({
   });
 
 
-    /*ReactDOM.render(
+    //ReactDOM.render(
 
-//var startChat = function(){
-  ReactDOM.render(
+/*window.startChat = function(){
+ReactDOM.render(
 
 
           //<CommentBox data={data} />,
@@ -127,6 +132,5 @@ var Chat = React.createClass({
           <ChatMonitor />,
           document.getElementById('content')
       );
-
+}
 */
-
