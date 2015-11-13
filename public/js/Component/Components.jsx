@@ -103,7 +103,7 @@ var ChatMonitor = React.createClass({
     render: function() {
         var value = this.state.value;
         var count = this.state.count;
-          if(count%2 == 0)
+          
           return (
             <div id="chatwindow" className="chat ui-widget-content ui-draggable">
                 <div id="chatmonitor" className="non-draggable">
@@ -121,7 +121,7 @@ var ChatMonitor = React.createClass({
                 <div>Count: {this.state.count}</div>
             </div>
         );
-        else return(<div></div>);
+        
     }
   });
 
@@ -143,12 +143,11 @@ var Chat = React.createClass({
     }
   });
 
-    ReactDOM.render(
+    /*ReactDOM.render(
           //<CommentBox data={data} />,
           //<CommentBox url="/api/comments" />,
           //<CommentBox url="/api/comments" pollInterval={2000} />,
           <ChatMonitor />,
           document.getElementById('content')
       );
-
-
+*/

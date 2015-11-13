@@ -3,9 +3,12 @@ function Communications(){
 	this.init();
 }
 Communications.prototype = {
-	init: function(){
-		this.socket = io.connect('http://localhost:80/');
-		//this.socket = io.connect('http://192.168.0.103:80/');
+	init:function(){
+
+	},
+	connect: function(){
+		//this.socket = io.connect('http://localhost:80/');
+		this.socket = io.connect('http://192.168.0.103:80/');
 		//this.socket = io.connect('http://104.197.217.162:80/');
 		this.sendClientInfo();
 

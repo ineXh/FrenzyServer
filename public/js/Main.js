@@ -70,6 +70,7 @@ function update(){
 
     if(assetsloaded){
     	//characters.update();
+        menu.update(time);
         game.update();
     }
 }

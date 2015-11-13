@@ -11,6 +11,10 @@ var renderer;
 var stage0;
 // In game Stage
 var stage;
+
+// Main Menu
+var stage_main_menu;
+
 // In game Path
 var path_container;
 
@@ -32,6 +36,18 @@ var assetsloaded = false;
 var arrow_head_texture;
 var arrow_line_texture;
 var cow_texture;
+
+var icon_play;
+var icon_music;
+var icon_sound;
+var icon_heart;
+var icon_setting;
+var icon_logo;
+var icon_menu;
+var icon_restart;
+var title;
+var score_text;
+
 
 // Game Variables
 var gamestate;

@@ -6,18 +6,24 @@ var colors = [enums.Red, enums.Blue, enums.Teal, enums.Purple];
 var teams = [enums.team0, enums.team1, enums.team2, enums.team3];
 var locations = [enums.NW, enums.NE,enums.SW, enums.SE];
 
-function gameServer(io, games){
+function gameServer(io, clients, games){
     this.io = io;
+    this.games = games;
+    this.clients = clients;
     this.init();
     //return this;
 } // end gameServer
 gameServer.prototype = {
     init: function(){
+        var Game = require('./Game.js');
+        game = new Game(this.io, 'Game1');
+        this.games.push(game)
+
         this.players = [];
     }, // end init
     join: function(player){
         this.players.push(player);
-        console.log('total players ' + this.players.length);
+        console.log('total players on server ' + this.players.length);
 
         player.color = colors.shift();
         player.team = teams.shift();

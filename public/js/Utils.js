@@ -64,12 +64,12 @@ function onTouchStart(event){
 	MousePos.sx = MousePos.x;
 	MousePos.sy = MousePos.y;
 	//console.log(MousePos);
-	if(drag(MousePos.x, MousePos.y)){
+	/*if(drag(MousePos.x, MousePos.y)){
         return;
-    }
+    }*/
     MousePos.touched = true;
     console.log('touched')
-	//if(gamestate == GameState.InPlay)
+	if(gamestate == GameState.InPlay)
 	game.getTeam(myteam).path.startPath(MousePos.stage_x, MousePos.stage_y);
 	/*characters.spawn({x: MousePos.stage_x_pct*stage_width, y:MousePos.stage_y_pct*stage_height}, CharacterType.Cow);
 	communication.socket.emit('spawn', {x: MousePos.stage_x_pct, y:MousePos.stage_y_pct});*/
@@ -81,7 +81,7 @@ function onTouchMove(event){
 	getMouse(event, event.changedTouches[0]);
     //stage.x -= MousePos.px - MousePos.x;
     //stage.y -= MousePos.py - MousePos.y;
-	//if(gamestate == GameState.InPlay)
+	if(gamestate == GameState.InPlay)
 	game.getTeam(myteam).path.updatePath(MousePos.stage_x, MousePos.stage_y);
 }
 function onTouchEnd(event){
@@ -91,10 +91,10 @@ function onTouchEnd(event){
 	//getMouse(event);
 	getMouse(event, event.changedTouches[0]);
 	MousePos.touched = false;
-	//if(gamestate == GameState.InPlay)
-	game.getTeam(myteam).path.endPath(MousePos.stage_x, MousePos.stage_y);
-
-	communication.socket.emit('path', game.getTeam(myteam).path.getLastTwoPoints());
+	if(gamestate == GameState.InPlay){
+		game.getTeam(myteam).path.endPath(MousePos.stage_x, MousePos.stage_y);
+		communication.socket.emit('path', game.getTeam(myteam).path.getLastTwoPoints());
+	}
 	//path.addPoint(MousePos.x, MousePos.y);
 	//path.drawPath();
 }

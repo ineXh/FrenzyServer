@@ -17,8 +17,10 @@ GameObjects.prototype = {
         characters = new Characters();
         //path = new Path();
         game = new Game();
+        menu = new Menu();
         communication = new Communications();
 
+        menu.mainmenu.playlogo();
 		assetsloaded = true;
 	},
 	update: function(time){

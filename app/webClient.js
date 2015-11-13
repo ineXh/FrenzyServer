@@ -4,7 +4,7 @@ var maxline = 3;
 
 function webClient(io, clients, gameserver){
     //var client = this;
-    var game = gameserver;
+    var gameserver = gameserver;
 	io.on('connection', function(socket){
         var client = socket;
         client.characters = characterlist();
@@ -21,12 +21,12 @@ function webClient(io, clients, gameserver){
         function onConnect(){
             console.log('A webClient has connected.');
             //socket.emit('chat', 'Hi Client.');
-            game.join(client);
+            gameserver.join(client);
 
         }
         function onDisconnect(){
             console.log('A webClient has disconnected.');
-            game.leave(client);
+            gameserver.leave(client);
         }
         function onChat(msg){
             console.log('onChat')
@@ -51,7 +51,7 @@ function webClient(io, clients, gameserver){
                                      y: msg[0].y});
             client.path_points.push({x: msg[1].x,
                                      y: msg[1].y});
-            game.path(client, msg);
+            gameserver.path(client, msg);
         }
         function onSpawn(msg){
             //msg.x = msg.x / client.stage_width;
@@ -63,7 +63,7 @@ function webClient(io, clients, gameserver){
 
             msg.team = client.team;
             msg.color = client.color;
-            game.spawn(client, msg);
+            gameserver.spawn(client, msg);
         }
         function onSyncCharacter(msg){
             //console.log('onSync')
@@ -80,7 +80,7 @@ function webClient(io, clients, gameserver){
                     }
                 }
             }
-            game.sync(client, msg);
+            gameserver.sync(client, msg);
         } // end onSync
 	}); // end io connection callback
 
