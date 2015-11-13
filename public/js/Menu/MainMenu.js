@@ -1,8 +1,6 @@
 function MainMenu(){
 	stage_main_menu = new PIXI.Container();
-	
 	stage0.addChild(stage_main_menu);
-	
 	this.icons = [];
 	
 	this.init();
@@ -15,7 +13,7 @@ MainMenu.prototype = {
 		
 	},	
 	restart :function(){
-		
+		stage0.addChild(stage_main_menu);
 	},
 	clean	: function(){
 		console.log('menu clean')
@@ -32,7 +30,11 @@ MainMenu.prototype = {
 		icon_play = new Particle({},
 								ParticleType.ICON,
 								new PIXI.Sprite(PIXI.Texture.fromFrame("play_196.png")));
-								//new PIXI.Sprite(icon1_texture));
+
+		icon_multiplay = new Particle({},
+								ParticleType.ICON,
+								new PIXI.Sprite(PIXI.Texture.fromFrame("icon_multiplayer.png")));
+								
 		icon_music = new Particle({},
 								ParticleType.ICON,
 								new PIXI.Sprite(PIXI.Texture.fromFrame("music_on.png")));
@@ -73,7 +75,6 @@ MainMenu.prototype = {
 	},	
 	playbutton : function(){
 		return new Promise(function(resolve, reject){
-			//console.log('playbutton start')
 			gamestate = GameState.MainMenu;
 			icon_play.init({
 				does_not_die : true,
@@ -92,15 +93,43 @@ MainMenu.prototype = {
 								this.sprite.on('mouseup'        	, playbuttonrelease.bind(menu));
 								this.sprite.on('touchend'       	, playbuttonrelease.bind(menu));
 								this.sprite.on('mouseupoutside'     , playbuttonreleaseout.bind(menu));
-								this.sprite.on('touchendoutside'    , playbuttonreleaseout.bind(menu));
+								this.sprite.on('touchendoutside'    , playbuttonreleaseout.bind(menu));								
+								resolve();								
+								},
+								function(){menu.mainmenu.playmultibutton();}]
+			});
+			menu.mainmenu.icons.push(icon_play);
+		});
+	},
+	playmultibutton : function(){
+		return new Promise(function(resolve, reject){
+			gamestate = GameState.MainMenu;
+			icon_multiplay.init({
+				does_not_die : true,
+				x: width/2 + width/5, y: height/2,
+				x_end : [width/2 + width/5, width/2 + width/5],
+				y_end : [height/2, height/2],
+				rs: width/30,
+				re : [width/8, width/8],
+				duration : [200,1],
+				container : stage_main_menu,
+				cb : [function(){//console.log(this)
+					//this.sprite.tint = 0x9aaee6;//9aaee65b
+								this.sprite.interactive = true;
+								this.sprite.on('mousedown'        	, playmultibuttonpress.bind(menu));
+								this.sprite.on('touchstart'       	, playmultibuttonpress.bind(menu));
+								this.sprite.on('mouseup'        	, playmultibuttonrelease.bind(menu));
+								this.sprite.on('touchend'       	, playmultibuttonrelease.bind(menu));
+								this.sprite.on('mouseupoutside'     , playmultibuttonreleaseout.bind(menu));
+								this.sprite.on('touchendoutside'    , playmultibuttonreleaseout.bind(menu));
 								
 								resolve();								
 								},
 								function(){menu.mainmenu.musicbutton();}]
 			});
-			menu.mainmenu.icons.push(icon_play);
+			menu.mainmenu.icons.push(icon_multiplay);
 		});
-	},
+	}, // end playmultibutton
 	playtitle: function(){
 		return new Promise(function(resolve, reject){
 			console.log('playtitle start')
@@ -139,7 +168,7 @@ MainMenu.prototype = {
 				y_end : [height*7/8, height*7/8],
 				rs: width/40,
 				re : [width/20, width/20],
-				duration : [500,1],
+				duration : [200,1],
 				container : stage_main_menu,
 				cb : [function(){//console.log(this)
 								this.sprite.tint = 0xffd422;
@@ -163,7 +192,7 @@ MainMenu.prototype = {
 				y_end : [height*7/8, height*7/8],
 				rs: width/40,
 				re : [width/20, width/20],
-				duration : [500,1],
+				duration : [200,1],
 				container : stage_main_menu,
 				cb : [function(){//console.log(this)
 								this.sprite.tint = 0xffd422;
@@ -187,7 +216,7 @@ MainMenu.prototype = {
 				y_end : [height*7/8, height*7/8],
 				rs: width/40,
 				re : [width/20, width/20],
-				duration : [500,1],
+				duration : [200,1],
 				container : stage_main_menu,
 				cb : [function(){//console.log(this)
 								this.sprite.tint = 0xffd422;
@@ -211,7 +240,7 @@ MainMenu.prototype = {
 				y_end : [height*7/8, height*7/8],
 				rs: width/40,
 				re : [width/20, width/20],
-				duration : [500,1],
+				duration : [200,1],
 				container : stage_main_menu,
 				cb : [function(){//console.log(this)
 								this.sprite.tint = 0xffd422;
@@ -258,7 +287,7 @@ var musicbuttonpress = function(){
 	console.log('musicbuttonpress')
 	//menu.icon_music.sprite.scale
 };
-//var playbuttonpressd = false;
+
 var playbuttonpress = function(){
 	//console.log('playbuttonpress')
 	//playbuttonpressd = true;
@@ -289,6 +318,39 @@ var playbuttonreleaseout = function(){
 	icon_play.time_s = time.t;
 
 	console.log('playbuttonreleaseout')
+	//menu.clean(); 
+	//icon_play.does_not_die  = false;
+};
+var playmultibuttonpress = function(){
+	//console.log('playbuttonpress')
+	//playbuttonpressd = true;
+	icon_multiplay.does_not_die  = false;
+	icon_multiplay.rs = icon_multiplay.re;
+	icon_multiplay.re *= 0.75;
+	icon_multiplay.pct = 0;
+	icon_multiplay.duration = 200;
+	icon_multiplay.time_s = time.t;
+	//this.pct = (time.t - this.time_s) / this.duration;
+	//icon_play.sprite.scale.y *= 0.5;
+};
+var playmultibuttonrelease = function(){
+	//playbuttonpressd = false;
+	console.log('playmultibuttonrelease')
+	gamestate = GameState.MultiPlayerMenu;	
+	menu.mainmenu.clean();  
+	//icon_play.does_not_die  = false;
+};
+var playmultibuttonreleaseout = function(){
+	//playbuttonpressd = false;
+	var temp = icon_multiplay.rs;	 
+	icon_multiplay.rs = icon_multiplay.re;
+	icon_multiplay.re = temp;
+	
+	icon_multiplay.pct = 0;
+	icon_multiplay.duration = 200;
+	icon_multiplay.time_s = time.t;
+
+	console.log('playmultibuttonreleaseout')
 	//menu.clean(); 
 	//icon_play.does_not_die  = false;
 };

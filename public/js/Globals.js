@@ -14,6 +14,7 @@ var stage;
 
 // Main Menu
 var stage_main_menu;
+var stage_multiplayer_menu;
 
 // In game Path
 var path_container;
@@ -38,6 +39,7 @@ var arrow_line_texture;
 var cow_texture;
 
 var icon_play;
+var icon_multiplay;
 var icon_music;
 var icon_sound;
 var icon_heart;

@@ -135,9 +135,10 @@ var Chat = React.createClass({
       return (
         <div className="chat">
           <h2 className="chatAuthor">
-            {this.props.author}
+            Bob
+            //{this.props.author}
           </h2>
-          <span dangerouslySetInnerHTML={this.rawMarkup()} />
+          //<span dangerouslySetInnerHTML={this.rawMarkup()} />
         </div>
       );
     }

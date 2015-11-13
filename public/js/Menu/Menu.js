@@ -4,6 +4,7 @@ function Menu(){
 Menu.prototype = {
 	init: function(){
 		this.mainmenu = new MainMenu();
+		this.multiplayermenu = new MultiPlayerMenu();
 		this.onAssetsLoaded();
 	},	
 	restart :function(){
@@ -19,6 +20,14 @@ Menu.prototype = {
 		this.mainmenu.onAssetsLoaded();
 	},	
 	update: function(time){
-		this.mainmenu.update(time);
+		switch(gamestate){
+			case GameState.Loading:
+			case GameState.MainMenu:
+				this.mainmenu.update(time);
+			break;
+			case GameState.MultiPlayerMenu:
+				this.multiplayermenu.update(time);
+			break;
+		}
 	}, // end update	
 } // end Menu

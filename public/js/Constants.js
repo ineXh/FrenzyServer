@@ -24,6 +24,7 @@ GameState.Loading		= 1;
 GameState.MainMenu		= 5;
 GameState.MainMenu2StageSelect		= 6;
 GameState.StageSelect		= 7;
+GameState.MultiPlayerMenu	= 8;
 GameState.GetReady		= 10;
 GameState.StartGame		= 11;
 GameState.InPlay		= 12;

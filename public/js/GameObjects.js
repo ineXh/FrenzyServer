@@ -6,6 +6,7 @@ GameObjects.prototype = {
 		PIXI.loader
 		.add('assets/cow.png')
 		.add('assets/misc.json')
+		.add('assets/soldier.json')
         .load(this.onassetsloaded.bind(this));
 
 	},

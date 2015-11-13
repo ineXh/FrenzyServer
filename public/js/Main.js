@@ -58,6 +58,7 @@ var Engine = (function(global) {
 
 
 function update(){
+    //console.log('update')
 	 var now = Date.now(),
          dt  = (now - lastTime),
          t   = (now - startTime);
