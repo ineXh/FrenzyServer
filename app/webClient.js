@@ -31,6 +31,8 @@ function webClient(io, clients, gameserver){
         function onChat(msg){
             console.log('onChat')
             console.log(msg);
+            game.sendChat(client, msg);
+
         }
         function onClientInfo(msg){
             client.width = msg.width;

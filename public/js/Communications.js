@@ -12,7 +12,7 @@ Communications.prototype = {
 		//this.socket = io.connect('http://104.197.217.162:80/');
 		this.sendClientInfo();
 
-		this.socket.on('chat', onChat);
+		//this.socket.on('chat', onChat);
 		this.socket.on('start info', onStartInfo);
 		this.socket.on('spawn existing', onSpawnExisting);
 		this.socket.on('spawn', onSpawnExisting);
@@ -28,12 +28,13 @@ Communications.prototype = {
 
 	},
 }; // end Communications
-
+function sendChat(msg){
+	communication.socket.emit('chat', msg);
+}
 function onChat(msg){
 	console.log(msg)
-	addMessage(json.data.author, json.data.text,
-				   json.data.color, new Date(json.data.time));
-
+	addMessage(msg.author, msg.text,
+				   msg.color, new Date(msg.time));
 }
 function onSpawn(msg){
 	//console.log('onSpawn')

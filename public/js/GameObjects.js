@@ -22,6 +22,8 @@ GameObjects.prototype = {
         communication = new Communications();
 
         menu.mainmenu.playlogo();
+        //startChat();
+
 		assetsloaded = true;
 	},
 	update: function(time){

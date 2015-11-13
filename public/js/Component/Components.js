@@ -7,7 +7,7 @@
 
 var ChatMonitor = React.createClass({
     getInitialState: function() {
-        return {value: 'Hello!', count:0};
+        return {value: 'Hello!', count:0, chats: []};
     },
     tick: function() {
       this.setState({count: this.state.count + 1});
@@ -15,7 +15,13 @@ var ChatMonitor = React.createClass({
     mountDrag:function(){
 
     },
+    onChat:function(){
+      console.log('get chat')
+    },
     componentDidMount: function(){
+        this.socket = communications.socket;
+        this.socket.on('chat', this.onChat);
+
         console.log('did mount')
         this.interval = setInterval(this.tick, 1000);
 
@@ -37,52 +43,15 @@ var ChatMonitor = React.createClass({
         },false);
 
         $(".inputchat")[0].addEventListener("touchstart", function(e) {
-            console.log('inputchat')
-            console.log(e)
              $( "#chatwindow.ui-draggable" ).draggable( "disable" );
-             //removeListeners();
-            /*var mdown = new MouseEvent("click", {
-                 //screenX: e.screenX,
-                //screenY: e.screenY,
-                //clientX: e.clientX,
-                //clientY: e.clientY,
-                bubbles: true,
-                view: window
-            });
-
-            e.target.dispatchEvent(mdown);*/
             var cb = document.getElementById("chatinput"); //element to click on
           cb.focus();
-            //simulateMouseEvent(e, 'click');
-        //    $(".inputchat")[0].dispatchEvent(mdown);
-
-            //$(this)[0].selectionStart = $(this)[0].selectionEnd = $(this).val().length;
-
-            //$( "#draggable" ).draggable( "disable" );
-
         },false);
+
         $(".inputchat")[0].addEventListener("touchend", function(e) {
-          console.log('reenable')
           $( "#chatwindow.ui-draggable" ).draggable( "enable" );
-          //addListeners();
-          //$( "#draggable" ).draggable({ cancel: ".non-draggable" });
-          //$( "#draggable" ).resizable();
+
         },false);
-
-        //$(".chatsendbutton")[0].addEventListener("mousedown", function(e) {
-
-            //console.log('pressed')
-            //console.log(this)
-            //chatmonitor.handleSubmit();
-        //},false);
-
-        /*$( "#draggable input" )[0].addEventListener("touchstart", function(event) {
-                console.log('select')
-                $( "#draggable input" )[0].select();
-        },false);*/
-
-        //$( "#chatmonitor" ).draggable();//{ cancel: "#chatmonitor" }
-
     },
     handleChange: function(event) {
         console.log(event)
@@ -93,6 +62,7 @@ var ChatMonitor = React.createClass({
           e.preventDefault();
           var chatmsg = this.refs.chatmsg.value.trim();
           if (!chatmsg) return;
+          sendChat(chatmsg);
           // TODO: send request to the server
           /*this.props.onCommentSubmit({author: author, text: text});
           this.refs.author.value = '';
@@ -103,7 +73,7 @@ var ChatMonitor = React.createClass({
     render: function() {
         var value = this.state.value;
         var count = this.state.count;
-          
+
           return (
             <div id="chatwindow" className="chat ui-widget-content ui-draggable">
                 <div id="chatmonitor" className="non-draggable">
@@ -121,7 +91,7 @@ var ChatMonitor = React.createClass({
                 <div>Count: {this.state.count}</div>
             </div>
         );
-        
+
     }
   });
 
@@ -144,11 +114,19 @@ var Chat = React.createClass({
     }
   });
 
+
     /*ReactDOM.render(
+
+//var startChat = function(){
+  ReactDOM.render(
+
+
           //<CommentBox data={data} />,
           //<CommentBox url="/api/comments" />,
           //<CommentBox url="/api/comments" pollInterval={2000} />,
           <ChatMonitor />,
           document.getElementById('content')
       );
+
 */
+

@@ -2,6 +2,11 @@ var enums = require("./enums.js");
 module.exports = exports = gameServer;
 
 // //////////////////////
+function htmlEntities(str) {
+    return String(str).replace(/&/g, '&amp;').replace(/</g, '&lt;')
+                      .replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+}
+
 var colors = [enums.Red, enums.Blue, enums.Teal, enums.Purple];
 var teams = [enums.team0, enums.team1, enums.team2, enums.team3];
 var locations = [enums.NW, enums.NE,enums.SW, enums.SE];
@@ -24,7 +29,7 @@ gameServer.prototype = {
     join: function(player){
         this.players.push(player);
         console.log('total players on server ' + this.players.length);
-
+        player.name = 'Bob';
         player.color = colors.shift();
         player.team = teams.shift();
         player.location = locations.shift();
@@ -40,12 +45,12 @@ gameServer.prototype = {
         if(index > -1) this.players.splice(index, 1);
         console.log('total players ' + this.players.length);
     },
-    sendChat : function(userName, userColor, msg){
+    sendChat : function(player, msg){
       var obj = {
           time: (new Date()).getTime(),
-          text: htmlEntities(msg),
-          author: userName,
-          color: userColor,
+          msg: htmlEntities(msg),
+          author: player.name,
+          color: player.color,
         };
         //this.history.push(obj);
         //this.history = this.history.slice(-100);
@@ -53,7 +58,7 @@ gameServer.prototype = {
         // broadcast message to all connected clients
         //var json = JSON.stringify({ type:'message', data: obj });
         //console.log(json)
-        this.io.emit('chat message', json);
+        this.io.emit('chat', obj);
     },
     spawn: function(player, input){
         //console.log('spawn')

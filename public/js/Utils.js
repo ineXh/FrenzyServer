@@ -117,6 +117,7 @@ function removeListeners(){
     renderer.view.removeEventListener("backbutton", backButtonTap, true);
 }
 function drag(x,y){
+    if($( "#chatwindow" ).length < 1) return false;
     var left = $( "#chatwindow" ).position().left;
     var right = left + $( "#chatwindow" ).width()*1.2;
     var top = $( "#chatwindow" ).position().top;
