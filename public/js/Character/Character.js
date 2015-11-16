@@ -202,7 +202,7 @@ Cow.prototype.create = function(){
 	this.sprite.animationSpeed = 0.1;
 	this.sprite.play();
 
-	this.r = dim*0.05;
+	this.r = big_dim*0.05;
 	this.scale = this.r / this.sprite.width;
 	this.sprite.scale.set(this.scale);
 	this.sprite.anchor.x = 0.5;

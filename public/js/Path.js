@@ -5,7 +5,7 @@ function Path(team){
   this.line_pool = [];
   this.lines = [];
   this.radius = 5;
-  this.outer_radius = dim / 20;
+  this.outer_radius = dim / 5;
   //this.gap = 50;
   this.maxline = 3;
   this.num_lines = 0;

@@ -194,9 +194,10 @@ window.MainInterface = React.createClass({
         //this.socket.emit('request chat', '');
       },
   render: function() {
+    //<GameList/>
     return (
       <div className="maininterface">
-        <GameList/>
+        
         <ChatMonitor />
         </div>
       );

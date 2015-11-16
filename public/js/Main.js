@@ -6,8 +6,8 @@ var Engine = (function(global) {
 
 	dim = (width < height) ? width : height;
 	big_dim = (width < height) ? height : width;
-    stage_width = dim*2;
-    stage_height = dim*2;
+    stage_width = big_dim*2;
+    stage_height = big_dim*2;
 	scope_width = width*0.25;
 	scope_height = height*0.25;
 
@@ -32,7 +32,7 @@ var Engine = (function(global) {
     border_box.drawRect(0, 0, stage_width, stage_height);
     //stage.addChild(border_box);
 
-    var x_count = 10;
+    /*var x_count = 10;
     var y_count = 10;
     for(var i = 0; i < y_count; i++){
         for(var j = 0; j < x_count; j++){
@@ -49,7 +49,7 @@ var Engine = (function(global) {
             container.addChild(grid);
             stage.addChild(container);
         }
-    }
+    }*/
 
     gameobjects = new GameObjects();
 
