@@ -16,7 +16,7 @@ MainMenu.prototype = {
 		stage0.addChild(stage_main_menu);
 	},
 	clean	: function(){
-		console.log('menu clean')
+		//console.log('menu clean')
 		stage0.removeChild(stage_main_menu);
 	},
 	update : function(time){
@@ -83,7 +83,7 @@ MainMenu.prototype = {
 				y_end : [height/2, height/2],
 				rs: width/30,
 				re : [width/8, width/8],
-				duration : [500,1],
+				duration : [200,1],
 				container : stage_main_menu,
 				cb : [function(){//console.log(this)
 					//this.sprite.tint = 0x9aaee6;//9aaee65b
@@ -132,7 +132,7 @@ MainMenu.prototype = {
 	}, // end playmultibutton
 	playtitle: function(){
 		return new Promise(function(resolve, reject){
-			console.log('playtitle start')
+			//console.log('playtitle start')
 
 			title.init({
 				does_not_die : true,
@@ -303,7 +303,11 @@ var playbuttonpress = function(){
 var playbuttonrelease = function(){
 	//playbuttonpressd = false;
 	console.log('playbuttonrelease')
-	gamestate = GameState.MainMenu2StageSelect;
+	//gamestate = GameState.MainMenu2StageSelect;
+	//gamestate = GameState.InPlay;
+	menu.mainmenu.clean();
+	gamemode = GameMode.SinglePlayer;
+	game.startsingle();
 	//menu.clean();
 	//icon_play.does_not_die  = false;
 };
@@ -338,6 +342,7 @@ var playmultibuttonrelease = function(){
 	console.log('playmultibuttonrelease')
 	gamestate = GameState.MultiPlayerMenu;
 	menu.mainmenu.clean();
+	gamemode = GameMode.MultiPlayer;
 	menu.multiplayermenu.init();
 	//icon_play.does_not_die  = false;
 };

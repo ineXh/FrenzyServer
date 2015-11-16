@@ -39,7 +39,9 @@
   };
 
   PVector.sub = function (one, other) {
-    return new PVector(one.x - other.x, one.y - other.y, one.z - other.z);
+    try{
+      return new PVector(one.x - other.x, one.y - other.y, one.z - other.z);
+    }catch (e) {}
   };
 
   PVector.prototype.div = function (n) {

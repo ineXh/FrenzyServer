@@ -38,6 +38,11 @@ var arrow_head_texture;
 var arrow_line_texture;
 var cow_texture;
 
+var cow_front_frames = [];
+var cow_front_attack_frames = [];
+var cow_back_frames = [];
+var cow_back_attack_frames = [];
+
 var icon_play;
 var icon_multiplay;
 var icon_music;
@@ -53,6 +58,7 @@ var score_text;
 
 // Game Variables
 var gamestate;
+var gamemode;
 var myteam = -1;
 var myteamcolor;
 var startlocation = -1;

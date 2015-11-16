@@ -53,7 +53,7 @@ Ball.prototype = {
     this.others.push(o);
   }, // end addCollisionObjects
   collide: function(o){
-    if(o == this) return;
+    if(o == this) return false;
     if(isIntersecting(this.sprite, o.sprite)){
       var dx = o.pos.x - this.pos.x;
       var dy = o.pos.y - this.pos.y;
@@ -69,7 +69,9 @@ Ball.prototype = {
       o.vel.y -= ax;
       this.collision_count++;
       o.collision_count++;
+      return true;
     }
+    return false;
     /*float dx = b.pos.x - pos.x;
       float dy = b.pos.y - pos.y;
       float distance = sqrt(dx*dx + dy*dy);

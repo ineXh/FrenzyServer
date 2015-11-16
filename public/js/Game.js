@@ -10,11 +10,14 @@ function Game(){
 Game.prototype = {
     init: function(){
         this.collision_count = 0;
-        this.collision_time = 40;
+        this.collision_time = 1;
+        this.updateOpponent_count = 0;
+        this.updateOpponent_time = 0;
     },
     checkcollisions :function(){
         this.collision_count++;
         if(this.collision_count < this.collision_time) return;
+        this.collision_count = 0;
         this.resetcollisioncounts();
         for(var i = 0; i < this.teams.length; i++){
             for(var j = 0; j < this.teams[i].characters.length; j++){
@@ -27,6 +30,7 @@ Game.prototype = {
                 }
             }
         }
+
     },
     checkcollision: function(c){
       for(var i = 0; i < this.teams.length; i++){
@@ -49,14 +53,70 @@ Game.prototype = {
             }
         }
     },
+    updateOpponent:function(){
+        this.updateOpponent_count++;
+        if(this.updateOpponent_count < this.updateOpponent_time) return;
+        this.updateOpponent_count = 0;
+        var find_closest_opponent = this.find_closest_opponent.bind(this);
+        for(var i = 0; i < this.teams.length; i++){
+            for(var j = 0; j < this.teams[i].characters.length; j++){
+                for(var k = 0; k < this.teams[i].characters[j].length; k++){
+                var c = this.teams[i].characters[j][k];
+                    //if(!c.sprite.visible && i != myteam) continue;
+                    find_closest_opponent(c);
+                }
+            }
+        }
+    },
+    find_closest_opponent:function(c){
+        //console.log('find_closest')
+        //if(c.opponent != null) if(findDist(c.pos, c.opponent.pos <= dim*2/4)) return;
+        /*if(c.opponent != null){
+            c.opponent_dist = findDist(c.pos, c.opponent.pos);
+            if(c.opponent_dist < c.r*6) return;
+        }*/
+        if(c.opponent_dist == undefined) c.opponent_dist = dim/2;
+        var dist = dim/2;
+        for(var i = 0; i < this.teams.length; i++){
+            if(c.team == i) continue;
+            for(var j = 0; j < this.teams[i].characters.length; j++){
+                for(var k = 0; k < this.teams[i].characters[j].length; k++){
+                    var c2 = this.teams[i].characters[j][k];
+                    //if(!c2.sprite.visible && i != myteam) continue;
+                    //console.log(c)
+                    //console.log(c2)
+                    new_dist = findDist(c.pos, c2.pos);
+                    if(new_dist < dist && new_dist < c.opponent_dist){
+                        c.opponent = c2;
+                        c.opponent_dist = new_dist;
+                    }
+                }
+            }
+        }
+    }, // end find_closest_opponent
     update: function(){
         this.checkcollisions();
+        this.updateOpponent();
         this.teams.forEach(function(team){
             team.update();
         })
     },
     getTeam: function(team){
         return this.teams[team];
+    },
+    startsingle:function(){
+        gamestate = GameState.InPlay;
+        stage.x = 0;
+        stage.y = 0;
+        myteam = 0;
+        myteamcolor = this.getTeam(myteam.color);
+
+        this.teams.forEach(function(t){
+            t.startsingle();
+        })
+        center = this.getTeam(myteam).characters[CharacterType.Cow][0].pos;
+
+
     },
     startgame: function(){
         //stage.width = width;
@@ -80,8 +140,8 @@ Game.prototype = {
             break;
     }
     var msg = {team: myteam, color: myteamcolor, characters: []};
-    for(var i = 0; i < 10; i++){
-        for(var j = 0; j < 10; j++){
+    for(var i = 0; i < 5; i++){
+        for(var j = 0; j < 5; j++){
             spawnCow(-stage.x + width/2 + width/20*j,-stage.y + height/2 + width/20*i, msg);
         }
     }
@@ -109,7 +169,16 @@ function spawnCow(x, y, msg){
 function Team(team){
     this.team = team;
     this.path = new Path(team);
-    this.color = (team == 0)? Red: (team == 1)? Blue: (team == 2)? Teal: (team == 3)? Purple: Red;
+    this.color = (team == 0)? Red:
+                 (team == 1)? Blue:
+                 (team == 2)? Teal:
+                 (team == 3)? Purple: Red;
+
+    this.startlocation = (team == 0)? StartLocation.NW:
+                         (team == 1)? StartLocation.NE:
+                         (team == 2)? StartLocation.SW:
+                         (team == 3)? StartLocation.SE: StartLocation.NW;
+    this.startlocation_pos = getstartlocation(this.startlocation);
     this.sync_count = 0;
     this.sync_time = 50;
     this.init();
@@ -121,7 +190,18 @@ Team.prototype = {
     clean: function(){
 
     },
+    startsingle:function(){
 
+        for(var i = 0; i < 5; i++){
+            for(var j = 0; j < 5; j++){
+                var input = {   x: this.startlocation_pos.x + width/2 + width/20*j,
+                                y: this.startlocation_pos.y + height/2 + width/20*i,
+                    type: CharacterType.Cow, team: this.team, color: this.color};
+                var character = characters.spawn(input);
+                this.characters[input.type].push(character);
+            }
+        }
+    },
     update: function(){
 
         this.sendSyncCharacter();
@@ -144,9 +224,11 @@ Team.prototype = {
         }
     }, // end update
     sendSyncCharacter:function(){
+        if(gamemode != GameMode.MultiPlayer) return;
         if(this.team != myteam) return;
         this.sync_count++;
         if(this.sync_count < this.sync_time) return;
+        this.sync_count = 0;
         //console.log('sendSync')
         this.sync_count = 0;
         var msg = [];
@@ -168,3 +250,25 @@ Team.prototype = {
 
 } // end Team
 
+var getstartlocation = function(startlocation){
+    loc = new PVector(0,0);
+    switch(startlocation){ //
+        case StartLocation.NW:
+            loc.x = 0;
+            loc.y = 0;
+            break;
+        case StartLocation.NE:
+            loc.x = stage_width - width;
+            loc.y = 0;
+            break;
+        case StartLocation.SW:
+            loc.x = 0;
+            loc.y = stage_height - height;
+            break;
+        case StartLocation.SE:
+            loc.x = stage_width - width;
+            loc.y = stage_height - height;
+            break;
+    }
+    return loc;
+} // end getstartlocation

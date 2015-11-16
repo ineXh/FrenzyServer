@@ -12,10 +12,10 @@ var onScreen = function(container){
     if(container._class  == 'path') return true;
     setBorder(container);
 
-    var left = container.right < ScreenPos.left;
-    var right = container.left > ScreenPos.right;
-    var top = container.bot < ScreenPos.top;
-    var bot = container.top > ScreenPos.bot;
+    var left = container.right < ScreenPos.left - width*0.2;
+    var right = container.left > ScreenPos.right + width*0.2;
+    var top = container.bot < ScreenPos.top - height*0.2;
+    var bot = container.top > ScreenPos.bot + height*0.2;
 
     //console.log("right " + right);
     //console.log("left " + left);
@@ -45,7 +45,8 @@ var setBorder = function(container){
 } // end setBorder
 var visiblecount = 0;
 var visibleCheck = function(){
-     if(visiblecount%50 == 0){
+    visiblecount++;
+     if(visiblecount%40 == 0){
         visiblecount = 0;
         //console.log('visible check')
         getScreenPos();
@@ -54,7 +55,6 @@ var visibleCheck = function(){
             else stage.children[i].visible = true;
         }
     }
-    visiblecount++;
 } // end visibleCheck
 var panCenter = function(){
     if(center != undefined){

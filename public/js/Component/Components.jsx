@@ -10,22 +10,26 @@ window.ChatMonitor = React.createClass({
         return {value: 'Hello!', count:0, chats: []};
     },
     tick: function() {
-      this.setState({count: this.state.count + 1});
+      //this.setState({count: this.state.count + 1});
     },
     mountDrag:function(){
 
     },
-    onChat:function(){
+    onChat:function(msg){
       console.log('get chat')
+      //this.state.chats.push(msg);
+      console.log(msg)
+      //this.forceUpdate();
+      this.setState({chats: msg});
+
     },
     componentDidMount: function(){
-        console.log('didmount')
+        console.log('chat monitor didmount')
         this.socket = communication.socket;
         this.socket.on('chat', this.onChat);
+        this.socket.emit('request chat', '');
 
-        console.log('did mount')
         this.interval = setInterval(this.tick, 1000);
-
 
         var scrollStartPos = 0;
         $( "#chatwindow" ).draggable({ containment: "document", scroll: false, cancel: ".non-draggable" });
@@ -63,6 +67,7 @@ window.ChatMonitor = React.createClass({
           e.preventDefault();
           var chatmsg = this.refs.chatmsg.value.trim();
           if (!chatmsg) return;
+
           sendChat(chatmsg);
           // TODO: send request to the server
           /*this.props.onCommentSubmit({author: author, text: text});
@@ -78,16 +83,11 @@ window.ChatMonitor = React.createClass({
           return (
             <div id="chatwindow" className="chat ui-widget-content ui-draggable">
                 <div id="chatmonitor" className="non-draggable">
-                <p><span>asfd</span></p>
-                <p><span>asfd</span></p>
-                <p><span>asfd</span></p>
-                <p><span>asfd</span></p>
-                <p><span>asfd</span></p>
-                <p><span>asfd</span></p>
+                <ChatList chats={this.state.chats}/>
                 </div>
-                <form className="commentForm non-draggable" onSubmit={this.handleSubmit}>
-                    <input id="chatinput" className="inputchat" type="text" defaultValue="Hey!" ref="chatmsg"/>;
-                    <input id="chatsendbutton" type="submit" value="Post" />
+                <form className="chatForm non-draggable" onSubmit={this.handleSubmit}>
+                    <input id="chatinput" className="inputchat" type="text" ref="chatmsg"/>
+                    <input id="chatsendbutton" type="submit" value="Send" />
                 </form>
                 <div>Count: {this.state.count}</div>
             </div>
@@ -100,24 +100,121 @@ window.myChatMonitor = React.createFactory(ChatMonitor);
 window.render_myChatMonitor = function() {
   ReactDOM.render(myChatMonitor({ foo: 'bar' }), document.getElementById('content'));
 }
+window.ChatList = React.createClass({
+  render: function () {
+    var Chats = (<div>Loading chats...</div>);
+    console.log(this.props)
+    if (this.props.chats) {
+      Chats = this.props.chats.map(function (chat) {
+
+        return (<Chat key={chat.id} chat={chat} />);
+      });
+    }
+    return (
+      <div className="chatList">
+        {Chats}
+      </div>
+    );
+  }
+});
 
 window.Chat = React.createClass({
     rawMarkup: function() {
       var rawMarkup = marked(this.props.children.toString(), {sanitize: true});
       return { __html: rawMarkup };
     },
+    getStyle:function(){
+      //console.log( {this.props.chat.color})
+      return {color:'Red'};
+    },
     render: function() {
+      //var color = {this.props.chat.color};
+      //console.log(color)
       return (
         <div className="chat">
-          <h2 className="chatAuthor">
-            Bob
-            //{this.props.author}
-          </h2>
-          //<span dangerouslySetInnerHTML={this.rawMarkup()} />
+          <p><span style={this.getStyle()}>{this.props.chat.author}: {this.props.chat.msg}</span></p>
         </div>
       );
     }
   });
+
+
+
+window.loginWindow = React.createClass({
+  handleSubmit: function(e) {
+        console.log('handleSubmit')
+          e.preventDefault();
+          var nameinput = this.refs.nameinput.value.trim();
+          if (!nameinput) return;
+          sendName(nameinput);
+          //this.refs.nameinput.value = '';
+          return;
+  },
+  render: function() {
+    return (
+        <div className="loginwindow">
+          <h1>Enter Your Nickname:</h1>
+          <form className="nameForm non-draggable" onSubmit={this.handleSubmit}>
+                    <input id="nameinput" className="namechat" type="text" ref="nameinput"/>
+                </form>
+        </div>
+      );
+  }
+});
+window.myloginWindow = React.createFactory(loginWindow);
+window.render_myloginWindow = function() {
+  ReactDOM.render(myloginWindow({ foo: 'bar' }), document.getElementById('content'));
+}
+
+window.GameList = React.createClass({
+  componentDidMount: function(){
+        console.log('GameList didmount')
+        this.socket = communication.socket;
+        //this.socket.on('chat', this.onChat);
+        //this.socket.emit('request chat', '');
+      },
+  render: function() {
+    return (
+        <div className="gamelist">
+          <h1>hi</h1>
+        </div>
+      );
+  }
+});
+window.myGameList = React.createFactory(GameList);
+window.render_mygameList = function() {
+  ReactDOM.render(myGameList({ foo: 'bar' }), document.getElementById('content'));
+}
+
+window.MainInterface = React.createClass({
+  componentDidMount: function(){
+        console.log('main didmount')
+        this.socket = communication.socket;
+        //this.socket.on('chat', this.onChat);
+        //this.socket.emit('request chat', '');
+      },
+  render: function() {
+    return (
+      <div className="maininterface">
+        <GameList/>
+        <ChatMonitor />
+        </div>
+      );
+  }
+});
+window.myMainInterface = React.createFactory(MainInterface);
+window.render_mymainInterface = function() {
+  ReactDOM.render(myMainInterface({ foo: 'bar' }), document.getElementById('content'));
+}
+
+window.InterfaceEmpty = React.createClass({
+  render: function() { return false; }
+});
+window.myInterfaceEmpty = React.createFactory(InterfaceEmpty);
+window.render_empty = function() {
+  ReactDOM.render(myInterfaceEmpty({ foo: 'bar' }), document.getElementById('content'));
+}
+
 
 
     //ReactDOM.render(

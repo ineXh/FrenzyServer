@@ -9,28 +9,52 @@
     left: 10%;
     top: 15%;
 }
+.loginwindow{
+    position:absolute;
+    top: 30%;
+    left: 30%;
+    color: #000;
+    font-weight: 100;
+    /*border: 1px solid Black;*/
+    text-align: left;
+
+}
+#nameinput{
+    margin-left:10px;
+    width:80%;
+    background-color: transparent;
+    border: none;
+    border-bottom: 2px solid #000;
+    font-size: 200%;
+    font-weight: 100;
+    outline: none;
+    padding-bottom: 15px;
+    text-align: center;
+    width: 400px;
+}
 #draggable { width: 250px; height: 250px; padding: 0.5em;
         position: absolute;
-    left: 92px; top: 14px;
+    left: 5%; top: 5%;
     opacity: 0.4;
 }
 .draggable {  padding: 0.5em;
-    left: 292px; top: 54px;
+    left: 10%; top: 54px;
     opacity: 0.4;
 }
 #chatwindow {
     position: absolute;
-    width: 250px; height: 150px;
-    left: 300px; top: 50px;
+    width: 10%; height: 10%;
+    left: 10%; top: 5%;
     opacity: 0.8;
 }
 #chatmonitor {
     padding:10px;
     position:relative;
-    /*left: 60%;*/
-    width:100%;
+
+    width:95%;
     height: 55%;
     background:#ddd;
+    margin-left:10px;
     margin-top:10px;
     margin-bottom:10px;
     border-radius:5px; overflow-y: scroll;
@@ -38,12 +62,19 @@
     border:1px solid #CCC; /*margin-bottom:10px;*/
 }
 #chatinput{
+    margin-left:10px;
     width:80%;
 }
 #chatsendbutton{
-
+margin-left:10px;
 }
-
+.chat{
+    /*float: left;*/
+    font-weight: 700;
+    /*overflow: hidden;*/
+    padding-right: 15px;
+    /*text-align: right;*/
+}
 .msg{
     position: absolute;
     left: 20%;
@@ -52,3 +83,4 @@
     height: 10%;
     /*user-select: auto;*/
 }
+

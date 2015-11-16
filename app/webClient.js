@@ -11,7 +11,9 @@ function webClient(io, clients, gameserver){
         client.path_points = [];
 
         onConnect(socket, gameserver);
+        socket.on('name', onName);
         socket.on('chat', onChat);
+        socket.on('request chat', onrequestChat);
         socket.on('client info', onClientInfo);
         socket.on('path', onPath);
         socket.on('spawn', onSpawn);
@@ -21,18 +23,25 @@ function webClient(io, clients, gameserver){
         function onConnect(){
             console.log('A webClient has connected.');
             //socket.emit('chat', 'Hi Client.');
-            gameserver.join(client);
+
 
         }
         function onDisconnect(){
             console.log('A webClient has disconnected.');
             gameserver.leave(client);
         }
+        function onrequestChat(){
+            gameserver.sendChatHistory(client);
+        }
+        function onName(name){
+            client.name = name;
+            gameserver.sendWelcomeMsg(client);
+            gameserver.join(client);
+        }
         function onChat(msg){
             console.log('onChat')
             console.log(msg);
-            game.sendChat(client, msg);
-
+            gameserver.sendChat(client, msg);
         }
         function onClientInfo(msg){
             client.width = msg.width;

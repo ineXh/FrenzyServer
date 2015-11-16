@@ -126,6 +126,8 @@ Path.prototype = {
     this.getEndLine().rotation = Math.atan2(y-p0.y, x-p0.x);
   },
   endPath : function(x,y){
+    if(!this.path_started) return;
+    //console.log('endPath')
     this.updatePath(x,y);
     this.addPoint(x,y);
 

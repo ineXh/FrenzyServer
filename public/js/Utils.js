@@ -29,7 +29,7 @@ function getMouse(event, touchobj){
 
 }
 function onMouseStart(event){
-	console.log("mouse start")
+	//console.log("mouse start")
 	getMouse(event, undefined);
 	MousePos.sx = MousePos.x;
 	MousePos.sy = MousePos.y;
@@ -38,6 +38,7 @@ function onMouseStart(event){
         return;
     }
 	MousePos.touched = true;
+    if(gamestate == GameState.InPlay)
 	game.getTeam(myteam).path.startPath(MousePos.stage_x, MousePos.stage_y);
 
 }
@@ -45,15 +46,18 @@ function onMouseMove(event){
     if(!MousePos.touched) return;
     //console.log("onMouseMove")
 	getMouse(event, undefined);
+    if(gamestate == GameState.InPlay)
 	game.getTeam(myteam).path.updatePath(MousePos.stage_x, MousePos.stage_y);
 }
 function onMouseUp(event){
     if(!MousePos.touched) return;
-    console.log("mouse up")
+    //console.log("mouse up")
 	getMouse(event, undefined);
-	game.getTeam(myteam).path.endPath(MousePos.stage_x, MousePos.stage_y);
+    if(gamestate == GameState.InPlay){
+    	game.getTeam(myteam).path.endPath(MousePos.stage_x, MousePos.stage_y);
 
-	communication.socket.emit('path', game.getTeam(myteam).path.getLastTwoPoints());
+    	communication.socket.emit('path', game.getTeam(myteam).path.getLastTwoPoints());
+    }
 }
 function onTouchStart(event){
 
@@ -68,7 +72,7 @@ function onTouchStart(event){
         return;
     }*/
     MousePos.touched = true;
-    console.log('touched')
+    //console.log('touched')
 	if(gamestate == GameState.InPlay)
 	game.getTeam(myteam).path.startPath(MousePos.stage_x, MousePos.stage_y);
 	/*characters.spawn({x: MousePos.stage_x_pct*stage_width, y:MousePos.stage_y_pct*stage_height}, CharacterType.Cow);
@@ -77,7 +81,7 @@ function onTouchStart(event){
 function onTouchMove(event){
     event.preventDefault();
     if(!MousePos.touched) return;
-    console.log('onTouchMove ' + MousePos.touched)
+    //console.log('onTouchMove ' + MousePos.touched)
 	getMouse(event, event.changedTouches[0]);
     //stage.x -= MousePos.px - MousePos.x;
     //stage.y -= MousePos.py - MousePos.y;
@@ -93,7 +97,7 @@ function onTouchEnd(event){
 	MousePos.touched = false;
 	if(gamestate == GameState.InPlay){
 		game.getTeam(myteam).path.endPath(MousePos.stage_x, MousePos.stage_y);
-		communication.socket.emit('path', game.getTeam(myteam).path.getLastTwoPoints());
+		if(gamemode == GameMode.MultiPlayer) communication.socket.emit('path', game.getTeam(myteam).path.getLastTwoPoints());
 	}
 	//path.addPoint(MousePos.x, MousePos.y);
 	//path.drawPath();

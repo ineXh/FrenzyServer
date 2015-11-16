@@ -22,10 +22,10 @@ define("Ready", 50);
 define("NotReady", 51);
 
 // Color
-define('Red', 0xFF0000)
-define('Blue', 0x0000FF)
-define('Teal', 0x008080)
-define('Purple', 0x800080)
+define('Red', 0xFF9999)
+define('Blue', 0x9999FF)
+define('Teal', 0x99f9f9)
+define('Purple', 0xf999f9)
 
 // Character Types
 define('Cow', 0)

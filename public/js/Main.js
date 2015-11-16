@@ -14,7 +14,7 @@ var Engine = (function(global) {
     console.log('width ' + width + ' height ' + height + ' stage_width ' + stage_width + ' stage_height ' + stage_height)
 
 
-	renderer = PIXI.autoDetectRenderer(width, height*1.0 ,{backgroundColor : LightCyan});
+	renderer = PIXI.autoDetectRenderer(width, height*1.0 ,{backgroundColor : LightCyan});//'Black'});
 	// view is canvas
 	document.body.appendChild(renderer.view);
 
@@ -45,8 +45,8 @@ var Engine = (function(global) {
             var text = new PIXI.Text(i + ", " + j, {font: '32px Arial', fill: 'black'})
             text.x = 0;
             text.y = 0;
-            //container.addChild(text);
-            //container.addChild(grid);
+            container.addChild(text);
+            container.addChild(grid);
             stage.addChild(container);
         }
     }

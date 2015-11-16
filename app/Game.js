@@ -1,7 +1,10 @@
 var enums = require("./enums.js");
 module.exports = exports = Game;
 
-
+function htmlEntities(str) {
+    return String(str).replace(/&/g, '&amp;').replace(/</g, '&lt;')
+                      .replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+}
 
 function Game(io){
     this.io = io;
@@ -37,7 +40,7 @@ Game.prototype = {
           text: htmlEntities(msg),
           author: userName,
           color: userColor,
-        };        
+        };
         this.io.emit('chat message', json);
     },
     spawn: function(player, input){

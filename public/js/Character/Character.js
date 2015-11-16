@@ -168,11 +168,14 @@ Character.prototype.steer = function(time){
 }
 Character.prototype.seek = function(target){
 	var desired = PVector.sub(target, this.pos);
+
 	desired.normalize();
-	desired.mult(this.maxspeed);
-	var steer = PVector.sub(desired, this.vel);
-	steer.limit(this.maxforce);
-	return steer;
+	desired.mult(this.maxspeed/2);
+
+	//var steer = PVector.sub(desired, this.vel);
+	//steer.limit(this.maxforce);
+	//console.log(steer)
+	return desired;
 }
 Character.prototype.isDead = function(){
 	return this.Dead;
@@ -184,10 +187,20 @@ function Cow(){
 	this.create();
 }
 Cow.prototype.create = function(){
+	this.animationtype = AnimationType.Walk_Front;
+	this.front_walk_frame = 0;
+	this.front_attack_frame = 8;
+	this.back_walk_frame = 14;
+	this.back_attack_frame = 22;
+
 	this.pos = new PVector(0,0);
 	this.vel = new PVector(0,0);
 	this.accel = new PVector(0,0);
-	this.sprite = new PIXI.Sprite(cow_texture);
+	//this.sprite = new PIXI.Sprite(cow_texture);
+	this.sprite = new PIXI.extras.MovieClip(cow_front_frames);
+	this.sprite.animationSpeed = 0.1;
+	this.sprite.play();
+
 	this.r = dim*0.05;
 	this.scale = this.r / this.sprite.width;
 	this.sprite.scale.set(this.scale);
@@ -195,6 +208,16 @@ Cow.prototype.create = function(){
 	this.sprite.anchor.y = 0.5;
 	this.maxspeed = 4*stage_width/1000;
 	this.type = CharacterType.Cow;
+	this.seekOpponent_count = 0;
+    this.seekOpponent_time = 0;
+    this.attack_count = 0;
+    this.attack_time = 10;
+    this.attacking = false;
+    this.Dead = false;
+    this.maxhp = 5;
+    this.hp = this.maxhp;
+    this.healthbar = new HealthBar(this);
+
 }
 Cow.prototype.init = function(input){
 	this.team = input.team;
@@ -202,14 +225,118 @@ Cow.prototype.init = function(input){
 	this.pos.x = input.x;
 	this.pos.y = input.y;
 	stage.addChild(this.sprite);
+	stage.addChild(this.healthbar.bar);
+} // gotoAndPlay // currentFramenumber
+Cow.prototype.animationdisplay = function(){
+	switch(this.animationtype){
+		case AnimationType.Walk_Front:
+		//console.log(this.sprite.currentFrame)
+			if(this.sprite.currentFrame >= this.front_attack_frame-1)
+				this.sprite.gotoAndPlay(this.front_walk_frame)
+		break;
+		case AnimationType.Attack_Front:
+			if(this.sprite.currentFrame >= this.back_walk_frame-1){
+				this.attacking = false;
+				this.animationtype = AnimationType.Walk_Front;
+				this.opponent.hp -= 1;
+				this.opponent.healthbar.set(this.opponent.hp);
+			}
+		//console.log(this.sprite.currentFrame)
+			//if(this.sprite.currentFrame >= this.back_walk_frame-1)
+			//this.sprite.gotoAndPlay(this.front_attack_frame)
+		break;
+	}
+}
+Cow.prototype.isDead = function(){
+	return this.Dead;
+}
+Cow.prototype.attack = function(){
+	if(!this.attacking){
+		if(this.animationtype != AnimationType.Attack_Front)
+		this.sprite.gotoAndPlay(this.front_attack_frame);
+		this.animationtype = AnimationType.Attack_Front;
+		this.attacking = true;
+	}
 }
 Cow.prototype.update = function(path){
-	if(path != null) applyForce.call(this, path.follow(this));
-	this.vel = this.accel;
-    this.vel.limit(this.maxspeed);
-    this.pos.add(this.vel);
-    this.accel.mult(0);
+	if(path != null && !this.attacking){
+		applyForce.call(this, path.follow(this));
+		if(this.accel.mag() > width/10)
+		this.animationtype = AnimationType.Walk_Front;
+	}
+	if(this.opponent != null && this.accel.mag() < width/1000
+		&& !this.attacking){
+		this.seekOpponent_count++;
+        if(this.seekOpponent_count < this.seekOpponent_time) return;
+        this.seekOpponent_count = 0;
+        this.opponent_dist = findDist(this.pos, this.opponent.pos);
+		if(this.opponent_dist >= dim/2){
+			this.opponent = null;
+			this.opponent_dist == undefined
+		}
+		if(this.opponent_dist >= this.r*1.5){
+			if(this.opponent != null)
+			applyForce.call(this, this.seek(this.opponent.pos));
+			this.animationtype = AnimationType.Walk_Front;
+		}else{
+			this.attack();
+		}
+	}
+	//if(this.animationtype == AnimationType.Attack_Front){
+	//}else{
+	if(!this.attacking){
+		this.vel = this.accel;
+	    this.vel.limit(this.maxspeed);
+	    this.pos.add(this.vel);
+	    this.accel.mult(0);
+	}
 	//this.move(time);
 	this.sprite.position.x = this.pos.x;
 	this.sprite.position.y = this.pos.y;
+	this.healthbar.update();
+	this.animationdisplay();
+	if(this.hp <= 0) this.isDead = true;
 }
+function HealthBar(character){
+	this.init(character);
+}
+HealthBar.prototype = {
+	init: function(character){
+		this.character = character;
+		this.pos = this.character.pos;
+		this.r = this.character.r;
+		this.maxhp = this.character.maxhp;
+	    this.hp = this.maxhp;
+		this.bar = new PIXI.Container();
+	    this.innerbar = new PIXI.Graphics;
+	    this.innerbar.beginFill(0x000000);
+		this.innerbar.drawRoundedRect (0, 0, this.r*0.6, this.r/12, this.r/24);
+		this.innerbar.endFill();
+		this.bar.addChild(this.innerbar);
+
+		//Create the front red rectangle
+		this.outbar = new PIXI.Graphics();
+		this.outbar.beginFill(0xFF3300);
+		this.outbar.drawRoundedRect (0, 0, this.r*0.6, this.r/12, this.r/24);
+		this.outbar.endFill();
+		this.bar.addChild(this.outbar);
+		this.bar.outer = this.outbar;
+	},
+	set : function(hp){
+		var ratio = hp/this.maxhp;
+		//console.log(ratio)
+		/*var length = hp/this.maxhp *this.r*0.6;
+		this.innerbar.beginFill(0x000000);
+		this.innerbar.drawRoundedRect (0, 0, this.r*0.6, this.r/12, this.r/24);
+		this.innerbar.endFill();*/
+		if(hp <= 0){
+			this.character.Dead = true;
+			ratio = 0;
+		}
+		this.outbar.scale.x = ratio;
+	},
+	update:function(){
+		this.bar.x = this.pos.x - this.r/4;
+		this.bar.y = this.pos.y - this.r*3/8;
+	}
+} // end HealthBar

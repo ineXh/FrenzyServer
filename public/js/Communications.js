@@ -7,18 +7,34 @@ Communications.prototype = {
 
 	},
 	connect: function(){
-		this.socket = io.connect('http://localhost:80/');
-		//this.socket = io.connect('http://192.168.0.103:80/');
-		//this.socket = io.connect('http://104.197.217.162:80/');
-		this.sendClientInfo();
+		return new Promise(function(resolve, reject){
 
+			communication.socket = io.connect('http://localhost:80/');
+			//communication.socket = io.connect('http://192.168.0.103:80/',
+			//	{reconnection: false});
+			//this.socket = io.connect('http://104.197.217.162:80/');
+			//if(!this.socket.connected) return false;
+			setTimeout( function(){
+				if(communication.socket.connected){
+					communication.setupconnection();
+					resolve();
+				}else{
+					communication.socket.io._reconnection =false;
+					reject();
+				}
+			}, 1000 );
+
+			//return true;
+		});
+	},
+	setupconnection:function(){
+		communication.sendClientInfo();
 		//this.socket.on('chat', onChat);
-		this.socket.on('start info', onStartInfo);
-		this.socket.on('spawn existing', onSpawnExisting);
-		this.socket.on('spawn', onSpawnExisting);
-		this.socket.on('path', onPath);
-		this.socket.on('sync', onSync);
-
+		communication.socket.on('start info', onStartInfo);
+		communication.socket.on('spawn existing', onSpawnExisting);
+		communication.socket.on('spawn', onSpawnExisting);
+		communication.socket.on('path', onPath);
+		communication.socket.on('sync', onSync);
 	},
 
 	sendClientInfo: function(){
@@ -28,6 +44,10 @@ Communications.prototype = {
 
 	},
 }; // end Communications
+function sendName(name){
+	communication.socket.emit('name', name);
+	menu.multiplayermenu.init_main();
+}
 function sendChat(msg){
 	communication.socket.emit('chat', msg);
 }
