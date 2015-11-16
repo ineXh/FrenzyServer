@@ -75,7 +75,7 @@ Game.prototype = {
             c.opponent_dist = findDist(c.pos, c.opponent.pos);
             if(c.opponent_dist < c.r*6) return;
         }*/
-        if(c.opponent_dist == undefined) c.opponent_dist = dim/2;
+        if(c.opponent_dist == undefined || c.opponent == null) c.opponent_dist = dim/2;
         var dist = dim/2;
         for(var i = 0; i < this.teams.length; i++){
             if(c.team == i) continue;
@@ -192,8 +192,8 @@ Team.prototype = {
     },
     startsingle:function(){
 
-        for(var i = 0; i < 5; i++){
-            for(var j = 0; j < 5; j++){
+        for(var i = 0; i < 10; i++){
+            for(var j = 0; j < 10; j++){
                 var input = {   x: this.startlocation_pos.x + width/2 + width/20*j,
                                 y: this.startlocation_pos.y + height/2 + width/20*i,
                     type: CharacterType.Cow, team: this.team, color: this.color};
@@ -203,7 +203,6 @@ Team.prototype = {
         }
     },
     update: function(){
-
         this.sendSyncCharacter();
         for (var i = 0; i < this.characters.length; i++) {
             if(this.characters[i] == undefined) continue;
@@ -212,8 +211,12 @@ Team.prototype = {
                 c.update(this.path);
 
                 if(c.isDead()){
-                    this.clean(c);
-                    var index = this.characters[c.type].indexOf(i);
+                    //console.log('isdead')
+                    //this.clean(c);
+                    characters.clean(c);
+                    //this.returnParticle(particle.type, particle);
+
+                    var index = this.characters[c.type].indexOf(c);
                     if(index > -1){
                         var val = this.characters[c.type][index];
                         this.characters[c.type].splice(index,1);

@@ -51,8 +51,8 @@ Characters.prototype = {
   	clean: function(character){
   		//console.log("clean" + character);
   		character.clean();
-  		this.character_length[character.type]--;
-  		this.returnCharacter(character.type, character);
+  		//this.character_length[character.type]--;
+  		this.pool.returnCharacter(character.type, character);
 
   	},
 	getCharacterlist: function(characterType){
@@ -180,6 +180,7 @@ Character.prototype.seek = function(target){
 Character.prototype.isDead = function(){
 	return this.Dead;
 }
+
 Cow.prototype = Object.create(Character.prototype);
 Cow.prototype.constructor = Character;
 
@@ -238,14 +239,21 @@ Cow.prototype.animationdisplay = function(){
 			if(this.sprite.currentFrame >= this.back_walk_frame-1){
 				this.attacking = false;
 				this.animationtype = AnimationType.Walk_Front;
-				this.opponent.hp -= 1;
-				this.opponent.healthbar.set(this.opponent.hp);
+				if(this.opponent != null){
+					this.opponent.hp -= 1;
+					this.opponent.healthbar.set(this.opponent.hp);
+				}
 			}
 		//console.log(this.sprite.currentFrame)
 			//if(this.sprite.currentFrame >= this.back_walk_frame-1)
 			//this.sprite.gotoAndPlay(this.front_attack_frame)
 		break;
 	}
+}
+Cow.prototype.clean = function(){
+	this.sprite.stop();
+	stage.removeChild(this.sprite);
+	stage.removeChild(this.healthbar.bar);
 }
 Cow.prototype.attack = function(){
 	if(!this.attacking){
@@ -267,7 +275,7 @@ Cow.prototype.update = function(path){
         if(this.seekOpponent_count < this.seekOpponent_time) return;
         this.seekOpponent_count = 0;
         this.opponent_dist = findDist(this.pos, this.opponent.pos);
-		if(this.opponent_dist >= dim/2){
+		if(this.opponent_dist >= dim/2 || this.opponent.isDead()){
 			this.opponent = null;
 			this.opponent_dist == undefined
 		}

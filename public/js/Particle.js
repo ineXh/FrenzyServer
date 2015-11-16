@@ -6,31 +6,31 @@ function ParticlesPool() {
 ParticlesPool.prototype = {
 	loadPool: function(){
 		//this.createChargeFlame();
-		//this.createFlame();		
+		//this.createFlame();
 		this.createText();
 		this.createIcon();
 	},
 	createIcon:function(){
 		this.Icons = [];
-	},	
+	},
 	borrowIcon : function(){
 		if(this.Icons.length >= 1)	return this.Icons.shift();
 		else return null;
 	},
 	returnIcon: function(p){
 		this.Icons.push(p);
-	},	
+	},
 	createFlame: function(){
 		this.flames = [];
 		this.addFlameSprites(2);
 	},
 	addFlameSprites : function(amount) {
-	  for (var i = 0; i < amount; i++){     
+	  for (var i = 0; i < amount; i++){
 	    var sprite = new PIXI.Sprite(flame_texture);
 	    sprite.tint = RGBColor(getRandomInt(230, 255), getRandomInt(100, 200), 0);
 	    sprite.anchor.x = 0.5;
 		sprite.anchor.y = 0.45;
-	    //clr = color(random(200,255),random(100,255),0);   
+	    //clr = color(random(200,255),random(100,255),0);
 	    var particle = new Particle(null, ParticleType.FLAME, sprite);
 	    this.flames.push(particle);
 	  }
@@ -52,7 +52,7 @@ ParticlesPool.prototype = {
 	addText : function(amount){
 		console.log("addText")
 		for (var i = 0; i < amount; i++){
-			//console.log(ParticleType.TEXT)'64px ' '#ff2211' 
+			//console.log(ParticleType.TEXT)'64px ' '#ff2211'
 			var particle = new Text({ font: '40px Ninja Naruto', fill: "black"},
 									 ParticleType.TEXT);
 	    	this.texts.push(particle);
@@ -76,12 +76,12 @@ Particles.prototype = {
 	init: function(){
 		// Particles on the stage Currently, Gained when borrowed from the pool
 		this.particles = [];
-		this.queue_particles = [];     
+		this.queue_particles = [];
 	},
 	getLength: function(){
 		return this.particles.length;
-	},  
-	update: function(time){		
+	},
+	update: function(time){
 		for (var i = this.particles.length - 1; i >= 0; i--) {
 			var p = this.particles[i];
 			p.update(time);
@@ -89,10 +89,10 @@ Particles.prototype = {
 				if(p.cb_dead != null) p.cb_dead();
 				this.clean(p);
 				this.particles.splice(i,1);
-			} 
+			}
 		}
 		this.update_queue(time);
-	},	
+	},
 	update_queue: function(time){
 		if(this.queue_particles.length < 1) return;
 		var p = this.queue_particles[0];
@@ -100,18 +100,18 @@ Particles.prototype = {
 			// Take next item in the queue
 			if(this.queue_particles.length >= 2){
 				this.queue_particles[1].init(this.queue_particles[1].input);
-				this.queue_particles[1].time_s = time.t;				
+				this.queue_particles[1].time_s = time.t;
 				if(this.queue_particles[1].cb != null) this.queue_particles[1].cb();
 			}
 			if(p.cb_dead != null) p.cb_dead();
 			this.clean(p);
 			this.queue_particles.splice(0,1);
 		}else{
-			p.update(time);	
-		}		
+			p.update(time);
+		}
 	},
 	spawn: function(input, type){
-		//this.particles.push(new Particle(input));		
+		//this.particles.push(new Particle(input));
 		//console.log("ay: " + input.ay);
 		var particle = this.borrowParticle(type);
 		//console.log(particle)
@@ -149,25 +149,25 @@ Particles.prototype = {
 	borrowParticle : function(particleType){
 		return this.borrowParticleLookup[particleType].call(this.pool);
 	},
-	returnParticle : function(particleType, particle){	
+	returnParticle : function(particleType, particle){
 	//console.log(this.returnParticleLookup[particleType])
 		if(this.returnParticleLookup[particleType] == undefined){
 			particle = null;
 			return;
-		} 
+		}
 		return this.returnParticleLookup[particleType].call(this.pool, particle);
-	},	
+	},
 };
 //function Particle(x, y, ax, ay,color) {
   //this.init(x, y, ax, ay, color);
-function Particle(input, type, sprite) {    
+function Particle(input, type, sprite) {
 
   this.create(input, type, sprite);
 }
 Particle.prototype = {
-  create: function(input, type, sprite){  	
+  create: function(input, type, sprite){
   	this.type = type;
-  	this.sprite = sprite;  	
+  	this.sprite = sprite;
   },
   init: function (input) {
   	this.input = input;
@@ -176,7 +176,7 @@ Particle.prototype = {
   	this.sprite.anchor.x = 0.5;
   	this.sprite.anchor.y = 0.5;
   	if(input.track_ang) this.sprite.rotation = this.input.body.angle;
-  	
+
   	if(input.play){
   		this.sprite.animationSpeed = input.animationSpeed;
   		this.sprite.play();
@@ -184,42 +184,42 @@ Particle.prototype = {
     this.radius = Math.random() * width;
     this.oldRadius = this.radius;
     this.particle_init(input);
-    
+
   },
   particle_init: function(input){
-  	
+
   	this.sprite.x = input.x;
   	this.sprite.y = input.y;
-    this.pos = new PVector(input.x, input.y);	
+    this.pos = new PVector(input.x, input.y);
     if(input.color != null) this.color = input.color;
   	this.vel = new PVector(0, 0);
     this.accel = new PVector(0, 0);
     if(input.ax != null){	this.accel.x = input.ax;	}
 	if(input.ay != null){	this.accel.y = input.ay;	}
 	if(input.x_end != null){
-		this.x_start = input.x;		
+		this.x_start = input.x;
 		if(input.x_end.length >= 1){
 			this.index = 0;
 			this.x_end = input.x_end[0];
 		}else{
-			this.x_end = input.x_end;	
-		} 
+			this.x_end = input.x_end;
+		}
 	}
 	if(input.y_end != null){
 		this.y_start = input.y;
 		if(input.y_end.length >= 1){
 			this.y_end = input.y_end[0];
 		}else{
-			this.y_end = input.y_end;	
+			this.y_end = input.y_end;
 		}
-	} 
+	}
 	if(input.rs != undefined){
 		this.rs = input.rs;
 		this.r = this.rs;
 		if(input.re.length >= 1){
 			this.re = input.re[0];
 		}else{
-			this.re = input.re;	
+			this.re = input.re;
 		}
 		if(this.sprite != undefined && !isNaN(this.r)) this.sprite.width = this.rs;
   		if(this.sprite != undefined && !isNaN(this.r)) this.sprite.height = this.rs;
@@ -237,13 +237,13 @@ Particle.prototype = {
 		this.lifespan_d = 5;
 	}
 	this.lifespan = this.lifespan_s;
-	
+
 	this.pct = 0;
 	if(input.duration != null){
 		if(input.duration.length != undefined){
 			this.duration = input.duration[0];
 		}else{
-		 this.duration = input.duration;	
+		 this.duration = input.duration;
 		}
 	}else{
 		this.duration = undefined;
@@ -258,10 +258,10 @@ Particle.prototype = {
 		}else{
 			input.cb.call(this);
 		}
-	}else{ this.cb = null;}	
+	}else{ this.cb = null;}
 	if(input.cb_dead != null){
 		this.cb_dead = input.cb_dead;
-	}else{this.cb_dead = null;}	
+	}else{this.cb_dead = null;}
 	if(input.does_not_die != null) this.does_not_die = input.does_not_die;
 	//console.log('this.does_not_die' + this.does_not_die)
 	if(input.container != undefined){
@@ -284,35 +284,35 @@ Particle.prototype = {
   update: function(time){
   	//console.log('particle update')
   	//console.log(this.accel);
-	this.vel.add(this.accel);    
+	this.vel.add(this.accel);
     this.pos.add(this.vel);
-	this.accel.mult(0);	
-	
-	
+	this.accel.mult(0);
+
+
 	//console.log("this.lifespan: " + this.lifespan);
 	this.sprite.rotation += 0.0;
-	
+
 	if(this.duration != null){
-		this.run_queue(time);	
+		this.run_queue(time);
 	}else{
 		this.sprite.alpha = (this.lifespan > 0) ? (this.lifespan)/255 : 0;
 		this.lifespan -= this.lifespan_d;
 	}
 
 	//console.log(this.lifespan)
-	if(this.input.track_pos != undefined){		
+	if(this.input.track_pos != undefined){
 		this.sprite.x = this.input.track_pos.x;
-		this.sprite.y = this.input.track_pos.y;	
+		this.sprite.y = this.input.track_pos.y;
 	}else{
 		this.sprite.x = this.pos.x;
-		this.sprite.y = this.pos.y;	
+		this.sprite.y = this.pos.y;
 	}
 	if(this.input.track_ang == true){
 		//console.log(this.sprite.rotation)
 		this.sprite.rotation = this.input.body.angle;
-	} 
+	}
 
-	
+
 
   },
   run_queue: function(time){
@@ -323,7 +323,7 @@ Particle.prototype = {
   	//console.log(this.duration)
   	if(this.input.x_end != undefined && this.input.x_end.length != undefined && this.index < this.input.x_end.length-1){
   		if(this.pct > 1){
-  			this.pct -= 1;  			
+  			this.pct -= 1;
   			if(this.rs != undefined) this.rs = this.input.re[this.index];
   			if(this.re != undefined) this.re = this.input.re[this.index + 1];
   			//console.log(this.rs)
@@ -334,12 +334,12 @@ Particle.prototype = {
   			this.y_end = this.input.y_end[this.index+1];
   			if(this.input.cb != undefined) if(this.input.cb[this.index+1] != null)
   				this.input.cb[this.index+1].call(this);
-  			
+
   			this.duration = this.input.duration[this.index+1];
   			this.time_s = time.t - this.duration * this.pct;
   			this.index++;
   			//console.log("this.index " + this.index)
-  		} 
+  		}
   	}
   	if(this.input.x_end != undefined && this.input.x_end.length != undefined &&  this.index == this.input.x_end.length - 1){
   		//console.log('ended, but not dead')
@@ -359,16 +359,16 @@ Particle.prototype = {
   		this.pos.y = this.y_start + (this.y_end - this.y_start)*this.pct;
   	}
   },
-  render: function (ctx) {	    
+  render: function (ctx) {
   },
   isDead: function(){
   	if(this.does_not_die){
   		return false;
-  		console.log('not dead')	
-  	} 
+  		console.log('not dead')
+  	}
 	return (this.lifespan <= 0 || this.pct >= 1);
   },
-};  
+};
 function Text(input, type){
 	this.input = input;
 	this.type = type;
@@ -377,7 +377,7 @@ function Text(input, type){
 		  //{ font: '64px Ninja Naruto', fill:"black", align: 'center' });
 
 	this.sprite = new PIXI.extras.BitmapText("", {font: input.font,
-							  fill: input.fill, 
+							  fill: input.fill,
 							 align: 'center',
 							stroke: '#FF0000',
 				   strokeThickness: 3 });
