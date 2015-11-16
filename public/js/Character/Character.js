@@ -247,9 +247,6 @@ Cow.prototype.animationdisplay = function(){
 		break;
 	}
 }
-Cow.prototype.isDead = function(){
-	return this.Dead;
-}
 Cow.prototype.attack = function(){
 	if(!this.attacking){
 		if(this.animationtype != AnimationType.Attack_Front)
@@ -295,7 +292,7 @@ Cow.prototype.update = function(path){
 	this.sprite.position.y = this.pos.y;
 	this.healthbar.update();
 	this.animationdisplay();
-	if(this.hp <= 0) this.isDead = true;
+	if(this.hp <= 0) this.Dead = true;
 }
 function HealthBar(character){
 	this.init(character);

@@ -218,7 +218,7 @@ Team.prototype = {
                         var val = this.characters[c.type][index];
                         this.characters[c.type].splice(index,1);
                     }
-                    this.characters.splice(i,1);
+                    //this.characters.splice(i,1);
                 }
             }
         }
