@@ -114,7 +114,7 @@ Game.prototype = {
         this.teams.forEach(function(t){
             t.startsingle();
         })
-        center = this.getTeam(myteam).characters[CharacterType.Cow][0].pos;
+        center = this.getTeam(myteam).characters[CharacterType.Cow][0].pos.clone();
 
 
     },

@@ -85,8 +85,12 @@ function onTouchMove(event){
 	getMouse(event, event.changedTouches[0]);
     //stage.x -= MousePos.px - MousePos.x;
     //stage.y -= MousePos.py - MousePos.y;
-	if(gamestate == GameState.InPlay)
-	game.getTeam(myteam).path.updatePath(MousePos.stage_x, MousePos.stage_y);
+    
+	if(gamestate == GameState.InPlay){
+		center.x += MousePos.px - MousePos.x;
+		game.getTeam(myteam).path.updatePath(MousePos.stage_x, MousePos.stage_y);	
+	}
+	
 }
 function onTouchEnd(event){
     event.preventDefault();
