@@ -57,7 +57,7 @@ var visibleCheck = function(){
     }
 } // end visibleCheck
 var panCenter = function(){
-    if(center != undefined){
+    /*if(center != undefined){
         if(center.x > (-stage.x + width/2 + scope_width)){
             stage.x = -(center.x - width/2 - scope_width);
         }
@@ -70,5 +70,12 @@ var panCenter = function(){
         if(center.y < (-stage.y + height/2 - scope_height)){
             stage.y = -(center.y - height/2 + scope_height);
         }
-    }
+    }*/
 } // end panCenter
+var pan = function(){
+    if(MousePos.x > width - scope_width){
+        stage.x -= width/100;//MousePos.px - MousePos.x;
+    }else if(MousePos.x < scope_width){
+        stage.x += width/100;//MousePos.px - MousePos.x;
+    }
+}

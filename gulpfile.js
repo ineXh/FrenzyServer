@@ -24,7 +24,7 @@ gulp.task('jshint', function() {
 gulp.task('uglify', function() {
   return gulp.src('source/js/**/*.js')
   //return gulp.src(['source/js/**/*.js', 'source/js/**/*.jsx'])
-    .pipe(uglify())
+  .pipe(uglify())
 	.pipe(gulp.dest('public/js'));
 });
 gulp.task('obfuscate', function() {
@@ -38,5 +38,5 @@ gulp.task('obfuscate', function() {
 
 // configure which files to watch and what tasks to use on file changes
 gulp.task('watch', function() {
-  gulp.watch('source/js/**/*.js', ['jshint']);
+  gulp.watch('source/js/**/*.js', ['uglify']);
 });

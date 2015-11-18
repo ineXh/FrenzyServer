@@ -87,7 +87,8 @@ function onTouchMove(event){
     //stage.y -= MousePos.py - MousePos.y;
     
 	if(gamestate == GameState.InPlay){
-		center.x += MousePos.px - MousePos.x;
+		pan();
+		//center.x += MousePos.px - MousePos.x;
 		game.getTeam(myteam).path.updatePath(MousePos.stage_x, MousePos.stage_y);	
 	}
 	
