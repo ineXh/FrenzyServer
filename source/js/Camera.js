@@ -71,11 +71,21 @@ var panCenter = function(){
             stage.y = -(center.y - height/2 + scope_height);
         }
     }*/
+    if(gamestate == GameState.InPlay){
+        pan();
+    }
 } // end panCenter
 var pan = function(){
+    if(!MousePos.touched) return;
+    //console.log('touched')
     if(MousePos.x > width - scope_width){
         stage.x -= width/100;//MousePos.px - MousePos.x;
     }else if(MousePos.x < scope_width){
         stage.x += width/100;//MousePos.px - MousePos.x;
+    }
+    if(MousePos.y > height - scope_height){
+        stage.y -= height/100;//MousePos.px - MousePos.x;
+    }else if(MousePos.y < scope_height){
+        stage.y += height/100;//MousePos.px - MousePos.x;
     }
 }
