@@ -3,7 +3,7 @@
 // grab our gulp packages
 var gulp  = require('gulp'),
     jshint = require('gulp-jshint'),
-	obfuscate = require('gulp-obfuscate'),
+	//obfuscate = require('gulp-obfuscate'),
 	uglify = require('gulp-uglify');
 
 // define the default task and add the watch task to it
