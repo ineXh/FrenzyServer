@@ -13,6 +13,7 @@ Game.prototype = {
         this.collision_time = 1;
         this.updateOpponent_count = 0;
         this.updateOpponent_time = 0;
+        this.minimap = new MiniMap();
     },
     checkcollisions :function(){
         this.collision_count++;
@@ -30,7 +31,6 @@ Game.prototype = {
                 }
             }
         }
-
     },
     checkcollision: function(c){
       for(var i = 0; i < this.teams.length; i++){
@@ -99,7 +99,8 @@ Game.prototype = {
         this.updateOpponent();
         this.teams.forEach(function(team){
             team.update();
-        })
+        });
+        this.minimap.update();
     },
     getTeam: function(team){
         return this.teams[team];
@@ -192,8 +193,8 @@ Team.prototype = {
     },
     startsingle:function(){
 
-        for(var i = 0; i < 10; i++){
-            for(var j = 0; j < 10; j++){
+        for(var i = 0; i < 1; i++){
+            for(var j = 0; j < 1; j++){
                 var input = {   x: this.startlocation_pos.x + width/2 + width/20*j,
                                 y: this.startlocation_pos.y + height/2 + width/20*i,
                     type: CharacterType.Cow, team: this.team, color: this.color};

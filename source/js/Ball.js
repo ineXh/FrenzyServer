@@ -1,4 +1,3 @@
-
 function Ball(x, y, r, draw, texture){
   this.init(x,y, r);
   if(draw == undefined || draw == true){
