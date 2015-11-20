@@ -6,10 +6,10 @@ var Engine = (function(global) {
 
 	dim = (width < height) ? width : height;
 	big_dim = (width < height) ? height : width;
-    stage_width = big_dim*3;
-    stage_height = big_dim*3;
-	scope_width = width*0.25;
-	scope_height = height*0.25;
+    stage_width = big_dim*2;
+    stage_height = big_dim*2;
+	scope_width = width*0.15;
+	scope_height = height*0.15;
 
     console.log('width ' + width + ' height ' + height + ' stage_width ' + stage_width + ' stage_height ' + stage_height)
 

@@ -46,7 +46,7 @@ var setBorder = function(container){
 var visiblecount = 0;
 var visibleCheck = function(){
     visiblecount++;
-     if(visiblecount%40 == 0){
+     if(visiblecount%30 == 0){
         visiblecount = 0;
         //console.log('visible check')
         getScreenPos();

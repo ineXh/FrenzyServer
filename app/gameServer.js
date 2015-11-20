@@ -92,6 +92,14 @@ gameServer.prototype = {
             }
         });
     }, // end spawn
+    DeadCharacter: function(player, input){
+        this.players.forEach(function(p){
+            if(p != player){
+                //console.log('player ' + p.team + ' to spawn.')
+                p.emit('dead character', input)
+            }
+        });
+    },
     send_start_info: function(player){
         player.emit('start info',
             {color      : player.color,

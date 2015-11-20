@@ -34,6 +34,7 @@ Communications.prototype = {
 		communication.socket.on('start info', onStartInfo);
 		communication.socket.on('spawn existing', onSpawnExisting);
 		communication.socket.on('spawn', onSpawnExisting);
+		communication.socket.on('dead character', onDeadCharacter);
 		communication.socket.on('path', onPath);
 		communication.socket.on('sync', onSync);
 	},
@@ -64,6 +65,10 @@ function onSpawn(msg){
 					type: msg.type, team: msg.team, color: msg.color});
 	game.getTeam(msg.team).characters[msg.type].push(character);*/
 
+}
+function onDeadCharacter(msg){
+	console.log(msg)
+	game.getTeam(msg.team).characters[msg.type][msg.index].Dead = true;
 }
 function onSpawnExisting(msg){
 	console.log('onSpawnExisting')
@@ -99,9 +104,10 @@ function onSync(msg){
 			team.characters[i][j].pos.y = msg.characters[i][j].y*stage_height;
 			team.characters[i][j].vel.x = msg.characters[i][j].vx*stage_width;
 			team.characters[i][j].vel.y = msg.characters[i][j].vy*stage_height;
+			team.characters[i][j].hp = msg.characters[i][j].hp;
 		}
 	}
-}
+} // end onSync
 function addMessage(author, message, color, dt) {
 	chatmonitor.prepend('<p><span "style="color:' + color + '"></span><span style="color:' + color + '">' + author + '</span> @ ' + convertTime(dt)
 		 + ': ' + message + '</p>');

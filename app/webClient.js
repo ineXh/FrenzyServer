@@ -17,6 +17,7 @@ function webClient(io, clients, gameserver){
         socket.on('client info', onClientInfo);
         socket.on('path', onPath);
         socket.on('spawn', onSpawn);
+        socket.on('sync dead character', onSyncDeadCharacter)
         socket.on('sync character', onSyncCharacter);
         socket.on('disconnect', onDisconnect);
 
@@ -75,6 +76,11 @@ function webClient(io, clients, gameserver){
             msg.team = client.team;
             msg.color = client.color;
             gameserver.spawn(client, msg);
+        }
+        function onSyncDeadCharacter(msg){
+            msg.team = client.team;
+            client.characters[msg.type].splice(msg.index,1);
+            gameserver.DeadCharacter(client, msg);
         }
         function onSyncCharacter(msg){
             //console.log('onSync')

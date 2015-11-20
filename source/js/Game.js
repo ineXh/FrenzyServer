@@ -141,8 +141,8 @@ Game.prototype = {
             break;
     }
     var msg = {team: myteam, color: myteamcolor, characters: []};
-    for(var i = 0; i < 5; i++){
-        for(var j = 0; j < 5; j++){
+    for(var i = -3; i < 3; i++){
+        for(var j = -3; j < 3; j++){
             spawnCow(-stage.x + width/2 + width/20*j,-stage.y + height/2 + width/20*i, msg);
         }
     }
@@ -227,7 +227,7 @@ function Team(team){
                          (team == 3)? StartLocation.SE: StartLocation.NW;
     this.startlocation_pos = getstartlocation(this.startlocation);
     this.sync_count = 0;
-    this.sync_time = 50;
+    this.sync_time = 5;
     this.init();
 }
 Team.prototype = {
@@ -250,7 +250,6 @@ Team.prototype = {
         }
     },
     update: function(){
-        this.sendSyncCharacter();
         for (var i = 0; i < this.characters.length; i++) {
             if(this.characters[i] == undefined) continue;
             for(var j = this.characters[i].length - 1; j >= 0; j--) {
@@ -267,11 +266,13 @@ Team.prototype = {
                     if(index > -1){
                         var val = this.characters[c.type][index];
                         this.characters[c.type].splice(index,1);
+                        this.sendSyncDeadCharacter(c.type, index);
                     }
                     //this.characters.splice(i,1);
                 }
             }
         }
+        this.sendSyncCharacter();
     }, // end update
     sendSyncCharacter:function(){
         if(gamemode != GameMode.MultiPlayer) return;
@@ -287,13 +288,24 @@ Team.prototype = {
             msg[i] = [];
             for(var j = 0; j < this.characters[i].length;j++){
                 var c = this.characters[i][j];
-                msg[i].push({x: c.pos.x/stage_width, y: c.pos.y/stage_height,
-                vx:c.vel.x / stage_width, vy: c.vel.y / stage_height, type: c.type})
+                msg[i].push({x: c.pos.x / stage_width,
+                             y: c.pos.y / stage_height,
+                            vx: c.vel.x / stage_width,
+                            vy: c.vel.y / stage_height,
+                            hp: c.hp,
+                            type: c.type})
             }
         }
         communication.socket.emit('sync character', msg)
         this.sendSyncPath();
-    }, // emd sendSyncCharacter
+    }, // end sendSyncCharacter
+    sendSyncDeadCharacter:function(type, index){
+        if(gamemode != GameMode.MultiPlayer) return;
+        if(this.team != myteam) return;
+        var msg = {type: type, index: index};
+        communication.socket.emit('sync dead character', msg)
+
+    },
     sendSyncPath : function(){
 
     }
