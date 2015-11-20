@@ -12,7 +12,9 @@ var port =  process.env.PORT || 80;
 // ///////////////////
 // Serve Request Files
 // ///////////////////
+app.use(express.static('source'));
 app.use(express.static('public'));
+
 
 // routes ==================================================
 require('./app/routes')(app); // pass our application into our routes

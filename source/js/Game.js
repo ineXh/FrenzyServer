@@ -4,16 +4,16 @@ function Game(){
     this.teams.push(new Team(1));
     this.teams.push(new Team(2));
     this.teams.push(new Team(3));
-
     this.init();
 }
 Game.prototype = {
     init: function(){
+        this.minimap = new MiniMap();
         this.collision_count = 0;
         this.collision_time = 1;
         this.updateOpponent_count = 0;
-        this.updateOpponent_time = 0;
-        this.minimap = new MiniMap();
+        this.updateOpponent_time = 10;
+
     },
     checkcollisions :function(){
         this.collision_count++;
@@ -116,7 +116,7 @@ Game.prototype = {
             t.startsingle();
         })
         center = this.getTeam(myteam).characters[CharacterType.Cow][0].pos.clone();
-
+        this.minimap.init();
 
     },
     startgame: function(){
@@ -153,7 +153,17 @@ Game.prototype = {
     //spawnCow(-stage.x + width/2 + width/50,-stage.y + height/2);
 
     center = this.getTeam(myteam).characters[CharacterType.Cow][0].pos;
+    this.minimap.init();
 
+    },
+    onTouchStart: function(){
+        if(gamestate == GameState.InPlay){
+            if(isTouching(MousePos.x, MousePos.y, game.minimap.map)){
+                this.minimap.onTouchStart();
+                return;
+            }
+            game.getTeam(myteam).path.startPath(MousePos.stage_x, MousePos.stage_y);
+        }
     }
 }; // end Game
 function spawnCow(x, y, msg){
@@ -193,8 +203,8 @@ Team.prototype = {
     },
     startsingle:function(){
 
-        for(var i = 0; i < 1; i++){
-            for(var j = 0; j < 1; j++){
+        for(var i = -5; i < 5; i++){
+            for(var j = -5; j < 5; j++){
                 var input = {   x: this.startlocation_pos.x + width/2 + width/20*j,
                                 y: this.startlocation_pos.y + height/2 + width/20*i,
                     type: CharacterType.Cow, team: this.team, color: this.color};

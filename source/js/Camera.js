@@ -80,12 +80,27 @@ var pan = function(){
     //console.log('touched')
     if(MousePos.x > width - scope_width){
         stage.x -= width/100;//MousePos.px - MousePos.x;
+        if(stage.x < -stage_width + width) stage.x = -stage_width + width;
     }else if(MousePos.x < scope_width){
         stage.x += width/100;//MousePos.px - MousePos.x;
+        if(stage.x > 0) stage.x = 0;
     }
     if(MousePos.y > height - scope_height){
         stage.y -= height/100;//MousePos.px - MousePos.x;
+        if(stage.y < -stage_height + height) stage.y = -stage_height + height;
     }else if(MousePos.y < scope_height){
         stage.y += height/100;//MousePos.px - MousePos.x;
+        if(stage.y > 0) stage.y = 0;
     }
+}
+var stageborder = function(){
+    if(stage.x < -stage_width + width) stage.x = -stage_width + width;
+    if(stage.x > 0) stage.x = 0;
+    if(stage.y < -stage_height + height) stage.y = -stage_height + height;
+    if(stage.y > 0) stage.y = 0;
+}
+var panTo = function(x, y){
+    stage.x = -x + width/2;
+    stage.y = -y + height/2;
+    stageborder();
 }

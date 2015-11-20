@@ -68,7 +68,7 @@ function Character(){
 	this.accel = new PVector(0,0);
 	this.vel = new PVector(0,0);
 	this.pos = new PVector(0,0);
-	this.maxspeed = width/100;
+	this.maxspeed = width/200;
 	this.Dead = false;
 }
 Character.prototype = Object.create(Ball.prototype);
@@ -207,7 +207,7 @@ Cow.prototype.create = function(){
 	this.sprite.scale.set(this.scale);
 	this.sprite.anchor.x = 0.5;
 	this.sprite.anchor.y = 0.5;
-	this.maxspeed = 4*stage_width/1000;
+	this.maxspeed = 2*big_dim/1000;
 	this.type = CharacterType.Cow;
 	this.seekOpponent_count = 0;
     this.seekOpponent_time = 0;
@@ -215,6 +215,7 @@ Cow.prototype.create = function(){
     this.attack_time = 10;
     this.attacking = false;
     this.Dead = false;
+    this.border = true;
     this.maxhp = 5;
     this.hp = this.maxhp;
     this.healthbar = new HealthBar(this);
@@ -294,7 +295,15 @@ Cow.prototype.update = function(path){
 	    this.vel.limit(this.maxspeed);
 	    this.pos.add(this.vel);
 	    this.accel.mult(0);
+	    if(this.border)   this.stayinBorder();
 	}
+	if(this.opponent!= null){
+		if(this.opponent.pos.x > this.pos.x) this.sprite.scale.x = -Math.abs(this.sprite.scale.x);
+		else this.sprite.scale.x = Math.abs(this.sprite.scale.x);
+	}
+	//if(this.vel.x < 0) this.sprite.scale.x = Math.abs(this.sprite.scale.x);
+	//else this.sprite.scale.x = -Math.abs(this.sprite.scale.x);
+
 	//this.move(time);
 	this.sprite.position.x = this.pos.x;
 	this.sprite.position.y = this.pos.y;

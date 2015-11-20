@@ -4,12 +4,6 @@ module.exports = function(grunt) {
   grunt.initConfig({
     pkg: grunt.file.readJSON('package.json'),
     uglify: {
-      /*
-      build: {
-        src: 'source/js/** /*.js',
-        dest: 'public/js/build.min.js'
-      }
-    }*/
       min: {
           files: grunt.file.expandMapping(['source/**/*.js'],
             'public', {
@@ -18,13 +12,23 @@ module.exports = function(grunt) {
               }
           })
       }
-    }
+    },
+    watch : {
+      scripts:{
+        files: ['source/**/*.js'],
+        tasks: ['uglify'],
+        options: {
+          spawn: false,
+        },
+      },
+    },
   });
 
   // Load the plugin that provides the "uglify" task.
   grunt.loadNpmTasks('grunt-contrib-uglify');
+  grunt.loadNpmTasks('grunt-contrib-watch');
 
   // Default task(s).
-  grunt.registerTask('default', ['uglify']);
+  grunt.registerTask('default', ['uglify','watch']);
 
 };

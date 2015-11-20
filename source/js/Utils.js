@@ -56,7 +56,7 @@ function onMouseUp(event){
     if(gamestate == GameState.InPlay){
     	game.getTeam(myteam).path.endPath(MousePos.stage_x, MousePos.stage_y);
 
-    	communication.socket.emit('path', game.getTeam(myteam).path.getLastTwoPoints());
+    	if(gamemode == GameMode.MultiPlayer) communication.socket.emit('path', game.getTeam(myteam).path.getLastTwoPoints());
     }
 }
 function onTouchStart(event){
@@ -73,8 +73,8 @@ function onTouchStart(event){
     }*/
     MousePos.touched = true;
     //console.log('touched')
-	if(gamestate == GameState.InPlay)
-	game.getTeam(myteam).path.startPath(MousePos.stage_x, MousePos.stage_y);
+    if(game != undefined) game.onTouchStart();
+
 	/*characters.spawn({x: MousePos.stage_x_pct*stage_width, y:MousePos.stage_y_pct*stage_height}, CharacterType.Cow);
 	communication.socket.emit('spawn', {x: MousePos.stage_x_pct, y:MousePos.stage_y_pct});*/
 }
@@ -85,6 +85,7 @@ function onTouchMove(event){
 	getMouse(event, event.changedTouches[0]);
     //stage.x -= MousePos.px - MousePos.x;
     //stage.y -= MousePos.py - MousePos.y;
+
 
 	if(gamestate == GameState.InPlay){
 		//pan();
@@ -229,6 +230,11 @@ function isIntersecting(r1, r2) {
 	//console.log("top " + top);
 return !( right || left || bot || top);
 }
+function isTouching(x,y, r2){
+    if(x > r2.x && x < r2.x + r2.width && y > r2.y && y < r2.y + r2.height) return true;
+    return false;
+}
+
 
 function map(x, x_min, x_max, x_min_new, x_max_new){
 	var pct = (x - x_min) / (x_max - x_min);

@@ -26,6 +26,7 @@
     "grunt": "^0.4.5",
     "grunt-contrib-jshint": "^0.11.3",
     "grunt-contrib-uglify": "^0.10.1",
+    "grunt-contrib-watch": "^0.6.1",
     "gulp": "^3.9.0",
     "gulp-jshint": "^1.12.0",
     "gulp-obfuscate": "^0.2.9",

@@ -22,6 +22,7 @@ Path.prototype = {
     this.path = new PIXI.Container();
     this.path._class  = 'path';
     stage.addChild(this.path);
+
     for(var i = 0; i < this.maxline; i++){
       this.line_pool.push(this.createArrow());
     }
@@ -60,12 +61,16 @@ Path.prototype = {
     var point = new PVector(x, y);
     this.points.push(point);
   },// end addPoint
+  changeLastPoint:function(x,y){
+    this.points[this.points.length-1].x = x;
+    this.points[this.points.length-1].y = y;
+  },
   getStart : function() {
      return this.points[0];
   },
-  getEnd : function(){
-    if(this.points.length <= 0) return -1;
-    return this.points[this.points.length-1];
+  getEnd : function(n){
+    if(this.points.length <= n) return -1;
+    return this.points[this.points.length-1 - n];
   },
   getEndLine : function(){
     //return this.path.children[this.path.children.length-1];
@@ -100,6 +105,8 @@ Path.prototype = {
     }
     this.path_started = true;
     this.addPoint(x,y);
+    this.addPoint(x,y);
+    this.num_lines++;
     var line = this.borrowline();
         line.x = x;
         line.y = y;
@@ -118,20 +125,22 @@ Path.prototype = {
   }, // end startPath
   updatePath : function(x,y){
     if(!this.path_started) return;
-    p0 = this.getEnd();
+    p0 = this.getEnd(1);
     // line
     this.getEndLine().children[0].width = findDist(p0, new PVector(x,y));
     // arrow head
     this.getEndLine().children[1].x = this.getEndLine().children[0].width;
     this.getEndLine().rotation = Math.atan2(y-p0.y, x-p0.x);
+    this.changeLastPoint(x,y);
   },
   endPath : function(x,y){
     if(!this.path_started) return;
     //console.log('endPath')
     this.updatePath(x,y);
-    this.addPoint(x,y);
 
-    this.num_lines++;
+    this.changeLastPoint(x,y);
+
+
     this.path_started = false;
   },
   drawPath : function(){
