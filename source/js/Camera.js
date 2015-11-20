@@ -71,9 +71,9 @@ var panCenter = function(){
             stage.y = -(center.y - height/2 + scope_height);
         }
     }*/
-    if(gamestate == GameState.InPlay){
-        pan();
-    }
+    //if(gamestate == GameState.InPlay){
+      //  pan();
+    //}
 } // end panCenter
 var pan = function(){
     if(!MousePos.touched) return;

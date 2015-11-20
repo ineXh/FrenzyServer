@@ -66,8 +66,9 @@ function update(){
     lastTime = now;
 
 
-    panCenter();
+
     visibleCheck();
+    if(game != undefined) game.onTouching();
 
     if(assetsloaded){
     	//characters.update();

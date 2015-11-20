@@ -58,12 +58,20 @@ MiniMap.prototype = {
 
     },
     onTouchStart: function(event){
-        console.log('minimappress')
+        //console.log('minimappress')
         //console.log(event)
         //getMouse(event, event.changedTouches[0]);MousePos.x, MousePos.y
         var x = MousePos.x / this.map.width * stage_width; // event.data.global.x
         var y = MousePos.y / this.map.height * stage_height; // event.data.global.y
         panTo(x, y);
+    },
+    onTouchMove: function(){
+        var x = MousePos.x / this.map.width * stage_width; // event.data.global.x
+        var y = MousePos.y / this.map.height * stage_height; // event.data.global.y
+        panTo(x, y);
+    },
+    onTouchEnd: function(){
+
     }
-}
+} // end MiniMap
 

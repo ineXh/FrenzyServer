@@ -160,10 +160,46 @@ Game.prototype = {
         if(gamestate == GameState.InPlay){
             if(isTouching(MousePos.x, MousePos.y, game.minimap.map)){
                 this.minimap.onTouchStart();
+                this.minimaptouched = true;
+                //console.log('minimaptouched')
                 return;
             }
+            pan();
             game.getTeam(myteam).path.startPath(MousePos.stage_x, MousePos.stage_y);
         }
+    },
+    onTouchMove:function(){
+        if(gamestate == GameState.InPlay){
+            //pan();
+            //center.x += MousePos.px - MousePos.x;
+            if(this.minimaptouched
+                //|| isTouching(MousePos.x, MousePos.y, game.minimap.map)
+                ){
+                this.minimap.onTouchMove();
+                return;
+            }
+            pan();
+            game.getTeam(myteam).path.updatePath(MousePos.stage_x, MousePos.stage_y);
+        }
+    },
+    onTouchEnd:function(){
+        if(gamestate == GameState.InPlay){
+            if(this.minimaptouched){
+                this.minimaptouched = false;
+                //console.log('minimap not touched')
+                return;
+            }
+            this.minimaptouched = false;
+            //console.log('minimap not touched')
+            game.getTeam(myteam).path.endPath(MousePos.stage_x, MousePos.stage_y);
+            if(gamemode == GameMode.MultiPlayer) communication.socket.emit('path', game.getTeam(myteam).path.getLastTwoPoints());
+        }
+    },
+    onTouching:function(){
+        if(gamestate != GameState.InPlay) return;
+        if(!MousePos.touched) return;
+        if(this.minimaptouched) return;
+        pan();
     }
 }; // end Game
 function spawnCow(x, y, msg){
