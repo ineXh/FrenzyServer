@@ -79,7 +79,7 @@ function webClient(io, clients, gameserver){
         }
         function onSyncDeadCharacter(msg){
             msg.team = client.team;
-            client.characters[msg.type].splice(msg.index,1);
+
             gameserver.DeadCharacter(client, msg);
         }
         function onSyncCharacter(msg){

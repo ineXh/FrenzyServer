@@ -101,12 +101,16 @@ gameServer.prototype = {
             p.emit('spawn', msg)
         });
     }, // end spawn
-    DeadCharacter: function(player, input){
+    DeadCharacter: function(player, msg){
+        if(player.characters[msg.type][msg.index] == undefined) return;
+        if(msg.id != player.characters[msg.type][msg.index].id) return;
+        player.characters[msg.type].splice(msg.index,1);
         this.players.forEach(function(p){
-            if(p != player){
+            p.emit('dead character', msg)
+            //if(p != player){
                 //console.log('player ' + p.team + ' to spawn.')
-                p.emit('dead character', input)
-            }
+
+            //}
         });
     },
     send_start_info: function(player){
@@ -140,13 +144,28 @@ gameServer.prototype = {
             }
         });
     },
-    sync: function(player, input){
-        var msg = {team: player.team, characters: input};
+    sync: function(player, msg){
+        for(var i = 0; i < player.characters.length; i++){
+                if(player.characters[i] == undefined) continue;
+                for(var j = 0; j < player.characters[i].length; j++){
+                    var c = player.characters[i][j];
+                    var m = msg[i][j];
+                    if(c != null && m != null && m.id == c.id){
+                        c.x = m.x;
+                        c.y = m.y;
+                        c.vx = m.vx;
+                        c.vy = m.vy;
+                        c.hp = m.hp;
+                    }
+                }
+            }
+
+        var msg = {team: player.team, characters: msg};
         this.players.forEach(function(p){
-            if(p != player){
+            //if(p != player){
                 //console.log('player ' + p.team + ' to path.')
                 p.emit('sync', msg)
-            }
+            //}
         });
     } // end sync
 } // end gameServer

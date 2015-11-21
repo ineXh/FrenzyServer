@@ -255,22 +255,7 @@ Team.prototype = {
             for(var j = this.characters[i].length - 1; j >= 0; j--) {
                 var c = this.characters[i][j];
                 c.update(this.path);
-
-
-                if(c.isDead()){
-                    //console.log('isdead')
-                    //this.clean(c);
-                    characters.clean(c);
-                    //this.returnParticle(particle.type, particle);
-
-                    var index = this.characters[c.type].indexOf(c);
-                    if(index > -1){
-                        var val = this.characters[c.type][index];
-                        this.characters[c.type].splice(index,1);
-                        this.sendSyncDeadCharacter(c.type, index);
-                    }
-                    //this.characters.splice(i,1);
-                }
+                this.check_dead(c);
             }
         }
         this.sendSyncCharacter();
@@ -284,8 +269,9 @@ Team.prototype = {
                 if(gamemode != GameMode.MultiPlayer){
                     this.characters[c.type].splice(index,1);
                     characters.clean(c);
+                }else{
+                    this.sendSyncDeadCharacter(c.type, index, c.id);
                 }
-                //this.sendSyncDeadCharacter(c.type, index);
             }
         }
     }, // end check_dead
@@ -309,16 +295,17 @@ Team.prototype = {
                             vx: c.vel.x / stage_width,
                             vy: c.vel.y / stage_height,
                             hp: c.hp,
-                            type: c.type})
+                            type: c.type,
+                            id: c.id})
             }
         }
         communication.socket.emit('sync character', msg)
         this.sendSyncPath();
     }, // end sendSyncCharacter
-    sendSyncDeadCharacter:function(type, index){
+    sendSyncDeadCharacter:function(type, index, id){
         if(gamemode != GameMode.MultiPlayer) return;
-        if(this.team != myteam) return;
-        var msg = {type: type, index: index};
+        //if(this.team != myteam) return;
+        var msg = {type: type, index: index, id: id};
         communication.socket.emit('sync dead character', msg)
 
     },

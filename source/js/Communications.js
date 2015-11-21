@@ -67,12 +67,15 @@ function onSpawn(msg){
 
 }
 function onDeadCharacter(msg){
-	console.log(msg)
-	game.getTeam(msg.team).characters[msg.type][msg.index].Dead = true;
+	//console.log(msg)
+	//game.getTeam(msg.team).characters[msg.type][msg.index].Dead = true;
+	var character = game.getTeam(msg.team).characters[msg.type][msg.index];
+	characters.clean(character);
+	game.getTeam(msg.team).characters[msg.type].splice(msg.index,1);
 }
 function onSpawnExisting(msg){
-	console.log('onSpawnExisting')
-	console.log(msg)
+	//console.log('onSpawnExisting')
+	//console.log(msg)
 	for(var i = 0; i < msg.characters.length; i++){
 		var character = characters.spawn({x: msg.characters[i].x*stage_width, y: msg.characters[i].y*stage_height,
 				type: msg.characters[i].type, team: msg.team, color: msg.color,
@@ -101,6 +104,7 @@ function onSync(msg){
 	for(var i = 0; i < msg.characters.length; i++){
 		if(msg.characters[i] == undefined) continue;
 		for(var j = 0; j < msg.characters[i].length; j++){
+			if(team.characters[i][j] == undefined) continue; //debugger;
 			team.characters[i][j].pos.x = msg.characters[i][j].x*stage_width;
 			team.characters[i][j].pos.y = msg.characters[i][j].y*stage_height;
 			team.characters[i][j].vel.x = msg.characters[i][j].vx*stage_width;
