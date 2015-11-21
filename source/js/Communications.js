@@ -72,10 +72,11 @@ function onDeadCharacter(msg){
 }
 function onSpawnExisting(msg){
 	console.log('onSpawnExisting')
-	//console.log(msg)
+	console.log(msg)
 	for(var i = 0; i < msg.characters.length; i++){
 		var character = characters.spawn({x: msg.characters[i].x*stage_width, y: msg.characters[i].y*stage_height,
-					type: msg.characters[i].type, team: msg.team, color: msg.color});
+				type: msg.characters[i].type, team: msg.team, color: msg.color,
+				id: msg.characters[i].id});
 		game.getTeam(msg.team).characters[msg.characters[i].type].push(character);
 	}
 	game.getTeam(msg.team).color = msg.color;

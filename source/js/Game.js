@@ -152,7 +152,7 @@ Game.prototype = {
 
     //spawnCow(-stage.x + width/2 + width/50,-stage.y + height/2);
 
-    center = this.getTeam(myteam).characters[CharacterType.Cow][0].pos;
+    //center = this.getTeam(myteam).characters[CharacterType.Cow][0].pos;
     this.minimap.init();
 
     },
@@ -206,8 +206,8 @@ function spawnCow(x, y, msg){
     var input = {  x: x, y: y,
                     type: CharacterType.Cow, team: myteam, color: myteamcolor};
 
-    var character = characters.spawn(input);
-    game.getTeam(myteam).characters[input.type].push(character);
+    //var character = characters.spawn(input);
+    //game.getTeam(myteam).characters[input.type].push(character);
     //console.log(input)
     msg.characters.push({  x: input.x/stage_width, y: input.y/stage_height, type: CharacterType.Cow});
     //communication.socket.emit('spawn', {  x: input.x/stage_width, y: input.y/stage_height, type: CharacterType.Cow});
@@ -256,6 +256,7 @@ Team.prototype = {
                 var c = this.characters[i][j];
                 c.update(this.path);
 
+
                 if(c.isDead()){
                     //console.log('isdead')
                     //this.clean(c);
@@ -274,6 +275,21 @@ Team.prototype = {
         }
         this.sendSyncCharacter();
     }, // end update
+    check_dead:function(c){
+        if(c.isDead()){
+            var index = this.characters[c.type].indexOf(c);
+            if(index > -1){
+                var val = this.characters[c.type][index];
+
+                if(gamemode != GameMode.MultiPlayer){
+                    this.characters[c.type].splice(index,1);
+                    characters.clean(c);
+                }
+                //this.sendSyncDeadCharacter(c.type, index);
+            }
+        }
+    }, // end check_dead
+
     sendSyncCharacter:function(){
         if(gamemode != GameMode.MultiPlayer) return;
         if(this.team != myteam) return;

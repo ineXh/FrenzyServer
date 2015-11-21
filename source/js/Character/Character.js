@@ -188,6 +188,7 @@ function Cow(){
 	this.create();
 }
 Cow.prototype.create = function(){
+	//this.id = cow_id++;
 	this.animationtype = AnimationType.Walk_Front;
 	this.front_walk_frame = 0;
 	this.front_attack_frame = 8;
@@ -222,6 +223,8 @@ Cow.prototype.create = function(){
 
 }
 Cow.prototype.init = function(input){
+	//console.log(input)
+	if(input.id != undefined) this.id = input.id;
 	this.team = input.team;
 	this.sprite.tint = input.color;
 	this.pos.x = input.x;

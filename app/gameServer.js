@@ -34,6 +34,8 @@ gameServer.prototype = {
         };
         this.chathistory = [obj];
         this.players = [];
+        this.character_ids = [];
+        for(var i = 0; i < 10000; i++) this.character_ids.push(i);
     }, // end init
     join: function(player){
         this.players.push(player);
@@ -83,13 +85,20 @@ gameServer.prototype = {
         //console.log(json)
         this.io.emit('chat', this.chathistory);
     },
-    spawn: function(player, input){
+    spawn: function(player, msg){
         //console.log('spawn')
+        //console.log(this)
+        for(var i = 0; i < msg.characters.length; i++){
+            var character = msg.characters[i];
+            var id = this.character_ids.shift();
+            //console.log(id)
+            msg.characters[i].id = id;
+            player.characters[character.type].push({x: character.x, y: character.y, type: character.type, id: id});
+
+        }
+
         this.players.forEach(function(p){
-            if(p != player){
-                //console.log('player ' + p.team + ' to spawn.')
-                p.emit('spawn', input)
-            }
+            p.emit('spawn', msg)
         });
     }, // end spawn
     DeadCharacter: function(player, input){

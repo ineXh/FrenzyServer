@@ -36,6 +36,7 @@ var assetsloaded = false;
 // Textures
 var arrow_head_texture;
 var arrow_line_texture;
+//var cow_id = 0;
 var cow_texture;
 
 var cow_front_frames = [];

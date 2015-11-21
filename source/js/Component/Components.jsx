@@ -123,7 +123,7 @@ window.Chat = React.createClass({
       var rawMarkup = marked(this.props.children.toString(), {sanitize: true});
       return { __html: rawMarkup };
     },
-    getStyle:function(){
+    getStyles:function(){
       //console.log( {this.props.chat.color})
       return {color:'Red'};
     },
@@ -132,7 +132,7 @@ window.Chat = React.createClass({
       //console.log(color)
       return (
         <div className="chat">
-          <p><span style={this.getStyle()}>{this.props.chat.author}: {this.props.chat.msg}</span></p>
+          <p><span style={this.getStyles()}>{this.props.chat.author}: {this.props.chat.msg}</span></p>
         </div>
       );
     }
@@ -197,7 +197,7 @@ window.MainInterface = React.createClass({
     //<GameList/>
     return (
       <div className="maininterface">
-        
+
         <ChatMonitor />
         </div>
       );

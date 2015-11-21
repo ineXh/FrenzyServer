@@ -68,10 +68,10 @@ function webClient(io, clients, gameserver){
         function onSpawn(msg){
             //msg.x = msg.x / client.stage_width;
             //msg.y = msg.y / client.stage_height;
-            for(var i = 0; i < msg.characters.length; i++){
+            /*for(var i = 0; i < msg.characters.length; i++){
                 var character = msg.characters[i];
                 client.characters[character.type].push({x: character.x, y: character.y, type: character.type})
-            }
+            }*/
 
             msg.team = client.team;
             msg.color = client.color;
