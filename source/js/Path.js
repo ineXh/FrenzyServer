@@ -5,7 +5,7 @@ function Path(team){
   this.line_pool = [];
   this.lines = [];
   this.radius = 5;
-  this.outer_radius = dim / 5;
+  this.outer_radius = big_dim / 6;
   //this.gap = 50;
   this.maxline = 3;
   this.num_lines = 0;
@@ -37,7 +37,7 @@ Path.prototype = {
     arrow_line.anchor.x = 0.0;
     arrow_line.anchor.y = 0.5;
 
-    this.scale =  width/20 / arrow_line.width;
+    this.scale =  big_dim/20 / arrow_line.width;
     arrow_line.scale.set(this.scale);
     arrow_line.width = 0;
     arrow_line.x = 0;

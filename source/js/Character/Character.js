@@ -68,7 +68,7 @@ function Character(){
 	this.accel = new PVector(0,0);
 	this.vel = new PVector(0,0);
 	this.pos = new PVector(0,0);
-	this.maxspeed = width/200;
+	this.maxspeed = big_dim/200;
 	this.Dead = false;
 }
 Character.prototype = Object.create(Ball.prototype);
@@ -105,7 +105,7 @@ Character.prototype.removeTarget = function(targets, other){
 Character.prototype.findClosestTarget = function(targets, pos){
 	if(this.targets == null) return -1;
 	this.minDist_idx = -1;
-	minDist = width;
+	minDist = big_dim;
 	for(var i = 0; i < targets.length; i++){
 		//console.log(targets[i]);
 		if(targets[i].target != undefined){
@@ -270,10 +270,10 @@ Cow.prototype.attack = function(){
 Cow.prototype.update = function(path){
 	if(path != null && !this.attacking){
 		applyForce.call(this, path.follow(this));
-		if(this.accel.mag() > width/10)
+		if(this.accel.mag() > big_dim/10)
 		this.animationtype = AnimationType.Walk_Front;
 	}
-	if(this.opponent != null && this.accel.mag() < width/1000
+	if(this.opponent != null && this.accel.mag() < big_dim/1000
 		&& !this.attacking){
 		this.seekOpponent_count++;
         if(this.seekOpponent_count < this.seekOpponent_time) return;
