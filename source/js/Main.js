@@ -11,7 +11,7 @@ var Engine = (function(global) {
 	scope_width = width*0.15;
 	scope_height = height*0.15;
 
-    console.log('width ' + width + ' height ' + height + ' stage_width ' + stage_width + ' stage_height ' + stage_height)
+    //console.log('width ' + width + ' height ' + height + ' stage_width ' + stage_width + ' stage_height ' + stage_height)
 
 
 	renderer = PIXI.autoDetectRenderer(width, height*1.0 ,{backgroundColor : LightCyan});//'Black'});
@@ -76,6 +76,7 @@ function update(){
     	//characters.update();
         menu.update(time);
         game.update();
+        if(characters != undefined) characters.update(time);
     }
 }
 

@@ -115,7 +115,7 @@ Game.prototype = {
         this.teams.forEach(function(t){
             t.startsingle();
         })
-        center = this.getTeam(myteam).characters[CharacterType.Cow][0].pos.clone();
+        //center = this.getTeam(myteam).characters[CharacterType.Cow][0].pos.clone();
         this.minimap.init();
 
     },
@@ -238,13 +238,18 @@ Team.prototype = {
 
     },
     startsingle:function(){
-
-        for(var i = -2; i < 2; i++){
-            for(var j = -2; j < 2; j++){
-                var input = {   x: this.startlocation_pos.x + width/2 + width/20*j,
+        var input = {   x: this.startlocation_pos.x + width/2,
+                                y: this.startlocation_pos.y + height/2,
+                    type: CharacterType.Hut, team: this.team, color: this.color};
+        var character = characters.spawn(input);
+        this.characters[input.type].push(character);
+        
+        for(var i = -1; i < 1; i++){
+            for(var j = -1; j < 1; j++){
+                input = {   x: this.startlocation_pos.x + width/2 + width/20*j,
                                 y: this.startlocation_pos.y + height/2 + width/20*i,
                     type: CharacterType.Cow, team: this.team, color: this.color};
-                var character = characters.spawn(input);
+                character = characters.spawn(input);
                 this.characters[input.type].push(character);
             }
         }

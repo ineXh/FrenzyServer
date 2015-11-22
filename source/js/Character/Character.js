@@ -34,6 +34,7 @@ Characters.prototype = {
 			return character;
 			//this.characters[input.type].push(character);
 		}
+		return null;
   	},
   	clean_all : function(){
   		for (var i = this.characters.length - 1; i >= 0; i--) {

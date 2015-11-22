@@ -74,6 +74,13 @@ function onTouchStart(event){
     //console.log('touched')
     if(game != undefined) game.onTouchStart();
 
+    /*var input = {   x: MousePos.stage_x_pct*stage_width,
+                    y: MousePos.stage_y_pct*stage_height,
+                    type: CharacterType.Hut, team: this.team, color: this.color};
+	var character = characters.spawn(input);
+	if(character != null) characters.characters[input.type].push(character);*/
+
+    //characters.spawn({x: MousePos.stage_x_pct*stage_width, y:MousePos.stage_y_pct*stage_height}, CharacterType.Hut);
 	/*characters.spawn({x: MousePos.stage_x_pct*stage_width, y:MousePos.stage_y_pct*stage_height}, CharacterType.Cow);
 	communication.socket.emit('spawn', {x: MousePos.stage_x_pct, y:MousePos.stage_y_pct});*/
 } // end onTouchStart
