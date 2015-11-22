@@ -239,8 +239,8 @@ Team.prototype = {
     },
     startsingle:function(){
 
-        for(var i = -5; i < 5; i++){
-            for(var j = -5; j < 5; j++){
+        for(var i = -2; i < 2; i++){
+            for(var j = -2; j < 2; j++){
                 var input = {   x: this.startlocation_pos.x + width/2 + width/20*j,
                                 y: this.startlocation_pos.y + height/2 + width/20*i,
                     type: CharacterType.Cow, team: this.team, color: this.color};

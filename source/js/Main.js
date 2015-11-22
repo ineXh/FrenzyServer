@@ -21,16 +21,18 @@ var Engine = (function(global) {
     addListeners();
 
     stage0 = new PIXI.Container();
+    //stage00 = new PIXI.Container();
     stage = new PIXI.Container();
     //stage.pivot = {x: width/2, y: height/2};
 
 
-	stage0.addChild(stage)
+	//stage0.addChild(stage)
+    //stage00.addChild(stage)
 
     var border_box = new PIXI.Graphics();
     border_box.lineStyle(5, 0xFF0000, 1);
     border_box.drawRect(0, 0, stage_width, stage_height);
-    //stage.addChild(border_box);
+    stage.addChild(border_box);
 
     /*var x_count = 10;
     var y_count = 10;

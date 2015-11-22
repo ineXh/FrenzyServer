@@ -306,7 +306,8 @@ var playbuttonrelease = function(){
 	//gamestate = GameState.MainMenu2StageSelect;
 	//gamestate = GameState.InPlay;
 	menu.mainmenu.clean();
-	gamemode = GameMode.SinglePlayer;
+	stage0.addChild(stage);
+	gamemode = GameMode.SinglePlayer;	
 	game.startsingle();
 	//menu.clean();
 	//icon_play.does_not_die  = false;
@@ -342,6 +343,7 @@ var playmultibuttonrelease = function(){
 	console.log('playmultibuttonrelease')
 	gamestate = GameState.MultiPlayerMenu;
 	menu.mainmenu.clean();
+	stage0.addChild(stage);
 	gamemode = GameMode.MultiPlayer;
 	menu.multiplayermenu.init();
 	//icon_play.does_not_die  = false;

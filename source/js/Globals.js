@@ -9,6 +9,7 @@ var renderer;
 // Container Frames
 // Overall Stage
 var stage0;
+var stage00;
 // In game Stage
 var stage;
 
