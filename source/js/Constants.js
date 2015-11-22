@@ -142,6 +142,12 @@ CharacterType.Stick		= 18;
 CharacterType.Mask	= 19;
 CharacterType.Demon	= 20;
 
+function StatusType() {}
+StatusType.Inanimate = 0;
+StatusType.Movable = 1;
+StatusType.NotMovable = 0;
+
+
 function ParticleType() {}
 
 ParticleType.FLAME      = 0;

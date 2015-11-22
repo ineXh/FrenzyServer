@@ -221,6 +221,7 @@ Cow.prototype.create = function(){
     this.maxhp = 5;
     this.hp = this.maxhp;
     this.healthbar = new HealthBar(this);
+    this.status = [];
 
 }
 Cow.prototype.init = function(input){
@@ -280,16 +281,17 @@ Cow.prototype.update = function(path){
         if(this.seekOpponent_count < this.seekOpponent_time) return;
         this.seekOpponent_count = 0;
         this.opponent_dist = findDist(this.pos, this.opponent.pos);
-		if(this.opponent_dist >= dim/2 || this.opponent.isDead()){
-			this.opponent = null;
-			this.opponent_dist == undefined
-		}
-		if(this.opponent_dist >= this.r*1.5){
+		
+		if(this.opponent_dist >= (this.r*3/4 + this.opponent.r*3/4)){
 			if(this.opponent != null)
 			applyForce.call(this, this.seek(this.opponent.pos));
 			this.animationtype = AnimationType.Walk_Front;
 		}else{
 			this.attack();
+		}
+		if(this.opponent_dist >= dim/2 || this.opponent.isDead()){
+			this.opponent = null;
+			this.opponent_dist == undefined
 		}
 	}
 	//if(this.animationtype == AnimationType.Attack_Front){

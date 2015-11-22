@@ -353,3 +353,8 @@ function simulateMouseEvent (event, simulatedType) {
     // Dispatch the simulated event to the target element
     event.target.dispatchEvent(simulatedEvent);
   }
+function arrayContains(array, item){
+	var index = array.indexOf(item);
+	if(index < 0) return false;
+	return true;
+}

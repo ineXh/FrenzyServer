@@ -64,8 +64,10 @@ Ball.prototype = {
       var ay = (targetY - o.pos.y)*spring;
       this.vel.x -= ax;
       this.vel.y -= ay;
-      o.vel.x += ax;
-      o.vel.y -= ax;
+      //if(!arrayContains(o.status, StatusType.NotMovable)){
+        o.vel.x += ax;
+        o.vel.y -= ax;  
+      //}       
       this.collision_count++;
       o.collision_count++;
       return true;

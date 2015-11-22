@@ -48,7 +48,7 @@ CharacterPool.prototype = {
     }, // end returnCow
     createHut: function(){
         this.huts = [];
-        this.addHut(28);
+        this.addHut(8);
     },
     addHut: function(amount){
         for(var i = 0; i < amount; i++){
