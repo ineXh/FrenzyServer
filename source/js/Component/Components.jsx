@@ -83,10 +83,13 @@ window.ChatMonitor = React.createClass({
           return (
             <div id="chatwindow" className="chat ui-widget-content ui-draggable">
                 <div id="chatmonitor" className="non-draggable">
-                <ChatList chats={this.state.chats}/>
+                  <ChatList chats={this.state.chats}/>
                 </div>
+
+                
                 <form className="chatForm non-draggable" onSubmit={this.handleSubmit}>
-                    <input id="chatinput" className="inputchat" type="text" ref="chatmsg"/>
+                    <input id="chatinput" className="inputchat" type="text" ref="chatmsg"
+                            placeholder="Type here..."/>
                     <input id="chatsendbutton" type="submit" value="Send" />
                 </form>
                 <div>Count: {this.state.count}</div>
@@ -155,7 +158,7 @@ window.loginWindow = React.createClass({
         <div className="loginwindow">
           <h1>Enter Your Nickname:</h1>
           <form className="nameForm non-draggable" onSubmit={this.handleSubmit}>
-                    <input id="nameinput" className="namechat" type="text" ref="nameinput"/>
+                    <input id="nameinput" className="namechat" type="text" ref="nameinput" maxLength="14"/>
                 </form>
         </div>
       );
