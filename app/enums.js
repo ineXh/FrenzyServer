@@ -29,3 +29,4 @@ define('Purple', 0xf999f9)
 
 // Character Types
 define('Cow', 0)
+define('Hut', 1)

@@ -38,6 +38,7 @@ Communications.prototype = {
 		communication.socket.on('dead character', onDeadCharacter);
 		communication.socket.on('path', onPath);
 		communication.socket.on('sync', onSync);
+		communication.socket.on('spawn period', onSpawnPeriod);
 	},
 
 	sendClientInfo: function(){
@@ -58,6 +59,12 @@ function onChat(msg){
 	console.log(msg)
 	addMessage(msg.author, msg.text,
 				   msg.color, new Date(msg.time));
+}
+function onSpawnPeriod(msg){
+	game.getTeam(myteam).spawn();
+	//console.log(msg)
+	//for(var i = 0; i < msg.teams.length; i++){
+	//}
 }
 function onSpawn(msg){
 	//console.log('onSpawn')

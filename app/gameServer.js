@@ -36,7 +36,14 @@ gameServer.prototype = {
         this.players = [];
         this.character_ids = [];
         for(var i = 0; i < 10000; i++) this.character_ids.push(i);
+        this.spawncounter = new SpawnCounter();
+        //this.spawn_count = 0;
+        //this.spawnPeriodUnit();
+        setTimeout(this.spawnPeriodUnit.bind(this), 5000);
     }, // end init
+    newgame: function(){
+
+    },
     join: function(player){
         this.players.push(player);
         console.log('total players on server ' + this.players.length);
@@ -44,6 +51,7 @@ gameServer.prototype = {
         player.color = colors.shift();
         player.team = teams.shift();
         player.location = locations.shift();
+        this.spawncounter.add(player.team, 5);
         this.send_start_info(player);
         this.spawn_existing(player);
         //console.log('start location ' + player.location);
@@ -101,6 +109,31 @@ gameServer.prototype = {
             p.emit('spawn', msg)
         });
     }, // end spawn
+    spawnPeriodUnit: function(){
+        //this.spawn_count++;
+        //var msg = {teams: []};
+        var msg = this.spawncounter.update();
+        //console.log(msg)
+        if(msg != null){
+            this.players.forEach(function(p){
+                p.emit('spawn period', msg)
+            });
+        }
+        /*if(this.spawn_count%10 == 0){
+            //console.log('spawnPeriodUnit ' + this.spawn_count)    
+            this.spawn_count = 0;
+            this.players.forEach(function(p){
+                p.emit('spawn period', msg)
+            });
+        }*/
+        //console.log('spawnPeriodUnit');
+        setTimeout(this.spawnPeriodUnit.bind(this), 1000);
+        //setInterval(this.spawnPeriodUnit.bind(this), 5000);
+        //this.spawnPeriodUnit();
+        /*console.log('spawnPeriodUnit');
+        
+        setTimeout(this.spawnPeriodUnit.call(this), 5000);*/
+    },
     DeadCharacter: function(player, msg){
         if(player.characters[msg.type][msg.index] == undefined) return;
         if(msg.id != player.characters[msg.type][msg.index].id) return;
@@ -167,5 +200,31 @@ gameServer.prototype = {
                 p.emit('sync', msg)
             //}
         });
-    } // end sync
+    }, // end sync
+
 } // end gameServer
+function SpawnCounter(){
+    this.init();
+} // end SpawnCounter
+SpawnCounter.prototype = {
+    init: function(){
+        this.counter = 0;
+        this.time = [];
+    },
+    add: function(team, timer){
+        this.time[team] = timer;
+    },
+    update: function(){
+        this.counter++;
+        var counter = this.counter;
+        var msg = {teams: []};
+        for(var i = 0; i < this.time.length; i++){
+            if(this.time[i] == undefined) continue;
+            if(this.counter % this.time[i] == 0){
+                msg.teams.push(i);
+            }
+        }   
+        if(msg.teams.length <= 0) return null;
+        else return msg;
+    } // end update
+} // ebd SpawnCounter

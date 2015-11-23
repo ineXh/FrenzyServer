@@ -12,9 +12,9 @@ function Communication(app, server){
     var gameServer = require('./gameServer.js');
 	this.gameserver = new gameServer(this.io, clients, games)
     this.webclient = require('./webClient.js')(this.io, clients, this.gameserver);
-
 	return this;
 } // end Communication
+
 
 
 

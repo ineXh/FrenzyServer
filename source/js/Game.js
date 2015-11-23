@@ -125,30 +125,25 @@ Game.prototype = {
     startgame: function(){
         //stage.width = width;
         //stage.height = height;
-    switch(startlocation){ //
-        case StartLocation.NW:
-            stage.x = 0;
-            stage.y = 0;
-            break;
-        case StartLocation.NE:
-            stage.x = -stage_width + width;
-            stage.y = 0;
-            break;
-        case StartLocation.SW:
-            stage.x = 0;
-            stage.y = -stage_height + height;
-            break;
-        case StartLocation.SE:
-            stage.x = -stage_width + width;
-            stage.y = -stage_height + height;
-            break;
-    }
+        var loc = getstartlocation(startlocation);
+        stage.x = -loc.x;
+        stage.y = -loc.y;
+
+       /* var input = {   x: this.startlocation_pos.x + width/2,
+                                y: this.startlocation_pos.y + height/2,
+                    type: CharacterType.Hut, team: this.team, color: this.color};
+        var character = characters.spawn(input);
+        this.characters[input.type].push(character);*/
+
+    
     var msg = {team: myteam, color: myteamcolor, characters: []};
-    for(var i = -3; i < 3; i++){
+    spawnUnitMsg(loc.x + width/2,loc.y + height/2, msg, CharacterType.Hut);
+
+    /*for(var i = -3; i < 3; i++){
         for(var j = -3; j < 3; j++){
-            spawnCow(-stage.x + width/2 + width/20*j,-stage.y + height/2 + width/20*i, msg);
+            spawnUnit(-stage.x + width/2 + width/20*j,-stage.y + height/2 + width/20*i, msg, CharacterType.Cow);
         }
-    }
+    }*/
 
     communication.socket.emit('spawn', msg);
     //spawnCow(-stage.x + width/2,-stage.y + height/2);
@@ -205,14 +200,14 @@ Game.prototype = {
         pan();
     }
 }; // end Game
-function spawnCow(x, y, msg){
+function spawnUnitMsg(x, y, msg, type){
     var input = {  x: x, y: y,
-                    type: CharacterType.Cow, team: myteam, color: myteamcolor};
+                    type: type, team: myteam, color: myteamcolor};
 
     //var character = characters.spawn(input);
     //game.getTeam(myteam).characters[input.type].push(character);
     //console.log(input)
-    msg.characters.push({  x: input.x/stage_width, y: input.y/stage_height, type: CharacterType.Cow});
+    msg.characters.push({  x: input.x/stage_width, y: input.y/stage_height, type: type});
     //communication.socket.emit('spawn', {  x: input.x/stage_width, y: input.y/stage_height, type: CharacterType.Cow});
 }
 
@@ -262,16 +257,20 @@ Team.prototype = {
             }
         }*/
     },
-    spawn:function(){
+    spawnSinglePlayer:function(){
         if(gamemode == GameMode.MultiPlayer) return;
-        if(this.characters[CharacterType.Hut].length <= 0){
-            this.Dead = true;
-            return;  
-        } 
+         
         if(this.characters[CharacterType.Cow].length > this.max_unit_count) return; 
         this.spawn_count++;
         if(this.spawn_count < this.spawn_time) return;
         this.spawn_count = 0;
+        this.spawn();
+    },
+    spawn:function(){
+        if(this.characters[CharacterType.Hut].length <= 0){
+            this.Dead = true;
+            return;  
+        }
         if(this.spawn_j > 2) this.spawn_j = -this.spawn_j;
         if(this.spawn_i > 2){
           this.spawn_i = -this.spawn_i;
@@ -280,8 +279,15 @@ Team.prototype = {
         var input = {   x: this.startlocation_pos.x + width/2 + this.spawn_i++*big_dim/20,
                         y: this.startlocation_pos.y + height/2 + this.spawn_j*big_dim/20, // + this.characters[CharacterType.Hut][0].r
                     type: CharacterType.Cow, team: this.team, color: this.color};
-        var character = characters.spawn(input);
-        this.characters[input.type].push(character);
+        
+        if(gamemode == GameMode.MultiPlayer && this.team == myteam){
+            var msg = {team: myteam, color: myteamcolor, characters: []};
+            spawnUnitMsg(input.x, input.y, msg, CharacterType.Cow);
+            communication.socket.emit('spawn', msg);
+        }else if(gamemode != GameMode.MultiPlayer){
+            var character = characters.spawn(input);
+            this.characters[input.type].push(character);    
+        }
     },
     update: function(){
         for (var i = 0; i < this.characters.length; i++) {
@@ -292,7 +298,7 @@ Team.prototype = {
                 this.check_dead(c);
             }
         }
-        this.spawn();
+        this.spawnSinglePlayer();
         this.sendSyncCharacter();
     }, // end update
     check_dead:function(c){

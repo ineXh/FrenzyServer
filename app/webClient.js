@@ -106,5 +106,6 @@ function webClient(io, clients, gameserver){
 function characterlist(){
     var list = [];
     list[enums.Cow] = [];
+    list[enums.Hut] = [];
     return list;
 }
