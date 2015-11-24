@@ -1,4 +1,20 @@
 
+var styles = {
+  root: {
+    display: "block"
+  },
+  item: {
+    color: "black",
+    complete: {
+      textDecoration: "line-through"
+    },
+
+    due: {
+      color: "red"
+    }
+  },
+}
+
 
 /*var data = [
         {author: "Pete Hunt", text: "This is one msg"},
@@ -86,11 +102,10 @@ window.ChatMonitor = React.createClass({
                   <ChatList chats={this.state.chats}/>
                 </div>
 
-                
+
                 <form className="chatForm non-draggable" onSubmit={this.handleSubmit}>
                     <input id="chatinput" className="inputchat" type="text" ref="chatmsg"
                             placeholder="Type here..."/>
-                    <input id="chatsendbutton" type="submit" value="Send" />
                 </form>
                 <div>Count: {this.state.count}</div>
             </div>
@@ -129,6 +144,12 @@ window.Chat = React.createClass({
     getStyles:function(){
       //console.log( {this.props.chat.color})
       return {color:'Red'};
+      /*return Object.assign(
+        {},
+        item.props.complete && styles.complete,
+        item.props.due && styles.due,
+        item.props.due && this.props.dueStyles
+      );*/
     },
     render: function() {
       //var color = {this.props.chat.color};
@@ -178,9 +199,17 @@ window.GameList = React.createClass({
       },
   render: function() {
     return (
-        <div className="gamelist">
-          <h1>hi</h1>
-        </div>
+       <div id="dashboardBody" className="gamelist">
+        <ul className="tabBodyOptions">
+            <li>
+                <h2> Game 1 <span> 1/4 Players</span></h2>
+            </li>
+            <li>
+                <h2> Game 2 <span> 1/4 Players</span></h2>
+            </li>
+        </ul>
+    </div>
+
       );
   }
 });
@@ -200,7 +229,7 @@ window.MainInterface = React.createClass({
     //<GameList/>
     return (
       <div className="maininterface">
-
+        <GameList />
         <ChatMonitor />
         </div>
       );

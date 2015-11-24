@@ -25,6 +25,9 @@ gameServer.prototype = {
         var Game = require('./Game.js');
         game = new Game(this.io, 'Game1');
         this.games.push(game)
+        game = new Game(this.io, 'Game2');
+        this.games.push(game)
+
         var obj = {
           time: (new Date()).getTime(),
           msg: htmlEntities('Welcome to Game'),
@@ -120,7 +123,7 @@ gameServer.prototype = {
             });
         }
         /*if(this.spawn_count%10 == 0){
-            //console.log('spawnPeriodUnit ' + this.spawn_count)    
+            //console.log('spawnPeriodUnit ' + this.spawn_count)
             this.spawn_count = 0;
             this.players.forEach(function(p){
                 p.emit('spawn period', msg)
@@ -131,7 +134,7 @@ gameServer.prototype = {
         //setInterval(this.spawnPeriodUnit.bind(this), 5000);
         //this.spawnPeriodUnit();
         /*console.log('spawnPeriodUnit');
-        
+
         setTimeout(this.spawnPeriodUnit.call(this), 5000);*/
     },
     DeadCharacter: function(player, msg){
@@ -146,6 +149,15 @@ gameServer.prototype = {
             //}
         });
     },
+    send_game_list: function(player){
+        var msg = {games: []};
+        for(var i = 0; i < this.games.length; i++){
+            msg.games.push(this.games[i].getName());
+        }
+        this.players.forEach(function(p){
+            p.emit('game list', msg)
+        });
+    }, // end send_game_list
     send_start_info: function(player){
         player.emit('start info',
             {color      : player.color,
@@ -223,7 +235,7 @@ SpawnCounter.prototype = {
             if(this.counter % this.time[i] == 0){
                 msg.teams.push(i);
             }
-        }   
+        }
         if(msg.teams.length <= 0) return null;
         else return msg;
     } // end update

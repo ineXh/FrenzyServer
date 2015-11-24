@@ -31,6 +31,9 @@
     padding-bottom: 15px;
     text-align: center;
     width: 400px;
+    font-family: "Telefon Black", Sans-Serif;
+    /*font-size: 6rem;*/
+    font-weight: bold;
 }
 #draggable { width: 250px; height: 250px; padding: 0.5em;
         position: absolute;
@@ -46,13 +49,16 @@
     width: 10%; height: 10%;
     left: 10%; top: 5%;
     opacity: 0.8;
+    background: #2C3E50;
+    box-shadow: rgba(0,0,0,0.6) 0px 0px 8px;
+    border: 2px solid #6898DD;
 }
 #chatmonitor {
     padding:10px;
     position:relative;
 
-    width:95%;
-    height: 55%;
+    width:98%;
+    height: 80%;
     background:#ddd;
     margin-left:10px;
     margin-top:10px;
@@ -60,10 +66,11 @@
     border-radius:5px; overflow-y: scroll;
     /*user-select: auto;*/
     border:1px solid #CCC; /*margin-bottom:10px;*/
+    background: #2C3E50;
 }
 #chatinput{
     margin-left:10px;
-    width:80%;
+    width:98%;
 }
 #chatsendbutton{
 margin-left:10px;
@@ -97,3 +104,60 @@ margin-left:10px;
   right: 0;
   width: 100%;
 }
+.gamelist {
+    position: absolute;
+    background: #2C3E50;
+    border-bottom: 1px solid #34495E;
+    color: #1ABC9C;
+    font-size: 16px;
+    /*background-color: #275494;*/
+    border: 2px solid #6898DD;
+    font-weight: bold;
+    box-shadow: rgba(0,0,0,0.6) 0px 0px 8px;
+    overflow: auto;
+    top: 60px;
+    /*bottom: 6px;*/
+    left: 60px;
+    opacity: 0.8;
+
+}
+
+.tabBodyOptions a {
+    font-weight: bold;
+    display: block;
+    font-size: 1.5em;
+    font-weight: bold;
+    color: #1ABC9C;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    cursor: pointer;
+
+}
+ul{
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+h2 span{
+  display: block;
+  font-size: 12px;
+  text-transform: capitalize;
+  font-weight: normal;
+  /*color: #bdc3c7;*/
+}
+/*label{
+  background: #34495E;
+  height: 69px;
+  width: 100%;
+  display: block;
+  border-bottom: 1px solid #2C3E50;
+  color: #fff;
+  text-transform: capitalize;
+  font-weight: 900;
+  font-size: 11px;
+  letter-spacing: 1px;
+  cursor: pointer;
+  position: relative;
+  padding: 5px 5px 5px 70px;
+}
+*/

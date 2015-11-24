@@ -6,8 +6,9 @@ function htmlEntities(str) {
                       .replace(/>/g, '&gt;').replace(/"/g, '&quot;');
 }
 
-function Game(io){
+function Game(io, name){
     this.io = io;
+    this.name = name;
     this.init();
     //return this;
 } // end Game
@@ -15,6 +16,9 @@ Game.prototype = {
     init: function(){
         this.players = [];
     }, // end init
+    getName:function(){
+        return this.name;
+    },
     join: function(player){
         this.players.push(player);
         console.log('total players ' + this.players.length);

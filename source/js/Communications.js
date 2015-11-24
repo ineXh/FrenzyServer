@@ -10,7 +10,7 @@ Communications.prototype = {
 		return new Promise(function(resolve, reject){
 
 			communication.socket = io.connect('http://localhost:80/',
-			//communication.socket = io.connect('http://10.224.63.243:80/',
+			//communication.socket = io.connect('http://10.224.63.58:80/',
 			//communication.socket = io.connect('http://192.168.0.104:80/',
 			//communication.socket = io.connect('http://75.1.30.179:80/',
 				{reconnection: false});
@@ -39,6 +39,7 @@ Communications.prototype = {
 		communication.socket.on('path', onPath);
 		communication.socket.on('sync', onSync);
 		communication.socket.on('spawn period', onSpawnPeriod);
+		communication.socket.on('game list', onGameList);
 	},
 
 	sendClientInfo: function(){
@@ -48,6 +49,9 @@ Communications.prototype = {
 
 	},
 }; // end Communications
+function onGameList(msg){
+	console.log(msg)
+}
 function sendName(name){
 	communication.socket.emit('name', name);
 	menu.multiplayermenu.init_main();

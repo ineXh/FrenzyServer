@@ -8,6 +8,7 @@ var LightCyan = 0xe0ffff;
 var LightBlue = 0x9aaee6;
 var LightOrange = 0xffac4c;
 var LightYellow = 0xfffb45;
+var DarkGreen = 0x1abc9c;
 var Red = 0xff9999;
 var Blue = 0x9999ff;
 var Green = 0x99ff99;

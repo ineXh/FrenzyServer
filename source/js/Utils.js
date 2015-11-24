@@ -358,3 +358,38 @@ function arrayContains(array, item){
 	if(index < 0) return false;
 	return true;
 }
+var convertTime = function(time){
+    t = '' + (time.getHours() < 10 ? '0' + time.getHours() : time.getHours()) + ':' + (time.getMinutes() < 10 ? '0' + time.getMinutes() : time.getMinutes());
+    return t;
+}
+function print_filter(filter){
+    var f=eval(filter);
+    if (typeof(f.length) != "undefined") {}else{}
+    if (typeof(f.top) != "undefined") {f=f.top(Infinity);}else{}
+    if (typeof(f.dimension) != "undefined") {f=f.dimension(function(d) { return "";}).top(Infinity);}else{}
+    console.log(filter+"("+f.length+") = "+JSON.stringify(f).replace("[","[\n\t").replace(/}\,/g,"},\n\t").replace("]","\n]"));
+}
+
+function getRandomInt(min, max) {
+  return Math.floor(Math.random() * (max - min)) + min;
+}
+function sortByKey(array, key) {
+    return array.sort(function(a, b) {
+        var x = a[key]; var y = b[key];
+        return ((x < y) ? 1 : ((x > y) ? -1 : 0));
+    });
+}
+function sortByKeySmall(array, key) {
+    return array.sort(function(a, b) {
+        var x = a[key]; var y = b[key];
+        return ((x < y) ? -1 : ((x > y) ? 1 : 0));
+    });
+}
+function search_array(array,key,valuetofind) {
+    for (i = 0; i < array.length; i++) {
+        if (array[i][key] === valuetofind) {
+            return i;
+        }
+    }
+    return -1;
+}
