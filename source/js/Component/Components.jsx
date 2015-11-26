@@ -35,8 +35,9 @@ window.ChatMonitor = React.createClass({
       console.log('get chat')
       //this.state.chats.push(msg);
       console.log(msg)
+      placechat(msg[0])
       //this.forceUpdate();
-      this.setState({chats: msg});
+      //this.setState({chats: msg});
 
     },
     componentDidMount: function(){
@@ -99,7 +100,7 @@ window.ChatMonitor = React.createClass({
           return (
             <div id="chatwindow" className="chat ui-widget-content ui-draggable">
                 <div id="chatmonitor" className="non-draggable">
-                  <ChatList chats={this.state.chats}/>
+                  //<ChatList chats={this.state.chats}/>
                 </div>
 
 
@@ -195,29 +196,29 @@ window.GameList = React.createClass({
         return {games: []};
     },
   onGameList:function(msg){
-      console.log('componentx get game list')
+      //console.log('componentx get game list')
       //this.state.chats.push(msg);
-      console.log(msg)
+      //console.log(msg)
       //this.forceUpdate();
-      this.setState({games: msg});
+      //this.setState({games: msg});
+      msg.games.forEach(function(g){
+        placegame(g, 1);
+      });
 
     },
-  /*componentDidMount: function(){
+  componentDidMount: function(){
         console.log('GameList didmount')
         this.socket = communication.socket;
         this.socket.on('game list', this.onGameList);
         //this.socket.emit('request chat', '');
-      },*/
+
+
+
+      },
   render: function() {
     return (
        <div id="dashboardBody" className="gamelist">
-        <ul className="tabBodyOptions">
-            <li>
-                <h2> Game 1 <span> 1/4 Players</span></h2>
-            </li>
-            <li>
-                <h2> Game 2 <span> 1/4 Players</span></h2>
-            </li>
+        <ul id="gamelist" className="tabBodyOptions">
         </ul>
     </div>
 
