@@ -191,12 +191,23 @@ window.render_myloginWindow = function() {
 }
 
 window.GameList = React.createClass({
-  componentDidMount: function(){
+  getInitialState: function() {
+        return {games: []};
+    },
+  onGameList:function(msg){
+      console.log('componentx get game list')
+      //this.state.chats.push(msg);
+      console.log(msg)
+      //this.forceUpdate();
+      this.setState({games: msg});
+
+    },
+  /*componentDidMount: function(){
         console.log('GameList didmount')
         this.socket = communication.socket;
-        //this.socket.on('chat', this.onChat);
+        this.socket.on('game list', this.onGameList);
         //this.socket.emit('request chat', '');
-      },
+      },*/
   render: function() {
     return (
        <div id="dashboardBody" className="gamelist">

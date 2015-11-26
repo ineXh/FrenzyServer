@@ -57,6 +57,7 @@ gameServer.prototype = {
         this.spawncounter.add(player.team, 5);
         this.send_start_info(player);
         this.spawn_existing(player);
+        this.send_game_list(player);
         //console.log('start location ' + player.location);
     },
     leave: function(player){
@@ -154,9 +155,9 @@ gameServer.prototype = {
         for(var i = 0; i < this.games.length; i++){
             msg.games.push(this.games[i].getName());
         }
-        this.players.forEach(function(p){
-            p.emit('game list', msg)
-        });
+        //this.players.forEach(function(p){
+            player.emit('game list', msg)
+        //});
     }, // end send_game_list
     send_start_info: function(player){
         player.emit('start info',

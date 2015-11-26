@@ -39,7 +39,7 @@ Communications.prototype = {
 		communication.socket.on('path', onPath);
 		communication.socket.on('sync', onSync);
 		communication.socket.on('spawn period', onSpawnPeriod);
-		communication.socket.on('game list', onGameList);
+		//communication.socket.on('game list', onGameList);
 	},
 
 	sendClientInfo: function(){
