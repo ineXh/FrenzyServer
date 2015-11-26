@@ -6,8 +6,8 @@ var placegame = function(name, players){
     $("#gamelist").append(formattedgamelist);
 }
 
-function placechat(author, message, color, dt) {
+function placechat(msg) { // author, message, color, dt
     var chatmonitor = $('#chatmonitor');
-    chatmonitor.prepend('<p><span "style="color:' + color + '"></span><span style="color:' + color + '">' + author + '</span> @ ' + convertTime(dt)
-         + ': ' + message + '</p>');
+    chatmonitor.prepend('<p><span "style="color:' + msg.color + '"></span><span style="color:' + msg.color + '">' + msg.author + '</span> @ ' + convertTime(new Date(msg.time))
+         + ': ' + msg.message + '</p>');
 }

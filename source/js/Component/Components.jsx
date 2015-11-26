@@ -35,7 +35,10 @@ window.ChatMonitor = React.createClass({
       console.log('get chat')
       //this.state.chats.push(msg);
       console.log(msg)
-      placechat(msg[0])
+      msg.forEach(function(m){
+        placechat(m)
+      })
+      //placechat(msg[0])
       //this.forceUpdate();
       //this.setState({chats: msg});
 

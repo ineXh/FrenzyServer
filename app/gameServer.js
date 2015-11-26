@@ -7,8 +7,8 @@ function htmlEntities(str) {
                       .replace(/>/g, '&gt;').replace(/"/g, '&quot;');
 }
 
-var colors = [enums.Red, enums.Blue, enums.Teal, enums.Purple];
-//var colors = ['Red', 'Blue', 'Teal', 'Purple'];
+//var colors = [enums.Red, enums.Blue, enums.Teal, enums.Purple];
+var colors = ['Red', 'Blue', 'Teal', 'Purple'];
 var teams = [enums.team0, enums.team1, enums.team2, enums.team3];
 var locations = [enums.NW, enums.NE,enums.SW, enums.SE];
 
