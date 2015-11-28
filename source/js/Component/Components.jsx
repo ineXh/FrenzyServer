@@ -35,9 +35,16 @@ window.ChatMonitor = React.createClass({
       console.log('get chat')
       //this.state.chats.push(msg);
       console.log(msg)
-      msg.forEach(function(m){
-        placechat(m)
-      })
+      if(msg.length > 1){
+        msg.forEach(function(m){
+          placechat(m)
+        })  
+      }else{
+        placechat(msg)
+      }
+      //msg.forEach(function(m){
+        
+      //})
       //placechat(msg[0])
       //this.forceUpdate();
       //this.setState({chats: msg});
@@ -103,7 +110,7 @@ window.ChatMonitor = React.createClass({
           return (
             <div id="chatwindow" className="chat ui-widget-content ui-draggable">
                 <div id="chatmonitor" className="non-draggable">
-                  //<ChatList chats={this.state.chats}/>
+                  
                 </div>
 
 
@@ -117,6 +124,7 @@ window.ChatMonitor = React.createClass({
 
     }
 });
+//<ChatList chats={this.state.chats}/>
 
 window.myChatMonitor = React.createFactory(ChatMonitor);
 window.render_myChatMonitor = function() {
@@ -221,8 +229,8 @@ window.GameList = React.createClass({
   render: function() {
     return (
        <div id="dashboardBody" className="gamelist">
-        <ul id="gamelist" className="tabBodyOptions">
-        </ul>
+        <ol id="gamelist" className="tabBodyOptions selectable">
+        </ol>
     </div>
 
       );

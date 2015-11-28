@@ -7,8 +7,8 @@ function htmlEntities(str) {
                       .replace(/>/g, '&gt;').replace(/"/g, '&quot;');
 }
 
-//var colors = [enums.Red, enums.Blue, enums.Teal, enums.Purple];
-var colors = ['Red', 'Blue', 'Teal', 'Purple'];
+var colors = [enums.Red, enums.Blue, enums.Teal, enums.Purple];
+//var colors = ['Red', 'Blue', 'Teal', 'Purple'];
 var teams = [enums.team0, enums.team1, enums.team2, enums.team3];
 var locations = [enums.NW, enums.NE,enums.SW, enums.SE];
 
@@ -26,6 +26,8 @@ gameServer.prototype = {
         game = new Game(this.io, 'Game1');
         this.games.push(game)
         game = new Game(this.io, 'Game2');
+        this.games.push(game)
+        game = new Game(this.io, 'Game 3');
         this.games.push(game)
 
         var obj = {
@@ -85,17 +87,18 @@ gameServer.prototype = {
         };
         console.log('color ' + obj.color)
         if(obj.color == undefined) obj.color = 'Black';
-        this.chathistory.unshift(obj);
-        if(this.chathistory.length > 10) this.chathistory = this.chathistory.splice(0, this.chathistory.length - 1);
+        //this.chathistory.unshift(obj);
+        //if(this.chathistory.length > 10) this.chathistory = this.chathistory.splice(0, this.chathistory.length - 1);
         //console.log('chat history')
         //console.log(this.chathistory);
-        //this.history.push(obj);
+        this.chathistory.push(obj);
         //
 
         // broadcast message to all connected clients
         //var json = JSON.stringify({ type:'message', data: obj });
         //console.log(json)
-        this.io.emit('chat', this.chathistory);
+        //this.io.emit('chat', this.chathistory);
+        this.io.emit('chat', obj);
     },
     spawn: function(player, msg){
         //console.log('spawn')
