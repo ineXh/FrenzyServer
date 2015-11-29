@@ -1,9 +1,9 @@
-var HTMLgamelist = '<li><h2>%gamename%<span>%players%/4Players</span></h2></li>';
+var HTMLgamelist = '<li class="ui-widget-content"><h2>%gamename%<span>%players%/4Players</span></h2></li>';
 
 var placegame = function(name, players){
     formattedgamelist = HTMLgamelist.replace("%gamename%", name);
     formattedgamelist = formattedgamelist.replace("%players%", players);
-    $(".gamelist").append(formattedgamelist);
+    $(".selectable").append(formattedgamelist);
 }
 
 function placechat(msg) { // author, message, color, dt

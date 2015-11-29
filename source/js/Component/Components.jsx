@@ -223,19 +223,44 @@ window.GameList = React.createClass({
         this.socket.on('game list', this.onGameList);
         //this.socket.emit('request chat', '');
 
-
-
+        $( ".selectable" ).selectable({
+          /*selected: function( event, ui ) {
+            console.log('selected')
+          }*/
+          stop: function() {
+            console.log('selectable stop')
+            var result = $( "#select-result" ).empty();
+            $( ".ui-selected", this ).each(function() {
+              var index = $( "#selectable li" ).index( this );
+              result.append( " #" + ( index + 1 ) );
+            });
+          }
+        });
       },
   render: function() {
-    return (
-       <div id="dashboardBody" className="gamelist">
-        <ol id="gamelist" className="tabBodyOptions selectable">
+    return (      
+      <div className="gamelist">
+       <p id="feedback">
+        <span>"You've selected:"</span> <span id="select-result">none</span>
+        </p>
+         
+        <ol id="selectable" className="tabBodyOptions selectable">
+          <li className="ui-widget-content">Item 1</li>
+          <li className="ui-widget-content">Item 2</li>
+          <li className="ui-widget-content">Item 3</li>
+          <li className="ui-widget-content">Item 4</li>
+          <li className="ui-widget-content">Item 5</li>
+          <li className="ui-widget-content">Item 6</li>
         </ol>
-    </div>
-
+        </div>
       );
   }
 });
+/*<div id="dashboardBody" className="gamelist">
+       <span>"You've selected:"</span> <span id="select-result">none</span>
+        <ol id="gamelist" className="tabBodyOptions selectable">
+        </ol>
+    </div>*/
 window.myGameList = React.createFactory(GameList);
 window.render_mygameList = function() {
   ReactDOM.render(myGameList({ foo: 'bar' }), document.getElementById('content'));
