@@ -245,12 +245,7 @@ window.GameList = React.createClass({
         </p>
          
         <ol id="selectable" className="tabBodyOptions selectable">
-          <li className="ui-widget-content">Item 1</li>
-          <li className="ui-widget-content">Item 2</li>
-          <li className="ui-widget-content">Item 3</li>
-          <li className="ui-widget-content">Item 4</li>
-          <li className="ui-widget-content">Item 5</li>
-          <li className="ui-widget-content">Item 6</li>
+          
         </ol>
         </div>
       );

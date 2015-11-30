@@ -47,7 +47,7 @@
 #chatwindow {
     position: absolute;
     width: 10%; height: 10%;
-    left: 10%; top: 5%;
+    left: 70%; top: 5%;
     opacity: 0.8;
     background: #2C3E50;
     box-shadow: rgba(0,0,0,0.6) 0px 0px 8px;
@@ -120,14 +120,19 @@ margin-left:10px;
     font-weight: bold;
     box-shadow: rgba(0,0,0,0.6) 0px 0px 8px;
     overflow: auto;
-    top: 60px;
+    top: 120px;
     /*bottom: 6px;*/
     left: 60px;
     opacity: 0.8;
 
 }
-
-.tabBodyOptions a {
+.ui-selected { background: #F39814; color: white; }
+/*ol .ui-widget-content {
+  background: #2C3E50;
+    border: 1px solid #ddd;    
+}*/
+.tabBodyOptions {
+  /*background: #2C3E50;*/
     font-weight: bold;
     display: block;
     font-size: 1.5em;
@@ -136,9 +141,11 @@ margin-left:10px;
     text-transform: uppercase;
     letter-spacing: 1px;
     cursor: pointer;
-
 }
-ul{
+/*.ui-selecting { background: #FECA40; }*/
+
+
+ol{
   list-style: none;
   margin: 0;
   padding: 0;
@@ -151,13 +158,12 @@ h2 span{
   font-size: 12px;
   text-transform: capitalize;
   font-weight: normal;
-  /*color: #bdc3c7;*/
 }
 
-#selectable .ui-selecting { background: #FECA40; }
+/*#selectable .ui-selecting { background: #FECA40; }
   #selectable .ui-selected { background: #F39814; color: white; }
   #selectable { list-style-type: none; margin: 0; padding: 0; width: 60%; }
-  #selectable li { margin: 3px; padding: 0.4em; font-size: 1.4em; height: 18px; }
+  #selectable li { margin: 3px; padding: 0.4em; font-size: 1.4em; height: 18px; }*/
   
 /*label{
   background: #34495E;
