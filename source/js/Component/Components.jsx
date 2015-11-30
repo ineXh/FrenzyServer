@@ -204,7 +204,7 @@ window.render_myloginWindow = function() {
 
 window.GameList = React.createClass({
   getInitialState: function() {
-        return {games: []};
+        return {games: [], index: -1};
     },
   onGameList:function(msg){
       //console.log('componentx get game list')
@@ -222,32 +222,43 @@ window.GameList = React.createClass({
         this.socket = communication.socket;
         this.socket.on('game list', this.onGameList);
         //this.socket.emit('request chat', '');
-
+        var list = this;
         $( ".selectable" ).selectable({
           /*selected: function( event, ui ) {
             console.log('selected')
           }*/
           stop: function() {
             console.log('selectable stop')
-            var result = $( "#select-result" ).empty();
+            
+            //var result = $( "#select-result" ).empty();
             $( ".ui-selected", this ).each(function() {
               var index = $( "#selectable li" ).index( this );
-              result.append( " #" + ( index + 1 ) );
+              console.log('index ' + index)
+              console.log(list)
+              list.setState({index: index});
+              return;
+              //result.append( " #" + ( index + 1 ) );
             });
           }
         });
       },
+  getIndex: function(){
+    console.log('selectable stop')
+     var list = this;
+     $( ".ui-selected", this ).each(function() {
+        var index = $( "#selectable li" ).index( this );
+        console.log('index ' + index)
+        console.log(list)
+        list.setState({index: index});
+        return;
+        //result.append( " #" + ( index + 1 ) );
+      });
+  },
   render: function() {
     return (      
       <div className="gamelist">
-       <p id="feedback">
-        <span>"You've selected:"</span> <span id="select-result">none</span>
-        </p>
-         
-        <ol id="selectable" className="tabBodyOptions selectable">
-          
-        </ol>
-        </div>
+        <ol id="selectable" className="tabBodyOptions selectable"></ol>
+      </div>
       );
   }
 });
