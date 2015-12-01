@@ -92,6 +92,7 @@ gameServer.prototype = {
         //console.log('chat history')
         //console.log(this.chathistory);
         this.chathistory.push(obj);
+        this.chathistory = this.chathistory.slice(-10);
         //
 
         // broadcast message to all connected clients

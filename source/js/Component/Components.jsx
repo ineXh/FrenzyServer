@@ -38,12 +38,12 @@ window.ChatMonitor = React.createClass({
       if(msg.length > 1){
         msg.forEach(function(m){
           placechat(m)
-        })  
+        })
       }else{
         placechat(msg)
       }
       //msg.forEach(function(m){
-        
+
       //})
       //placechat(msg[0])
       //this.forceUpdate();
@@ -110,7 +110,7 @@ window.ChatMonitor = React.createClass({
           return (
             <div id="chatwindow" className="chat ui-widget-content ui-draggable">
                 <div id="chatmonitor" className="non-draggable">
-                  
+
                 </div>
 
 
@@ -229,7 +229,7 @@ window.GameList = React.createClass({
           }*/
           stop: function() {
             console.log('selectable stop')
-            
+
             //var result = $( "#select-result" ).empty();
             $( ".ui-selected", this ).each(function() {
               var index = $( "#selectable li" ).index( this );
@@ -254,10 +254,21 @@ window.GameList = React.createClass({
         //result.append( " #" + ( index + 1 ) );
       });
   },
+  handleSubmit: function(e) {
+    e.preventDefault();
+    console.log('index ' + this.state.index)
+    //console.log('handle Submit');
+    return;
+  },
   render: function() {
-    return (      
+    return (
       <div className="gamelist">
         <ol id="selectable" className="tabBodyOptions selectable"></ol>
+        <form onSubmit={this.handleSubmit} className="MyForm">
+          <button type="submit">Join Game</button>
+        </form>
+
+
       </div>
       );
   }
@@ -272,49 +283,4 @@ window.render_mygameList = function() {
   ReactDOM.render(myGameList({ foo: 'bar' }), document.getElementById('content'));
 }
 
-window.MainInterface = React.createClass({
-  componentDidMount: function(){
-        console.log('main didmount')
-        this.socket = communication.socket;
-        //this.socket.on('chat', this.onChat);
-        //this.socket.emit('request chat', '');
-      },
-  render: function() {
-    //<GameList/>
-    return (
-      <div className="maininterface">
-        <GameList />
-        <ChatMonitor />
-        </div>
-      );
-  }
-});
-window.myMainInterface = React.createFactory(MainInterface);
-window.render_mymainInterface = function() {
-  ReactDOM.render(myMainInterface({ foo: 'bar' }), document.getElementById('content'));
-}
 
-window.InterfaceEmpty = React.createClass({
-  render: function() { return false; }
-});
-window.myInterfaceEmpty = React.createFactory(InterfaceEmpty);
-window.render_empty = function() {
-  ReactDOM.render(myInterfaceEmpty({ foo: 'bar' }), document.getElementById('content'));
-}
-
-
-
-    //ReactDOM.render(
-
-/*window.startChat = function(){
-ReactDOM.render(
-
-
-          //<CommentBox data={data} />,
-          //<CommentBox url="/api/comments" />,
-          //<CommentBox url="/api/comments" pollInterval={2000} />,
-          <ChatMonitor />,
-          document.getElementById('content')
-      );
-}
-*/
