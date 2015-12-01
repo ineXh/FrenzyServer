@@ -7,7 +7,14 @@ function htmlEntities(str) {
                       .replace(/>/g, '&gt;').replace(/"/g, '&quot;');
 }
 
-var colors = [enums.Red, enums.Blue, enums.Teal, enums.Purple];
+var colors = [enums.Red, enums.Blue, enums.Teal, enums.Purple,
+              enums.Brown, enums.Orange, enums.DarkOrange,
+              enums.LightGreen, enums.DarkGreen, enums.Lime,
+              enums.Aqua, enums.LightBlue, enums.DarkPurple,
+              enums.Burlywood  ];
+colors.sort(function(a,b) { return Math.random() > 0.5; } );
+
+
 //var colors = ['Red', 'Blue', 'Teal', 'Purple'];
 var teams = [enums.team0, enums.team1, enums.team2, enums.team3];
 var locations = [enums.NW, enums.NE,enums.SW, enums.SE];
@@ -32,7 +39,7 @@ gameServer.prototype = {
 
         var obj = {
           time: (new Date()).getTime(),
-          msg: htmlEntities('Welcome to Game'),
+          msg: htmlEntities('Welcome to Cow Frenzy'),
           author: 'Server',
           color: 'black',
           id:0
@@ -54,6 +61,8 @@ gameServer.prototype = {
         console.log('total players on server ' + this.players.length);
         //player.name = 'Bob';
         player.color = colors.shift();
+        colors.push(player.color);
+
         player.team = teams.shift();
         player.location = locations.shift();
         this.spawncounter.add(player.team, 5);
