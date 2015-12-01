@@ -28,6 +28,10 @@ Path.prototype = {
     }
 
   }, // end init
+  restart: function(){
+    stage.removeChild(this.path);
+    stage.addChild(this.path);
+  },
   createArrow: function(){
     var line = new PIXI.Container();
     line.pivot.x = 0;

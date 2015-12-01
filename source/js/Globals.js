@@ -25,6 +25,8 @@ var time;
 
 
 // Modules
+var stagesetup;
+var stagelayout;
 var communication;
 var game;
 var gameobjects;

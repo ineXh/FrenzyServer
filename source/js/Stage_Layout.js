@@ -28,8 +28,8 @@ Stage_Layout.prototype = {
       stage_layout.num_tiles_x = s1.width;
       stage_layout.end_x = stage_layout.num_tiles_x;
       stage_layout.num_tiles_y = s1.height;
-      stage_layout.tilewidth = stage_width / (stage_layout.num_tiles_x);
-      stage_layout.tileheight = stage_height / stage_layout.num_tiles_y;
+      stage_layout.tilewidth = stage_width*1.05 / (stage_layout.num_tiles_x);
+      stage_layout.tileheight = stage_height*1.05 / stage_layout.num_tiles_y;
 
       console.log("stage_width: " + stage_width)
       console.log("this.tilewidth: " + stage_layout.tilewidth);
@@ -89,8 +89,8 @@ Stage_Layout.prototype = {
       sprite.anchor.set(0,0);
       sprite.width = this.tilewidth;
       sprite.height = this.tileheight;
-      sprite.x = (j-0.5)*sprite.width*0.979;//this.tilewidth;
-      sprite.y = i*sprite.height*0.979;//this.tileheight;
+      sprite.x = (j-0.5)*sprite.width*0.95;//this.tilewidth;
+      sprite.y = i*sprite.height*0.95;//this.tileheight;
       //sprite.alpha = 0.3;
       platformcontainer.sprites.push(sprite);
       platformcontainer.addChild(sprite);

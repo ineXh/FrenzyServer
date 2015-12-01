@@ -109,11 +109,14 @@ Game.prototype = {
         return this.teams[team];
     },
     startsingle:function(){
+        stagelayout.place_stage();
         gamestate = GameState.InPlay;
         stage.x = 0;
         stage.y = 0;
         myteam = 0;
         myteamcolor = this.getTeam(myteam.color);
+
+
 
         this.teams.forEach(function(t){
             t.startsingle();
@@ -123,6 +126,10 @@ Game.prototype = {
 
     },
     startgame: function(){
+        stagelayout.place_stage();
+        this.teams.forEach(function(t){
+            t.restartPath();
+        })
         //stage.width = width;
         //stage.height = height;
         var loc = getstartlocation(startlocation);
@@ -240,7 +247,11 @@ Team.prototype = {
     clean: function(){
         this.Dead = false;
     },
+    restartPath:function(){
+        this.path.restart();
+    },
     startsingle:function(){
+        this.restartPath();
         var input = {   x: this.startlocation_pos.x + width/2,
                                 y: this.startlocation_pos.y + height/2,
                     type: CharacterType.Hut, team: this.team, color: this.color};

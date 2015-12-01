@@ -7,6 +7,7 @@ GameObjects.prototype = {
 		.add('assets/cow.png')
 		.add('assets/misc.json')
 		.add('assets/soldier.json')
+        .add('assets/grasses.json')
         .add('assets/cow/1.png')
         .add('assets/cow/2.png')
         .add('assets/cow/3.png')
@@ -38,6 +39,10 @@ GameObjects.prototype = {
         characters = new Characters();
         //path = new Path();
         game = new Game();
+        stagesetup = new Stagesetup();
+
+        stagelayout = new Stage_Layout();
+        var stage_promise = stagelayout.load();
         menu = new Menu();
         communication = new Communications();
 
