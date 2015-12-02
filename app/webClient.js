@@ -13,7 +13,7 @@ function webClient(io, clients, gameserver){
         onConnect(socket, gameserver);
         socket.on('name', onName);
         socket.on('chat', onChat);
-        socket.on('request chat', onrequestChat);
+        //socket.on('request chat', onrequestChat);
         socket.on('client info', onClientInfo);
         socket.on('path', onPath);
         socket.on('spawn', onSpawn);
@@ -35,9 +35,10 @@ function webClient(io, clients, gameserver){
             gameserver.sendChatHistory(client);
         }
         function onName(name){
-            client.name = name;
-            gameserver.sendWelcomeMsg(client);
+            client.name = name;            
             gameserver.join(client);
+            gameserver.sendChatHistory(client);
+            gameserver.sendWelcomeMsg(client);
         }
         function onChat(msg){
             console.log('onChat')

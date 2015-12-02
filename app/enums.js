@@ -22,6 +22,7 @@ define("Ready", 50);
 define("NotReady", 51);
 
 // Color
+define('Black', 0x00)
 define('Red', 0xFF9999)
 define('Blue', 0x9999FF)
 define('Teal', 0x99f9f9)

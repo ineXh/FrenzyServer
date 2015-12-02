@@ -8,9 +8,7 @@ var placegame = function(name, players){
 
 function placechat(msg) { // author, message, color, dt
     var chatmonitor = $('#chatmonitor');
-    //chatmonitor.prepend('<p><span "style="color:' + msg.color + '"></span><span style="color:' + msg.color + '">' + msg.author + '</span> @ ' + convertTime(new Date(msg.time))
-//         + ': ' + msg.msg + '</p>');
-	//if(msg.color == undefined) debugger;
-    chatmonitor.prepend('<p><span style="color:#' + (msg.color).toString(16) + '">' + msg.author + '</span> @ ' + convertTime(new Date(msg.time))
-         + ': ' + msg.msg + '</p>');
+    //console.log(msg)
+    //console.log((msg.color).toString(16))
+    chatmonitor.prepend('<p><span style="color:#' + (msg.color).toString(16) + '">' + msg.author + '</span> @ ' + convertTime(new Date(msg.time)) + ': ' + '<span style="color:#' + (msg.color).toString(16) + '">' + msg.msg + '</span></p>');
 }

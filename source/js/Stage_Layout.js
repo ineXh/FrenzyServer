@@ -17,7 +17,7 @@ Stage_Layout.prototype = {
   },
   place_stage : function(){
     stage.addChild(this.container);
-
+    this.container.cacheAsBitmap = true
   },
   load_s1: function(){
   	//this.stage_width = s1.width * s1.tilewidth;
@@ -28,8 +28,8 @@ Stage_Layout.prototype = {
       stage_layout.num_tiles_x = s1.width;
       stage_layout.end_x = stage_layout.num_tiles_x;
       stage_layout.num_tiles_y = s1.height;
-      stage_layout.tilewidth = stage_width*1.05 / (stage_layout.num_tiles_x);
-      stage_layout.tileheight = stage_height*1.05 / stage_layout.num_tiles_y;
+      stage_layout.tilewidth = stage_width*1.1 / (stage_layout.num_tiles_x);
+      stage_layout.tileheight = stage_height*1.1 / stage_layout.num_tiles_y;
 
       console.log("stage_width: " + stage_width)
       console.log("this.tilewidth: " + stage_layout.tilewidth);

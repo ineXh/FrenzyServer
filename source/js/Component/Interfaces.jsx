@@ -1,12 +1,11 @@
+// ///////////////////////////
+// Main Multiplayer Interface
+// ///////////////////////////
 window.MainInterface = React.createClass({
   componentDidMount: function(){
-        console.log('main didmount')
-        this.socket = communication.socket;
-        //this.socket.on('chat', this.onChat);
-        //this.socket.emit('request chat', '');
+        console.log('main didmount')        
       },
   render: function() {
-    //<GameList/>
     return (
       <div className="maininterface">
         <GameList />
@@ -20,32 +19,36 @@ window.render_mymainInterface = function() {
   ReactDOM.render(myMainInterface({ foo: 'bar' }), document.getElementById('content'));
 }
 
-window.InterfaceEmpty = React.createClass({
-  render: function() { return false; }
-});
-window.myInterfaceEmpty = React.createFactory(InterfaceEmpty);
-window.render_empty = function() {
-  ReactDOM.render(myInterfaceEmpty({ foo: 'bar' }), document.getElementById('content'));
-}
-
-window.GameWaitInterface = React.createClass({
+// //////////////////
+// GameRoom Interface
+// //////////////////
+window.GameRoomInterface = React.createClass({
   componentDidMount: function(){
-        console.log('gamewait didmount')
-        this.socket = communication.socket;
+        console.log('gameroom didmount')
+        //this.socket = communication.socket;
         //this.socket.on('chat', this.onChat);
         //this.socket.emit('request chat', '');
       },
   render: function() {
     //<GameList/>
     return (
-      <div className="gamewaitinterface">
-        <GameList />
+      <div className="gameroominterface">
         <ChatMonitor />
         </div>
       );
   }
 });
-window.myGameWaitInterface = React.createFactory(GameWaitInterface);
-window.render_mygamewaitInterface = function() {
-  ReactDOM.render(myMainInterface({ foo: 'bar' }), document.getElementById('content'));
+window.myGameRoomInterface = React.createFactory(GameRoomInterface);
+window.render_mygameroomInterface = function() {
+  ReactDOM.render(myGameRoomInterface({ foo: 'bar' }), document.getElementById('content'));
+}
+// //////////////////
+// Empty Interface
+// //////////////////
+window.InterfaceEmpty = React.createClass({
+  render: function() { return false; }
+});
+window.myInterfaceEmpty = React.createFactory(InterfaceEmpty);
+window.render_empty = function() {
+  ReactDOM.render(myInterfaceEmpty({ foo: 'bar' }), document.getElementById('content'));
 }

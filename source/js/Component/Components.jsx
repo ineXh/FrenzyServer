@@ -35,7 +35,9 @@ window.ChatMonitor = React.createClass({
       console.log('get chat')
       //this.state.chats.push(msg);
       console.log(msg)
-      if(msg.length > 1){
+      //Object.prototype.toString.call( a ) === '[object Array]'
+      //if(msg.length > 1){
+      if(Object.prototype.toString.call( msg ) === '[object Array]'){
         msg.forEach(function(m){
           placechat(m)
         })
@@ -54,7 +56,7 @@ window.ChatMonitor = React.createClass({
         console.log('chat monitor didmount')
         this.socket = communication.socket;
         this.socket.on('chat', this.onChat);
-        this.socket.emit('request chat', '');
+        //this.socket.emit('request chat', '');
 
         this.interval = setInterval(this.tick, 1000);
 

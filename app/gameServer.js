@@ -41,7 +41,7 @@ gameServer.prototype = {
           time: (new Date()).getTime(),
           msg: htmlEntities('Welcome to Cow Frenzy'),
           author: 'Server',
-          color: 'black',
+          color: enums.Black,
           id:0
         };
         this.chathistory = [obj];
