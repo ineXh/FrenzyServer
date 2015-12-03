@@ -57,6 +57,7 @@ function sendName(name){
 	menu.multiplayermenu.init_main();
 }
 function joinGame(index){
+	if(index < 0) return;
 	communication.socket.emit('join game', index);
 	menu.multiplayermenu.init_gameroom();	
 }

@@ -25,16 +25,15 @@ window.render_mymainInterface = function() {
 window.GameRoomInterface = React.createClass({
   componentDidMount: function(){
         console.log('gameroom didmount')
-        //this.socket = communication.socket;
-        //this.socket.on('chat', this.onChat);
-        //this.socket.emit('request chat', '');
+        
       },
   render: function() {
     //<GameList/>
     return (
       <div className="gameroominterface">
         <ChatMonitor />
-        </div>
+        <GamePlayerList />
+      </div>
       );
   }
 });

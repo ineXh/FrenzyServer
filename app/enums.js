@@ -11,6 +11,7 @@ define("team0", 0);
 define("team1", 1);
 define("team2", 2);
 define("team3", 3);
+define("observer", 10);
 
 define("NW", 0);
 define("NE", 1);

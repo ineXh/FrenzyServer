@@ -110,7 +110,7 @@ window.ChatMonitor = React.createClass({
         var count = this.state.count;
 
           return (
-            <div id="chatwindow" className="chat ui-widget-content ui-draggable">
+            <div id="chatwindow" className="windowobject chat ui-draggable">
                 <div id="chatmonitor" className="non-draggable">
 
                 </div>
@@ -265,7 +265,7 @@ window.GameList = React.createClass({
   },
   render: function() {
     return (
-      <div className="gamelist">
+      <div id="gamelist" className=" windowobject">
         <ol id="selectable" className="tabBodyOptions selectable"></ol>
         <form onSubmit={this.handleSubmit} className="MyForm">
           <button type="submit">Join Game</button>
@@ -287,3 +287,43 @@ window.render_mygameList = function() {
 }
 
 
+
+window.GamePlayerList = React.createClass({
+  getInitialState: function() {
+        return {players: [], team1: false, team2: false};
+    },
+  onGamePlayerList:function(msg){      
+      msg.players.forEach(function(p){
+        //placegame(g, 1);
+      });
+    },
+  componentDidMount: function(){
+        console.log('GamePlayerList didmount')
+        this.socket = communication.socket;
+        this.socket.on('game player list', this.onGameList);
+        //this.socket.emit('request chat', '');
+        var list = this;
+
+         $( "#gameroom_playerteam" ).selectmenu({
+           change: function( event, data ) {
+            console.log(data.item.value)
+             //circle.css( "background", data.item.value );
+           }
+         });
+        
+      },    
+  render: function() {
+    return (
+      <div id="gameplayerlist" className="windowobject">
+        <ol id="selectable" className="tabBodyOptions selectable">
+          <li><h2>Player 1</h2>
+            <select name="playerteam" id="gameroom_playerteam">
+              <option>Slower</option>
+              <option>Slow</option>
+            </select>
+          </li>          
+        </ol>        
+      </div>
+      );
+  }
+}); // end GamePlayerList

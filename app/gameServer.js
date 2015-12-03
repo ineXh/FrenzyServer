@@ -30,9 +30,9 @@ function gameServer(io, clients, games){
 gameServer.prototype = {
     init: function(){
         var Game = require('./Game.js');
-        game = new Game(this.io, 'Game1');
+        game = new Game(this.io, 'Game 1');
         this.games.push(game)
-        game = new Game(this.io, 'Game2');
+        game = new Game(this.io, 'Game 2');
         this.games.push(game)
         game = new Game(this.io, 'Game 3');
         this.games.push(game)
@@ -109,6 +109,9 @@ gameServer.prototype = {
         //console.log(json)
         //this.io.emit('chat', this.chathistory);
         this.io.emit('chat', obj);
+    },
+    joinGame : function(player, index){
+        this.games[index].join(player)
     },
     spawn: function(player, msg){
         //console.log('spawn')

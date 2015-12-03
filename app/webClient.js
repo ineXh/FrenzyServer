@@ -15,6 +15,7 @@ function webClient(io, clients, gameserver){
         socket.on('chat', onChat);
         //socket.on('request chat', onrequestChat);
         socket.on('client info', onClientInfo);
+        socket.on('join game', onJoinGame)
         socket.on('path', onPath);
         socket.on('spawn', onSpawn);
         socket.on('sync dead character', onSyncDeadCharacter)
@@ -50,6 +51,10 @@ function webClient(io, clients, gameserver){
             client.height = msg.height;
             client.stage_width = msg.stage_width;
             client.stage_height = msg.stage_height;
+        }
+        function onJoinGame(index){
+            console.log('join game ' + index);
+            gameserver.joinGame(client, index);
         }
         function onPath(msg){
             //console.log(msg);
