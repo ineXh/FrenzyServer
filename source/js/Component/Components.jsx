@@ -206,7 +206,7 @@ window.render_myloginWindow = function() {
 
 window.GameList = React.createClass({
   getInitialState: function() {
-        return {games: [], index: -1};
+        return {games: [], index: 0};
     },
   onGameList:function(msg){
       //console.log('componentx get game list')
@@ -249,6 +249,7 @@ window.GameList = React.createClass({
      var list = this;
      $( ".ui-selected", this ).each(function() {
         var index = $( "#selectable li" ).index( this );
+        if(index == -1) return;
         console.log('index ' + index)
         console.log(list)
         list.setState({index: index});
@@ -290,12 +291,15 @@ window.render_mygameList = function() {
 
 window.GamePlayerList = React.createClass({
   getInitialState: function() {
-        return {players: [], team1: false, team2: false};
+        return {players: [],
+                showteam0: true, showteam1: false,
+                showteam2: true, showteam3: true};
     },
-  onGamePlayerList:function(msg){      
-      msg.players.forEach(function(p){
+  onGamePlayerList:function(msg){
+    console.log(msg)     
+      /*msg.players.forEach(function(p){
         //placegame(g, 1);
-      });
+      });*/
     },
   componentDidMount: function(){
         console.log('GamePlayerList didmount')
@@ -306,7 +310,8 @@ window.GamePlayerList = React.createClass({
 
          $( "#gameroom_playerteam" ).selectmenu({
            change: function( event, data ) {
-            console.log(data.item.value)
+            console.log(data)
+            //console.log(data.item.value)
              //circle.css( "background", data.item.value );
            }
          });
@@ -318,8 +323,10 @@ window.GamePlayerList = React.createClass({
         <ol id="selectable" className="tabBodyOptions selectable">
           <li><h2>Player 1</h2>
             <select name="playerteam" id="gameroom_playerteam">
-              <option>Slower</option>
-              <option>Slow</option>
+            { this.state.showteam0 ? <option>Team 0</option> : null }
+            { this.state.showteam1 ? <option>Team 1</option> : null }
+            { this.state.showteam2 ? <option>Team 2</option> : null }
+            { this.state.showteam3 ? <option>Team 3</option> : null }
             </select>
           </li>          
         </ol>        
@@ -327,3 +334,4 @@ window.GamePlayerList = React.createClass({
       );
   }
 }); // end GamePlayerList
+//<option>Team 1</option>
