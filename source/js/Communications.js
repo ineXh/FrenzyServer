@@ -56,6 +56,10 @@ function sendName(name){
 	communication.socket.emit('name', name);
 	menu.multiplayermenu.init_main();
 }
+function joinGame(index){
+	communication.socket.emit('join game', index);
+	menu.multiplayermenu.init_gameroom();	
+}
 function sendChat(msg){
 	communication.socket.emit('chat', msg);
 }

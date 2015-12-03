@@ -23,6 +23,10 @@ MultiPlayerMenu.prototype = {
 		//render_myChatMonitor();
 		render_mymainInterface();
 	},
+	init_gameroom: function(){
+		gamestate = GameState.GameRoom;
+		render_mygameroomInterface();
+	},
 	update: function(time){
 
 	},

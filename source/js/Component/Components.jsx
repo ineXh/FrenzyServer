@@ -258,7 +258,8 @@ window.GameList = React.createClass({
   },
   handleSubmit: function(e) {
     e.preventDefault();
-    console.log('index ' + this.state.index)
+    //console.log('index ' + this.state.index)
+    joinGame(this.state.index)
     //console.log('handle Submit');
     return;
   },
