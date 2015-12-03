@@ -240,18 +240,19 @@ window.GameList = React.createClass({
     joinGame(this.state.index)
     //console.log('handle Submit');
     return;
-  },
+  },  
   render: function() {
     return (
       <div id="gamelist" className=" windowobject">
         <ol id="selectable" className="tabBodyOptions selectable"></ol>
-        <form onSubmit={this.handleSubmit} className="MyForm">
-          <button type="submit">Join Game</button>
-        </form>
+        <button onClick={this.handleSubmit}>Join Game</button>
       </div>
       );
   }
 });
+/*<form onSubmit={this.handleSubmit} className="MyForm">
+          <button type="submit">Join Game</button>
+        </form>*/
 /*<div id="dashboardBody" className="gamelist">
        <span>"You've selected:"</span> <span id="select-result">none</span>
         <ol id="gamelist" className="tabBodyOptions selectable">

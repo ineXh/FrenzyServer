@@ -27,6 +27,9 @@ window.GameRoomInterface = React.createClass({
         console.log('gameroom didmount')
         
       },
+  handleSubmit:function(e){
+    e.preventDefault();
+  },
   render: function() {
     //<GameList/>
     //console.log(username)
@@ -35,6 +38,7 @@ window.GameRoomInterface = React.createClass({
       <div className="gameroominterface">
         <ChatMonitor />
         <GamePlayerList username={username}/>
+        <button id="gamestartbutton" onClick={this.handleSubmit}>Start Game</button>
       </div>
       );
   }
