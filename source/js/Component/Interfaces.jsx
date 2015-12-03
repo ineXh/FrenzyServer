@@ -29,10 +29,12 @@ window.GameRoomInterface = React.createClass({
       },
   render: function() {
     //<GameList/>
+    //console.log(username)
+    //var nam = "Cow"
     return (
       <div className="gameroominterface">
         <ChatMonitor />
-        <GamePlayerList />
+        <GamePlayerList username={username}/>
       </div>
       );
   }

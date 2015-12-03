@@ -1,26 +1,3 @@
-
-var styles = {
-  root: {
-    display: "block"
-  },
-  item: {
-    color: "black",
-    complete: {
-      textDecoration: "line-through"
-    },
-
-    due: {
-      color: "red"
-    }
-  },
-}
-
-
-/*var data = [
-        {author: "Pete Hunt", text: "This is one msg"},
-        {author: "Jordan Walke", text: "This is *another* msg"}
-    ];*/
-
 window.ChatMonitor = React.createClass({
     getInitialState: function() {
         return {value: 'Hello!', count:0, chats: []};
@@ -235,8 +212,9 @@ window.GameList = React.createClass({
             //var result = $( "#select-result" ).empty();
             $( ".ui-selected", this ).each(function() {
               var index = $( "#selectable li" ).index( this );
-              console.log('index ' + index)
-              console.log(list)
+              if(index == -1) return;
+              //console.log('index ' + index)
+              //console.log(list)
               list.setState({index: index});
               return;
               //result.append( " #" + ( index + 1 ) );
@@ -249,7 +227,6 @@ window.GameList = React.createClass({
      var list = this;
      $( ".ui-selected", this ).each(function() {
         var index = $( "#selectable li" ).index( this );
-        if(index == -1) return;
         console.log('index ' + index)
         console.log(list)
         list.setState({index: index});
@@ -271,8 +248,6 @@ window.GameList = React.createClass({
         <form onSubmit={this.handleSubmit} className="MyForm">
           <button type="submit">Join Game</button>
         </form>
-
-
       </div>
       );
   }
@@ -291,8 +266,8 @@ window.render_mygameList = function() {
 
 window.GamePlayerList = React.createClass({
   getInitialState: function() {
-        return {players: [],
-                showteam0: true, showteam1: false,
+        return {players: [], team: "4",
+                showteam0: true, showteam1: true,
                 showteam2: true, showteam3: true};
     },
   onGamePlayerList:function(msg){
@@ -307,26 +282,23 @@ window.GamePlayerList = React.createClass({
         this.socket.on('game player list', this.onGameList);
         //this.socket.emit('request chat', '');
         var list = this;
-
-         $( "#gameroom_playerteam" ).selectmenu({
-           change: function( event, data ) {
-            console.log(data)
-            //console.log(data.item.value)
-             //circle.css( "background", data.item.value );
-           }
-         });
         
-      },    
+      },   
+  handleChange:function(event){
+    this.setState({team: event.target.value});
+  }, 
   render: function() {
     return (
       <div id="gameplayerlist" className="windowobject">
         <ol id="selectable" className="tabBodyOptions selectable">
-          <li><h2>Player 1</h2>
-            <select name="playerteam" id="gameroom_playerteam">
-            { this.state.showteam0 ? <option>Team 0</option> : null }
-            { this.state.showteam1 ? <option>Team 1</option> : null }
-            { this.state.showteam2 ? <option>Team 2</option> : null }
-            { this.state.showteam3 ? <option>Team 3</option> : null }
+          <li><h2>{this.props.username}</h2>
+            <select name="playerteam" id="gameroom_playerteam" 
+              value={ this.state.team} onChange={this.handleChange}>
+              { this.state.showteam0 ? <option value="0">Team 0</option> : null }
+              { this.state.showteam1 ? <option value="1">Team 1</option> : null }
+              { this.state.showteam2 ? <option value="2">Team 2</option> : null }
+              { this.state.showteam3 ? <option value="3">Team 3</option> : null }
+              <option value="4">Observer</option>
             </select>
           </li>          
         </ol>        
@@ -334,4 +306,5 @@ window.GamePlayerList = React.createClass({
       );
   }
 }); // end GamePlayerList
-//<option>Team 1</option>
+
+/**/

@@ -53,6 +53,7 @@ function onGameList(msg){
 	console.log(msg)
 }
 function sendName(name){
+	username = name;
 	communication.socket.emit('name', name);
 	menu.multiplayermenu.init_main();
 }

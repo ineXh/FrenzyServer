@@ -67,3 +67,6 @@ var gamemode;
 var myteam = -1;
 var myteamcolor;
 var startlocation = -1;
+
+// Multiplayer
+var username = "";
