@@ -64,6 +64,7 @@ var score_text;
 // Game Variables
 var gamestate;
 var gamemode;
+var playerid = -1;
 var myteam = -1;
 var myteamcolor;
 var startlocation = -1;

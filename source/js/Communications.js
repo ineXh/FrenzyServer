@@ -39,6 +39,7 @@ Communications.prototype = {
 		communication.socket.on('path', onPath);
 		communication.socket.on('sync', onSync);
 		communication.socket.on('spawn period', onSpawnPeriod);
+		communication.socket.on('joinGameSuccess', onjoinGameSuccess)
 		//communication.socket.on('game list', onGameList);
 	},
 
@@ -60,6 +61,11 @@ function sendName(name){
 function joinGame(index){
 	if(index < 0) return;
 	communication.socket.emit('join game', index);
+}
+function onjoinGameSuccess(msg){
+	console.log('onjoinGameSuccess')
+	myteam = msg.team;
+	myteamcolor = msg.color;
 	menu.multiplayermenu.init_gameroom();
 }
 function leaveGame(){
@@ -108,6 +114,7 @@ function onSpawnExisting(msg){
 	game.getTeam(msg.team).color = msg.color;
 }
 function onStartInfo(msg){
+	playerid = msg.id;
 	gamestate = GameState.InPlay;
 	myteam = msg.team;
 	myteamcolor = msg.color;

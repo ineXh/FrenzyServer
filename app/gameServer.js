@@ -16,7 +16,7 @@ colors.sort(function(a,b) { return Math.random() > 0.5; } );
 
 
 //var colors = ['Red', 'Blue', 'Teal', 'Purple'];
-var teams = [enums.team0, enums.team1, enums.team2, enums.team3];
+var teams = [enums.Team0, enums.Team1, enums.Team2, enums.Team3];
 var locations = [enums.NW, enums.NE,enums.SW, enums.SE];
 
 function gameServer(io, clients, games){
@@ -47,6 +47,9 @@ gameServer.prototype = {
         this.chathistory = [obj];
         this.players = [];
         this.character_ids = [];
+        this.player_ids = [];
+        for(var i = 0; i < 90000; i++) this.player_ids.push(i);
+
         for(var i = 0; i < 10000; i++) this.character_ids.push(i);
         this.spawncounter = new SpawnCounter();
         //this.spawn_count = 0;
@@ -60,6 +63,7 @@ gameServer.prototype = {
         this.players.push(player);
         console.log('total players on server ' + this.players.length);
         //player.name = 'Bob';
+        player.id = this.player_ids.shift();
         player.color = colors.shift();
         colors.push(player.color);
 
@@ -72,6 +76,8 @@ gameServer.prototype = {
         //console.log('start location ' + player.location);
     },
     leave: function(player){
+        if(player.game != null) this.leaveGame(player);
+        this.player_ids.push(player.id);
         colors.push(player.color)
         teams.push(player.team)
         locations.push(player.location)
@@ -118,7 +124,8 @@ gameServer.prototype = {
     leaveGame: function(player){
         player.game.leave(player);
         player.game = null;
-        setTimeout(function(){this.send_game_list(player);},500);
+        var server = this;
+        setTimeout(function(){server.send_game_list(player);},500);
     },
     spawn: function(player, msg){
         //console.log('spawn')
@@ -186,6 +193,7 @@ gameServer.prototype = {
     send_start_info: function(player){
         player.emit('start info',
             {color      : player.color,
+             id         : player.id,
              team       : player.team,
              location   : player.location
          });

@@ -181,47 +181,6 @@ window.render_myloginWindow = function() {
   ReactDOM.render(myloginWindow({ foo: 'bar' }), document.getElementById('content'));
 }
 
-window.GamePlayerList = React.createClass({
-  getInitialState: function() {
-        return {players: [], team: "4",
-                showteam0: true, showteam1: true,
-                showteam2: true, showteam3: true};
-    },
-  onGamePlayerList:function(msg){
-    console.log(msg)
-      msg.players.forEach(function(p){
-        placeplayer(p);
-      });
-    },
-  componentDidMount: function(){
-        console.log('GamePlayerList didmount')
-        this.socket = communication.socket;
-        this.socket.on('game player list', this.onGameList);
-        //this.socket.emit('request chat', '');
-        var list = this;
 
-      },
-  handleChange:function(event){
-    this.setState({team: event.target.value});
-  },
-  render: function() {
-    return (
-      <div id="gameplayerlist" className="windowobject">
-        <ol id="gameroomplayerlist" className="tabBodyOptions selectable">
-          <li><h2>{this.props.username}</h2>
-            <select name="playerteam" id="gameroom_playerteam"
-              value={ this.state.team} onChange={this.handleChange}>
-              { this.state.showteam0 ? <option value="0">Team 0</option> : null }
-              { this.state.showteam1 ? <option value="1">Team 1</option> : null }
-              { this.state.showteam2 ? <option value="2">Team 2</option> : null }
-              { this.state.showteam3 ? <option value="3">Team 3</option> : null }
-              <option value="4">Observer</option>
-            </select>
-          </li>
-        </ol>
-      </div>
-      );
-  }
-}); // end GamePlayerList
 
 /**/

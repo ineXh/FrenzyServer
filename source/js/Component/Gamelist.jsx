@@ -1,4 +1,4 @@
-var GameItem = React.createClass({
+var GameListItem = React.createClass({
   rawMarkup: function() {
     var rawMarkup = marked(this.props.children.toString(), {sanitize: true});
     return { __html: rawMarkup };
@@ -33,7 +33,7 @@ window.GameList = React.createClass({
         console.log('GameList didmount')
         this.socket = communication.socket;
         this.socket.on('game list', this.onGameList);
-        //setTimeout(function(){communication.socket.emit('request game list');}, 2000);
+        //setTimeout(function(){communication.socket.emit('request game list');}, 500);
         //this.socket.emit('request chat', '');
         var list = this;
         $( ".selectable" ).selectable({
@@ -79,8 +79,8 @@ window.GameList = React.createClass({
     //console.log(this.state)
     var gameNodes = this.state.games.map(function(game, index){
     return (
-        <GameItem gamename={game.name} players={game.players} key={index}>
-        </GameItem>
+        <GameListItem gamename={game.name} players={game.players} key={index}>
+        </GameListItem>
       );
     });
     return (

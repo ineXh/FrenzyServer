@@ -18,6 +18,7 @@ function webClient(io, clients, gameserver){
         socket.on('request game list', onRequestGameList)
         socket.on('join game', onJoinGame)
         socket.on('leave game', onLeaveGame)
+        socket.on('GameRoom Change Team', onChangeTeam)
         socket.on('path', onPath);
         socket.on('spawn', onSpawn);
         socket.on('sync dead character', onSyncDeadCharacter)
@@ -63,7 +64,11 @@ function webClient(io, clients, gameserver){
         }
         function onLeaveGame(msg){
             console.log('leave game ');
-
+            gameserver.leaveGame(client);
+        }
+        function onChangeTeam(msg){
+            console.log('change team ' + msg)
+            client.game.changeTeam(client, msg);
         }
         function onPath(msg){
             //console.log(msg);
