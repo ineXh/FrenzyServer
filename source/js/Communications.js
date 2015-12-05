@@ -32,7 +32,7 @@ Communications.prototype = {
 	setupconnection:function(){
 		communication.sendClientInfo();
 		//this.socket.on('chat', onChat);
-		communication.socket.on('start info', onStartInfo);
+		communication.socket.on('joinserver info', onjoinServerInfo);
 		communication.socket.on('spawn existing', onSpawnExisting);
 		communication.socket.on('spawn', onSpawnExisting);
 		communication.socket.on('dead character', onDeadCharacter);
@@ -40,6 +40,8 @@ Communications.prototype = {
 		communication.socket.on('sync', onSync);
 		communication.socket.on('spawn period', onSpawnPeriod);
 		communication.socket.on('joinGameSuccess', onjoinGameSuccess)
+		communication.socket.on('start game', onstartGame)
+		//communication.socket.on('chat', onChat);
 		//communication.socket.on('game list', onGameList);
 	},
 
@@ -72,16 +74,42 @@ function leaveGame(){
 	communication.socket.emit('leave game');
 	menu.multiplayermenu.init_main();
 }
+function startGame(){
+	console.log('start game press')
+	communication.socket.emit('start game');
+}
+function onstartGame(msg){
+	console.log('onstartGame');
+	console.log(msg)
+	startlocation = msg.location;
+	menu.multiplayermenu.init_game();
 
+	//myteam = msg.team;
+	//myteamcolor = msg.color;
+
+
+}
 function sendChat(msg){
 	communication.socket.emit('chat', msg);
 }
 function onChat(msg){
-	console.log(msg)
+	/*console.log(msg)
 	addMessage(msg.author, msg.text,
-				   msg.color, new Date(msg.time));
+				   msg.color, new Date(msg.time));*/
+	console.log('get chat')
+    console.log(msg)
+    if(Object.prototype.toString.call( msg ) === '[object Array]'){
+    	msg.forEach(function(m){
+        	placechat(m)
+        })
+    }else{
+    	placechat(msg)
+	}
 }
+
+
 function onSpawnPeriod(msg){
+	console.log('onSpawnPeriod')
 	game.getTeam(myteam).spawn();
 	//console.log(msg)
 	//for(var i = 0; i < msg.teams.length; i++){
@@ -113,13 +141,13 @@ function onSpawnExisting(msg){
 	}
 	game.getTeam(msg.team).color = msg.color;
 }
-function onStartInfo(msg){
+function onjoinServerInfo(msg){
 	playerid = msg.id;
-	gamestate = GameState.InPlay;
-	myteam = msg.team;
-	myteamcolor = msg.color;
-	startlocation = msg.location;
-	game.startgame();
+	//gamestate = GameState.InPlay;
+	//myteam = msg.team;
+	//myteamcolor = msg.color;
+	//startlocation = msg.location;
+	//game.startgame();
 }
 function onPath(msg){
 	//console.log(msg)

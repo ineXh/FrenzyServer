@@ -19,6 +19,7 @@ function webClient(io, clients, gameserver){
         socket.on('join game', onJoinGame)
         socket.on('leave game', onLeaveGame)
         socket.on('GameRoom Change Team', onChangeTeam)
+        socket.on('start game', onStartGame)
         socket.on('path', onPath);
         socket.on('spawn', onSpawn);
         socket.on('sync dead character', onSyncDeadCharacter)
@@ -28,8 +29,6 @@ function webClient(io, clients, gameserver){
         function onConnect(){
             console.log('A webClient has connected.');
             //socket.emit('chat', 'Hi Client.');
-
-
         }
         function onDisconnect(){
             console.log('A webClient has disconnected.');
@@ -67,8 +66,11 @@ function webClient(io, clients, gameserver){
             gameserver.leaveGame(client);
         }
         function onChangeTeam(msg){
-            console.log('change team ' + msg)
+            //console.log('change team ' + msg)
             client.game.changeTeam(client, msg);
+        }
+        function onStartGame(){
+            client.game.startGame();
         }
         function onPath(msg){
             //console.log(msg);
@@ -83,7 +85,7 @@ function webClient(io, clients, gameserver){
                                      y: msg[0].y});
             client.path_points.push({x: msg[1].x,
                                      y: msg[1].y});
-            gameserver.path(client, msg);
+            client.game.path(client, msg);
         }
         function onSpawn(msg){
             //msg.x = msg.x / client.stage_width;
@@ -95,12 +97,12 @@ function webClient(io, clients, gameserver){
 
             msg.team = client.team;
             msg.color = client.color;
-            gameserver.spawn(client, msg);
+            client.game.spawn(client, msg);
         }
         function onSyncDeadCharacter(msg){
             msg.team = client.team;
 
-            gameserver.DeadCharacter(client, msg);
+            client.game.DeadCharacter(client, msg);
         }
         function onSyncCharacter(msg){
             //console.log('onSync')
@@ -117,7 +119,7 @@ function webClient(io, clients, gameserver){
                     }
                 }
             }
-            gameserver.sync(client, msg);
+            client.game.sync(client, msg);
         } // end onSync
 	}); // end io connection callback
 

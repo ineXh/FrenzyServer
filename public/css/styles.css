@@ -50,8 +50,8 @@
 }
 #chatwindow {
     position: absolute;
-    width: 10%; height: 10%;
-    left: 70%; top: 5%;
+    width: 50%; height: 30%;
+    left: 40%; top: 5%;
     box-shadow: rgba(0,0,0,0.6) 0px 0px 8px;
     border: 2px solid #6898DD;
 }
@@ -168,13 +168,13 @@ h4{
     /*background-color: #275494;*/
     border: 2px solid #6898DD;
     font-weight: bold;
-    width:70%;
-    height:70%;
+    width:40%;
+    height:40%;
     box-shadow: rgba(0,0,0,0.6) 0px 0px 8px;
     overflow: auto;
-    top: 120px;
+    top: 10%;
     /*bottom: 6px;*/
-    left: 60px;
+    left: 10%;
     opacity: 0.8;
 }
 #gamestartbutton{

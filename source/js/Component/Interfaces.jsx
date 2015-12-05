@@ -29,6 +29,7 @@ window.GameRoomInterface = React.createClass({
   },
   handleSubmitStart:function(e){
     e.preventDefault();
+    startGame();
   },
    handleSubmitBack:function(e){
     e.preventDefault();
@@ -49,6 +50,35 @@ window.myGameRoomInterface = React.createFactory(GameRoomInterface);
 window.render_mygameroomInterface = function() {
   ReactDOM.render(myGameRoomInterface({ foo: 'bar' }), document.getElementById('content'));
 }
+// //////////////////
+// InGame Interface
+// //////////////////
+window.InGameInterface = React.createClass({
+  componentDidMount: function(){
+    console.log('InGame didmount')
+    this.socket = communication.socket;
+  },
+  handleSubmitStart:function(e){
+    e.preventDefault();
+    startGame();
+  },
+   handleSubmitBack:function(e){
+    e.preventDefault();
+    leaveGame();
+  },
+  render: function() {
+    return (
+      <div className="ingameinterface">
+        <ChatMonitor />
+      </div>
+      );
+  }
+});
+window.myInGameInterface = React.createFactory(InGameInterface);
+window.render_myingameInterface = function() {
+  ReactDOM.render(myInGameInterface({ foo: 'bar' }), document.getElementById('content'));
+}
+
 // //////////////////
 // Empty Interface
 // //////////////////

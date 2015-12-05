@@ -27,6 +27,11 @@ MultiPlayerMenu.prototype = {
 		gamestate = GameState.GameRoom;
 		render_mygameroomInterface();
 	},
+	init_game: function(){
+		gamestate = GameState.InPlay;
+		game.startgame();
+		render_myingameInterface();
+	},
 	update: function(time){
 
 	},

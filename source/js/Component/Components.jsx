@@ -30,7 +30,7 @@ window.ChatMonitor = React.createClass({
 
     },
     componentDidMount: function(){
-        console.log('chat monitor didmount')
+        console.log('chat monitor did mount')
         this.socket = communication.socket;
         this.socket.on('chat', this.onChat);
         //this.socket.emit('request chat', '');
@@ -63,6 +63,10 @@ window.ChatMonitor = React.createClass({
           $( "#chatwindow.ui-draggable" ).draggable( "enable" );
 
         },false);
+    },
+    componentWillUnmount: function(){
+      console.log('chat monitor will unmount')
+      this.socket.removeListener('chat', this.onChat);
     },
     handleChange: function(event) {
         console.log(event)
