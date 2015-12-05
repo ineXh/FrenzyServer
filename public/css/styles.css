@@ -51,7 +51,7 @@
 #chatwindow {
     position: absolute;
     width: 10%; height: 10%;
-    left: 70%; top: 5%;        
+    left: 70%; top: 5%;
     box-shadow: rgba(0,0,0,0.6) 0px 0px 8px;
     border: 2px solid #6898DD;
 }
@@ -129,7 +129,7 @@ margin-left:10px;
 .ui-selected { background: #F39814; color: white; }
 /*ol .ui-widget-content {
   background: #2C3E50;
-    border: 1px solid #ddd;    
+    border: 1px solid #ddd;
 }*/
 .tabBodyOptions {
   /*background: #2C3E50;*/
@@ -182,11 +182,16 @@ h2 span{
   bottom: 20%;
   right: 20%;
 }
+#gamebackbutton{
+  position: absolute;
+  bottom: 10%;
+  right: 20%;
+}
 /*#selectable .ui-selecting { background: #FECA40; }
   #selectable .ui-selected { background: #F39814; color: white; }
   #selectable { list-style-type: none; margin: 0; padding: 0; width: 60%; }
   #selectable li { margin: 3px; padding: 0.4em; font-size: 1.4em; height: 18px; }*/
-  
+
 /*label{
   background: #34495E;
   height: 69px;

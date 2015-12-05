@@ -111,7 +111,13 @@ gameServer.prototype = {
         this.io.emit('chat', obj);
     },
     joinGame : function(player, index){
-        this.games[index].join(player)
+        player.game = this.games[index];
+        player.game.join(player)
+    },
+    leaveGame: function(player){
+        player.game.leave(player);
+        player.game = null;
+        this.send_game_list(player);
     },
     spawn: function(player, msg){
         //console.log('spawn')
@@ -167,9 +173,10 @@ gameServer.prototype = {
         });
     },
     send_game_list: function(player){
-        var msg = {games: []};
+        var msg = {games: [{}]};
         for(var i = 0; i < this.games.length; i++){
-            msg.games.push(this.games[i].getName());
+            msg.games.push({name    : this.games[i].getName(),
+                            players : this.games[i].getPlayers()});
         }
         //this.players.forEach(function(p){
             player.emit('game list', msg)

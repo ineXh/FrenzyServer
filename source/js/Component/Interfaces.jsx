@@ -3,7 +3,7 @@
 // ///////////////////////////
 window.MainInterface = React.createClass({
   componentDidMount: function(){
-        console.log('main didmount')        
+        console.log('main didmount')
       },
   render: function() {
     return (
@@ -24,21 +24,23 @@ window.render_mymainInterface = function() {
 // //////////////////
 window.GameRoomInterface = React.createClass({
   componentDidMount: function(){
-        console.log('gameroom didmount')
-        
-      },
-  handleSubmit:function(e){
+    console.log('gameroom didmount')
+    this.socket = communication.socket;
+  },
+  handleSubmitStart:function(e){
     e.preventDefault();
   },
+   handleSubmitBack:function(e){
+    e.preventDefault();
+    leaveGame();
+  },
   render: function() {
-    //<GameList/>
-    //console.log(username)
-    //var nam = "Cow"
     return (
       <div className="gameroominterface">
         <ChatMonitor />
         <GamePlayerList username={username}/>
-        <button id="gamestartbutton" onClick={this.handleSubmit}>Start Game</button>
+        <button id="gamestartbutton" onClick={this.handleSubmitStart}>Start Game</button>
+        <button id="gamebackbutton" onClick={this.handleSubmitBack}>Back</button>
       </div>
       );
   }

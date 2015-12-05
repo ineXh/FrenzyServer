@@ -60,8 +60,13 @@ function sendName(name){
 function joinGame(index){
 	if(index < 0) return;
 	communication.socket.emit('join game', index);
-	menu.multiplayermenu.init_gameroom();	
+	menu.multiplayermenu.init_gameroom();
 }
+function leaveGame(){
+	communication.socket.emit('leave game');
+	menu.multiplayermenu.init_main();
+}
+
 function sendChat(msg){
 	communication.socket.emit('chat', msg);
 }

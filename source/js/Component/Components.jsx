@@ -187,12 +187,10 @@ window.GameList = React.createClass({
     },
   onGameList:function(msg){
       //console.log('componentx get game list')
-      //this.state.chats.push(msg);
       //console.log(msg)
-      //this.forceUpdate();
       //this.setState({games: msg});
       msg.games.forEach(function(g){
-        placegame(g, 1);
+        placegame(g);
       });
 
     },
@@ -240,7 +238,7 @@ window.GameList = React.createClass({
     joinGame(this.state.index)
     //console.log('handle Submit');
     return;
-  },  
+  },
   render: function() {
     return (
       <div id="gamelist" className=" windowobject">
@@ -272,10 +270,10 @@ window.GamePlayerList = React.createClass({
                 showteam2: true, showteam3: true};
     },
   onGamePlayerList:function(msg){
-    console.log(msg)     
-      /*msg.players.forEach(function(p){
-        //placegame(g, 1);
-      });*/
+    console.log(msg)
+      msg.players.forEach(function(p){
+        placeplayer(p);
+      });
     },
   componentDidMount: function(){
         console.log('GamePlayerList didmount')
@@ -283,17 +281,17 @@ window.GamePlayerList = React.createClass({
         this.socket.on('game player list', this.onGameList);
         //this.socket.emit('request chat', '');
         var list = this;
-        
-      },   
+
+      },
   handleChange:function(event){
     this.setState({team: event.target.value});
-  }, 
+  },
   render: function() {
     return (
       <div id="gameplayerlist" className="windowobject">
-        <ol id="selectable" className="tabBodyOptions selectable">
+        <ol id="gameroomplayerlist" className="tabBodyOptions selectable">
           <li><h2>{this.props.username}</h2>
-            <select name="playerteam" id="gameroom_playerteam" 
+            <select name="playerteam" id="gameroom_playerteam"
               value={ this.state.team} onChange={this.handleChange}>
               { this.state.showteam0 ? <option value="0">Team 0</option> : null }
               { this.state.showteam1 ? <option value="1">Team 1</option> : null }
@@ -301,8 +299,8 @@ window.GamePlayerList = React.createClass({
               { this.state.showteam3 ? <option value="3">Team 3</option> : null }
               <option value="4">Observer</option>
             </select>
-          </li>          
-        </ol>        
+          </li>
+        </ol>
       </div>
       );
   }
