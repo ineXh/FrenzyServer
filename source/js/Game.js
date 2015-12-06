@@ -9,11 +9,11 @@ function Game(){
 Game.prototype = {
     init: function(){
         this.minimap = new MiniMap();
+        this.ui = new GameUI();
         this.collision_count = 0;
         this.collision_time = 1;
         this.updateOpponent_count = 0;
         this.updateOpponent_time = 10;
-
     },
     checkcollisions :function(){
         this.collision_count++;
@@ -123,6 +123,7 @@ Game.prototype = {
         })
         //center = this.getTeam(myteam).characters[CharacterType.Cow][0].pos.clone();
         this.minimap.init();
+        this.ui.init();
 
     },
     startgame: function(){
@@ -159,6 +160,7 @@ Game.prototype = {
 
     //center = this.getTeam(myteam).characters[CharacterType.Cow][0].pos;
     this.minimap.init();
+    this.ui.init();
 
     },
     onTouchStart: function(){

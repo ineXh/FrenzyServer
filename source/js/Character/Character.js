@@ -195,6 +195,7 @@ Cow.prototype.create = function(){
 	this.front_attack_frame = 8;
 	this.back_walk_frame = 14;
 	this.back_attack_frame = 22;
+	this.total_frame = cow_front_frames.length;
 
 	this.pos = new PVector(0,0);
 	this.vel = new PVector(0,0);
@@ -254,6 +255,20 @@ Cow.prototype.animationdisplay = function(){
 			//if(this.sprite.currentFrame >= this.back_walk_frame-1)
 			//this.sprite.gotoAndPlay(this.front_attack_frame)
 		break;
+		case AnimationType.Walk_Back:
+			if(this.sprite.currentFrame >= this.back_attack_frame-1)
+				this.sprite.gotoAndPlay(this.back_walk_frame)
+		break;
+		case AnimationType.Attack_Back:
+			if(this.sprite.currentFrame >= this.total_frame){
+				this.attacking = false;
+				this.animationtype = AnimationType.Walk_Back;
+				if(this.opponent != null){
+					this.opponent.hp -= 1;
+					this.opponent.healthbar.set(this.opponent.hp);
+				}
+			}
+		break;
 	}
 }
 Cow.prototype.clean = function(){
@@ -264,16 +279,28 @@ Cow.prototype.clean = function(){
 Cow.prototype.attack = function(){
 	if(!this.attacking){
 		if(this.animationtype != AnimationType.Attack_Front)
-		this.sprite.gotoAndPlay(this.front_attack_frame);
-		this.animationtype = AnimationType.Attack_Front;
+		//if(this.opponent.pos.y >= this.pos.y){
+			this.sprite.gotoAndPlay(this.front_attack_frame);
+			this.animationtype = AnimationType.Attack_Front;
+		//}else{
+		//	this.sprite.gotoAndPlay(this.back_attack_frame);
+		//	this.animationtype = AnimationType.Attack_Back;
+		//}
 		this.attacking = true;
 	}
 }
 Cow.prototype.update = function(path){
 	if(path != null && !this.attacking){
 		applyForce.call(this, path.follow(this));
-		if(this.accel.mag() > big_dim/10)
-		this.animationtype = AnimationType.Walk_Front;
+		if(this.accel.mag() > big_dim/10){
+			//console.log('this.accel.y ' + this.accel.y)
+			//if(this.accel.y >= 0){
+				this.animationtype = AnimationType.Walk_Front;	
+			//}else{
+				//console.log('Walk_Back')
+			//	this.animationtype = AnimationType.Walk_Back;	
+			//} 
+		}		
 	}
 	if(this.opponent != null && this.accel.mag() < big_dim/1000
 		&& !this.attacking){
@@ -286,6 +313,8 @@ Cow.prototype.update = function(path){
 			if(this.opponent != null)
 			applyForce.call(this, this.seek(this.opponent.pos));
 			this.animationtype = AnimationType.Walk_Front;
+			//if(this.accel.y >= 0) this.animationtype = AnimationType.Walk_Front;
+			//else this.animationtype = AnimationType.Walk_Back;
 		}else{
 			this.attack();
 		}
@@ -304,8 +333,13 @@ Cow.prototype.update = function(path){
 	    if(this.border)   this.stayinBorder();
 	}
 	if(this.opponent!= null){
-		if(this.opponent.pos.x > this.pos.x) this.sprite.scale.x = -Math.abs(this.sprite.scale.x);
-		else this.sprite.scale.x = Math.abs(this.sprite.scale.x);
+		//if(this.animationtype == AnimationType.Walk_Front || this.animationtype == AnimationType.Attack_Front){
+			if(this.opponent.pos.x > this.pos.x) this.sprite.scale.x = -Math.abs(this.sprite.scale.x);
+			else this.sprite.scale.x = Math.abs(this.sprite.scale.x);	
+		//}else{
+		//	if(this.opponent.pos.x > this.pos.x) this.sprite.scale.x = Math.abs(this.sprite.scale.x);
+		//	else this.sprite.scale.x = -Math.abs(this.sprite.scale.x);	
+		//}		
 	}
 	//if(this.vel.x < 0) this.sprite.scale.x = Math.abs(this.sprite.scale.x);
 	//else this.sprite.scale.x = -Math.abs(this.sprite.scale.x);
