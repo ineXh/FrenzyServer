@@ -30,7 +30,18 @@ GameState.GameRoom		= 9;
 GameState.GetReady		= 10;
 GameState.StartGame		= 11;
 GameState.InPlay		= 12;
+GameState.InGame        = 12;
 GameState.GameOver		= 100;
+
+function getGameState(gamestate){
+    switch(gamestate){
+        case GameState.GameRoom:
+            return 'GameRoom'
+        case GameState.InGame:
+            return 'InGame'
+    }
+    return ''
+}
 
 function GameMode(){}
 GameMode.SinglePlayer = 0;

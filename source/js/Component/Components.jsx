@@ -63,6 +63,9 @@ window.ChatMonitor = React.createClass({
           $( "#chatwindow.ui-draggable" ).draggable( "enable" );
 
         },false);
+
+        var cb = document.getElementById("chatinput");
+        cb.focus();
     },
     componentWillUnmount: function(){
       console.log('chat monitor will unmount')
@@ -168,6 +171,10 @@ window.loginWindow = React.createClass({
           sendName(nameinput);
           //this.refs.nameinput.value = '';
           return;
+  },
+  componentDidMount: function(){
+    var cb = document.getElementById("nameinput");
+    cb.focus();
   },
   render: function() {
     return (

@@ -245,6 +245,22 @@ Team.Team1 = 1;
 Team.Team2 = 2;
 Team.Team3 = 3;
 Team.Observer = 4;
+function getTeam(team){
+    //console.log(team)
+    switch(team){
+        case Team.Team0:
+            return 'Team 0';
+        case Team.Team1:
+            return 'Team 1';
+        case Team.Team2:
+            return 'Team 2';
+        case Team.Team3:
+            return 'Team 3';
+        case Team.Observer:
+            return 'Observer';
+    }
+    return '';
+}
 
 Team.prototype = {
     init: function(){
@@ -337,6 +353,7 @@ Team.prototype = {
 
     sendSyncCharacter:function(){
         if(gamemode != GameMode.MultiPlayer) return;
+        if(gamestate != GameState.InPlay) return;
         if(this.team != myteam) return;
         this.sync_count++;
         if(this.sync_count < this.sync_time) return;

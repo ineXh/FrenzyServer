@@ -5,8 +5,11 @@ var GamePlayerListItem = React.createClass({
   },
 
   render: function() {
+    var team = getTeam(parseInt(this.props.team));
+    //console.log(this.props.team)
+    //console.log(team)
     return (
-      <li><h2>{this.props.name} - Team {this.props.team}</h2></li>
+      <li><h2>{this.props.name} - {team}</h2></li>
     );
   }
 });
@@ -20,16 +23,21 @@ window.GamePlayerList = React.createClass({
   onGamePlayerList:function(msg){
     console.log('onGamePlayerList')
     console.log(msg)
-    this.setState({players: msg.players,
-                  showteam0: true, showteam1: true,
-                  showteam2: true, showteam3: true});
-    var list = this;
+
+    var showteam0 = true;
+    var showteam1 = true;
+    var showteam2 = true;
+    var showteam3 = true;
+
     msg.players.forEach(function(p){
-      if(p.team == Team.Team0) list.state.showteam0 = false;
-      if(p.team == Team.Team1) list.state.showteam1 = false;
-      if(p.team == Team.Team2) list.state.showteam2 = false;
-      if(p.team == Team.Team3) list.state.showteam3 = false;
+      if(p.team == Team.Team0 && p.id != playerid) showteam0 = false;
+      if(p.team == Team.Team1 && p.id != playerid) showteam1 = false;
+      if(p.team == Team.Team2 && p.id != playerid) showteam2 = false;
+      if(p.team == Team.Team3 && p.id != playerid) showteam3 = false;
     });
+    this.setState({players: msg.players,
+                  showteam0: showteam0, showteam1: showteam1,
+                  showteam2: showteam2, showteam3: showteam3});
 
   },
   componentDidMount: function(){
@@ -42,10 +50,11 @@ window.GamePlayerList = React.createClass({
     },
   handleChange:function(event){
     this.setState({team: event.target.value});
-    console.log(event.target.value)
+    //console.log(event.target.value)
     this.socket.emit('GameRoom Change Team', event.target.value);
   },
   render: function() {
+
     var playerNodes = this.state.players.map(function(player, index){
     return (
         <GamePlayerListItem name={player.name} team={player.team} key={index}>

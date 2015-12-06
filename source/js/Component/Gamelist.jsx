@@ -5,10 +5,9 @@ var GameListItem = React.createClass({
   },
 
   render: function() {
+    var state = getGameState(this.props.state);//'GameRoom';
     return (
-      <li><h2>{this.props.gamename}</h2><h4>{this.props.players}/4Players</h4></li>
-
-
+      <li><h2>{this.props.gamename}</h2><h4>{state} - {this.props.players}/4Players</h4></li>
     );
   }
 });
@@ -77,9 +76,11 @@ window.GameList = React.createClass({
   },
   render: function() {
     //console.log(this.state)
+    //{game.state}
+
     var gameNodes = this.state.games.map(function(game, index){
     return (
-        <GameListItem gamename={game.name} players={game.players} key={index}>
+        <GameListItem gamename={game.name} players={game.players} state={game.state} key={index}>
         </GameListItem>
       );
     });

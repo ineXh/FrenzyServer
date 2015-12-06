@@ -18,6 +18,11 @@ define("NE", 1);
 define("SW", 2);
 define("SE", 3);
 
+// Client State
+define("MultiPlayerMenu", 8);
+define("GameRoom", 9);
+define("InGame", 12);
+
 // Client Status
 define("Ready", 50);
 define("NotReady", 51);

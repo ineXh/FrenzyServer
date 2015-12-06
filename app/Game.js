@@ -6,8 +6,9 @@ function htmlEntities(str) {
                       .replace(/>/g, '&gt;').replace(/"/g, '&quot;');
 }
 
-function Game(io, name){
+function Game(io, server, name){
     this.io = io;
+    this.server = server;
     this.name = name;
     this.init();
     //return this;
@@ -20,13 +21,17 @@ Game.prototype = {
         this.character_ids = [];
         for(var i = 0; i < 10000; i++) this.character_ids.push(i);
         this.spawncounter = new SpawnCounter();
-        this.gameStarted = false;
+        this.state = enums.GameRoom;
+        //this.gameStarted = false;
     }, // end init
     getName:function(){
         return this.name;
     },
     getPlayers:function(){
         return this.players.length;
+    },
+    getState: function(){
+        return this.state;
     },
     join : function(player){
         console.log(player.name + ' joins ' + this.name);
@@ -58,12 +63,14 @@ Game.prototype = {
             if(p.team != enums.Observer){
                 p.location = game.locations.shift();
                 msg.location = p.location;
+                game.spawncounter.add(p.team, 5);
             }
             p.emit('start game', msg);
-            game.spawncounter.add(p.team, 5);
         });
         setTimeout(this.spawnPeriodUnit.bind(this), 5000);
-        this.gameStarted = true;
+        //this.gameStarted = true;
+        this.state = enums.InGame;
+        this.server.send_game_list(null);
     },
     changeTeam : function(player, team){
         var index = -1;
@@ -76,6 +83,7 @@ Game.prototype = {
             this.teams.push(player.team);
             player.team = team;
         }else if(team == enums.Observer){
+            if(player.team != enums.Observer) this.teams.push(player.team);
             player.team = team;
         }
         this.updateplayerlist();
@@ -84,7 +92,7 @@ Game.prototype = {
         console.log('updateplayerlist')
         var msg = {players: []};
         for(var i = 0; i < this.players.length; i++){
-            msg.players.push({name: this.players[i].name, team: this.players[i].team});
+            msg.players.push({name: this.players[i].name, team: this.players[i].team, id: this.players[i].id});
         }
         this.players.forEach(function(p){
             p.emit('game player list', msg);

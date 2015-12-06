@@ -30,11 +30,11 @@ function gameServer(io, clients, games){
 gameServer.prototype = {
     init: function(){
         var Game = require('./Game.js');
-        game = new Game(this.io, 'Game 1');
+        game = new Game(this.io, this, 'Game 1');
         this.games.push(game)
-        game = new Game(this.io, 'Game 2');
+        game = new Game(this.io, this, 'Game 2');
         this.games.push(game)
-        game = new Game(this.io, 'Game 3');
+        game = new Game(this.io, this, 'Game 3');
         this.games.push(game)
 
         var obj = {
@@ -63,6 +63,7 @@ gameServer.prototype = {
         player.team = teams.shift();
         player.location = locations.shift();
 
+        player.state = enums.MultiPlayerMenu;
         this.send_joinserver_info(player);
         this.send_game_list(player);
         //console.log('start location ' + player.location);
@@ -102,10 +103,15 @@ gameServer.prototype = {
     },
     joinGame : function(player, index){
         if(index < 0) return;
+        if(this.games[index].getState() == enums.InGame) return;
         player.game = this.games[index];
-        player.game.join(player)
+        player.state = enums.GameRoom;
+        player.game.join(player);
+        this.send_game_list(null);
+
     },
     leaveGame: function(player){
+        player.state = enums.MultiPlayerMenu;
         player.game.leave(player);
         player.game = null;
         var server = this;
@@ -116,10 +122,19 @@ gameServer.prototype = {
         var msg = {games: []};
         for(var i = 0; i < this.games.length; i++){
             msg.games.push({name    : this.games[i].getName(),
-                            players : this.games[i].getPlayers()});
+                            players : this.games[i].getPlayers(),
+                            state   : this.games[i].getState()});
+        }
+        if(player == null){
+            this.players.forEach(function(p){
+                //console.log('player state ' + p.state)
+                if(p.state == enums.MultiPlayerMenu) p.emit('game list', msg)
+            });
+        }else{
+            player.emit('game list', msg)
         }
         //this.players.forEach(function(p){
-            player.emit('game list', msg)
+
         //});
     }, // end send_game_list
     send_joinserver_info: function(player){
