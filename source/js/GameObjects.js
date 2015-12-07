@@ -13,6 +13,7 @@ GameObjects.prototype = {
         .add('assets/cow/3.png')
         .add('assets/cow/4.png')
         .add('assets/cow/5.png')
+        .add( 'assets/space.fnt')
         .load(this.onassetsloaded.bind(this));
 
 	},
