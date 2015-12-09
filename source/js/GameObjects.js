@@ -14,6 +14,11 @@ GameObjects.prototype = {
         .add('assets/cow/4.png')
         .add('assets/cow/5.png')
         .add( 'assets/space.fnt')
+        .add( 'assets/ataurusp.fnt')
+        .add( 'assets/ataurus3d.fnt')
+        .add( 'assets/android.fnt')
+        .add( 'assets/fipps.fnt')
+        .add( 'assets/pixel-love.fnt')
         .load(this.onassetsloaded.bind(this));
 
 	},
