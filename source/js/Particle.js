@@ -98,16 +98,17 @@ ParticlesPool.prototype = {
 
 function Particles(){
     this.create();
-    this.container = new PIXI.Container();
+
     this.pool = new ParticlesPool();
     this.createLookupTables();
 }
 Particles.prototype = {
 	create: function(){
 		// Particles on the stage Currently, Gained when borrowed from the pool
-		this.particles = [];
+		this.container = new PIXI.Container();
+        this.particles = [];
 		this.queue_particles = [];
-        //this.init();
+        this.init();
 	},
     init: function(){
         stage0.addChild(this.container);

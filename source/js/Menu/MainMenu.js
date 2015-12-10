@@ -147,7 +147,8 @@ MainMenu.prototype = {
 								//this.sprite.interactive = true;
 								//this.sprite.on('mousedown'        , playbuttonpress.bind(menu));
 								//this.sprite.on('touchstart'       , playbuttonpress.bind(menu));
-								this.sprite.tint = 0xffd422;
+								//this.sprite.tint = 0xffd422;
+								this.sprite.tint = 0xFFFFFF;
 
 								},
 								function(){
@@ -307,7 +308,7 @@ var playbuttonrelease = function(){
 	//gamestate = GameState.InPlay;
 	menu.mainmenu.clean();
 	stage0.addChild(stage);
-	gamemode = GameMode.SinglePlayer;	
+	gamemode = GameMode.SinglePlayer;
 	game.startsingle();
 	//menu.clean();
 	//icon_play.does_not_die  = false;

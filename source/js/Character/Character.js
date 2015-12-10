@@ -222,6 +222,7 @@ Cow.prototype.create = function(){
     this.maxhp = 5;
     this.hp = this.maxhp;
     this.healthbar = new HealthBar(this);
+    this.dmg = 1;
     this.status = [];
 
 }
@@ -247,7 +248,9 @@ Cow.prototype.animationdisplay = function(){
 				this.attacking = false;
 				this.animationtype = AnimationType.Walk_Front;
 				if(this.opponent != null){
-					this.opponent.hp -= 1;
+					if(this.opponent.hp <= this.dmg && this.opponent.hp > 0) getCoin(this.team, this.opponent);
+					this.opponent.hp -= this.dmg;
+
 					this.opponent.healthbar.set(this.opponent.hp);
 				}
 			}
@@ -264,7 +267,8 @@ Cow.prototype.animationdisplay = function(){
 				this.attacking = false;
 				this.animationtype = AnimationType.Walk_Back;
 				if(this.opponent != null){
-					this.opponent.hp -= 1;
+					if(this.opponent.hp < this.dmg && this.opponent.hp > 0) getCoin(this.team, this.opponent);
+					this.opponent.hp -= this.dmg;
 					this.opponent.healthbar.set(this.opponent.hp);
 				}
 			}
@@ -295,12 +299,12 @@ Cow.prototype.update = function(path){
 		if(this.accel.mag() > big_dim/10){
 			//console.log('this.accel.y ' + this.accel.y)
 			//if(this.accel.y >= 0){
-				this.animationtype = AnimationType.Walk_Front;	
+				this.animationtype = AnimationType.Walk_Front;
 			//}else{
 				//console.log('Walk_Back')
-			//	this.animationtype = AnimationType.Walk_Back;	
-			//} 
-		}		
+			//	this.animationtype = AnimationType.Walk_Back;
+			//}
+		}
 	}
 	if(this.opponent != null && this.accel.mag() < big_dim/1000
 		&& !this.attacking){
@@ -308,7 +312,7 @@ Cow.prototype.update = function(path){
         if(this.seekOpponent_count < this.seekOpponent_time) return;
         this.seekOpponent_count = 0;
         this.opponent_dist = findDist(this.pos, this.opponent.pos);
-		
+
 		if(this.opponent_dist >= (this.r*3/4 + this.opponent.r*3/4)){
 			if(this.opponent != null)
 			applyForce.call(this, this.seek(this.opponent.pos));
@@ -335,11 +339,11 @@ Cow.prototype.update = function(path){
 	if(this.opponent!= null){
 		//if(this.animationtype == AnimationType.Walk_Front || this.animationtype == AnimationType.Attack_Front){
 			if(this.opponent.pos.x > this.pos.x) this.sprite.scale.x = -Math.abs(this.sprite.scale.x);
-			else this.sprite.scale.x = Math.abs(this.sprite.scale.x);	
+			else this.sprite.scale.x = Math.abs(this.sprite.scale.x);
 		//}else{
 		//	if(this.opponent.pos.x > this.pos.x) this.sprite.scale.x = Math.abs(this.sprite.scale.x);
-		//	else this.sprite.scale.x = -Math.abs(this.sprite.scale.x);	
-		//}		
+		//	else this.sprite.scale.x = -Math.abs(this.sprite.scale.x);
+		//}
 	}
 	//if(this.vel.x < 0) this.sprite.scale.x = Math.abs(this.sprite.scale.x);
 	//else this.sprite.scale.x = -Math.abs(this.sprite.scale.x);

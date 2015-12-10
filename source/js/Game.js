@@ -417,6 +417,17 @@ var getstartlocation = function(startlocation){
     }
     return loc;
 } // end getstartlocation
-var getCoin = function(){
-
+var getCoin = function(team, opponent){
+    //particles.spawn({x: MousePos.stage_x_pct*stage_width, y:MousePos.stage_y_pct*stage_height,
+    if(team == myteam){
+        particles.spawn({x: opponent.pos.x, y: opponent.pos.y,
+                     lifespan_d: 10,
+                     ax: getRandomArbitrary(-1, 1)*-width*0.001,
+                     ay: getRandomArbitrary(0.5, 1)*-height*0.001,
+                     rs: dim*0.025,
+                     re: dim*0.025,
+                      container: stage},//particles.container
+                     ParticleType.COIN);
+    }
+    game.teams[team].coins++;
 }
