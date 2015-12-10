@@ -9,7 +9,7 @@ function Game(){
 Game.prototype = {
     init: function(){
         this.minimap = new MiniMap();
-        this.ui = new GameUI();
+        this.ui = new GameUI(this);
         this.collision_count = 0;
         this.collision_time = 1;
         this.updateOpponent_count = 0;
@@ -104,6 +104,7 @@ Game.prototype = {
             team.update();
         });
         this.minimap.update();
+        this.ui.update();
     },
     getTeam: function(team){
         return this.teams[team];
@@ -241,6 +242,8 @@ function Team(team){
     this.spawn_i = 0;
     this.init();
     this.max_unit_count = 50;
+
+    this.coins = 0;
 }
 Team.Team0 = 0;
 Team.Team1 = 1;
@@ -414,3 +417,6 @@ var getstartlocation = function(startlocation){
     }
     return loc;
 } // end getstartlocation
+var getCoin = function(){
+
+}

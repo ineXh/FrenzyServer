@@ -168,6 +168,7 @@ ParticleType.BACK       = 1;
 ParticleType.TEXT		= 2;
 ParticleType.CHARGEFLAME 	= 3;
 ParticleType.ICON 		= 4;
+ParticleType.COIN      = 5;
 
 function BallType(){}
 BallType.Draw			= 0;

@@ -77,6 +77,7 @@ function update(){
         menu.update(time);
         game.update();
         if(characters != undefined) characters.update(time);
+        particles.update(time);
     }
 }
 

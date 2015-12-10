@@ -32,6 +32,7 @@ var game;
 var gameobjects;
 var characters;
 var gameitems;
+var particles;
 var menu;
 var path;
 
@@ -42,6 +43,7 @@ var arrow_line_texture;
 
 var hut_texture;
 var cow_texture;
+var coin_texture;
 
 var cow_front_frames = [];
 var cow_front_attack_frames = [];

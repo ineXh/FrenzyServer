@@ -83,6 +83,15 @@ function onTouchStart(event){
     //characters.spawn({x: MousePos.stage_x_pct*stage_width, y:MousePos.stage_y_pct*stage_height}, CharacterType.Hut);
 	/*characters.spawn({x: MousePos.stage_x_pct*stage_width, y:MousePos.stage_y_pct*stage_height}, CharacterType.Cow);
 	communication.socket.emit('spawn', {x: MousePos.stage_x_pct, y:MousePos.stage_y_pct});*/
+
+  particles.spawn({x: MousePos.stage_x_pct*stage_width, y:MousePos.stage_y_pct*stage_height,
+                 lifespan_d: 10,
+                 ax: getRandomArbitrary(-1, 1)*-width*0.001,
+                 ay: getRandomArbitrary(0.5, 1)*-height*0.001,
+                 rs: dim*0.02,
+                 re: dim*0.04,
+                  container: stage0},
+                 ParticleType.COIN);
 } // end onTouchStart
 function onTouchMove(event){
     event.preventDefault();

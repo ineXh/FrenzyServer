@@ -13,6 +13,7 @@ GameObjects.prototype = {
         .add('assets/cow/3.png')
         .add('assets/cow/4.png')
         .add('assets/cow/5.png')
+        .add('assets/coin.png')
         .add( 'assets/space.fnt')
         .add( 'assets/ataurusp.fnt')
         .add( 'assets/ataurus3d.fnt')
@@ -26,6 +27,7 @@ GameObjects.prototype = {
 		console.log("onassetsloaded")
 		cow_texture = new PIXI.Texture.fromImage("assets/cow.png");
         hut_texture  = PIXI.Texture.fromFrame("hut_142.png");
+        coin_texture = PIXI.Texture.fromFrame("assets/coin.png");
 		arrow_line_texture = PIXI.Texture.fromFrame("arrow_line.png");
 		arrow_head_texture = PIXI.Texture.fromFrame("arrow_head.png");
 
@@ -54,6 +56,7 @@ GameObjects.prototype = {
 
         menu.mainmenu.playlogo();
         //startChat();
+        particles = new Particles();
 
 		assetsloaded = true;
 	},

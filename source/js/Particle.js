@@ -7,8 +7,9 @@ ParticlesPool.prototype = {
 	loadPool: function(){
 		//this.createChargeFlame();
 		//this.createFlame();
-		this.createText();
-		this.createIcon();
+		//this.createText();
+		//this.createIcon();
+        this.createCoin();
 	},
 	createIcon:function(){
 		this.Icons = [];
@@ -45,6 +46,34 @@ ParticlesPool.prototype = {
 		this.flames.push(particle);
 		//console.log("this.flames.length: " + this.flames.length);
 	},
+
+    createCoin: function(){
+        this.coins = [];
+        this.addCoinSprites(5);
+    },
+    addCoinSprites : function(amount) {
+      for (var i = 0; i < amount; i++){
+        var sprite = new PIXI.Sprite(coin_texture);
+        //sprite.tint = RGBColor(getRandomInt(230, 255), getRandomInt(100, 200), 0);
+        //sprite.tint = 0xFFFFFF;
+        sprite.anchor.x = 0.5;
+        sprite.anchor.y = 0.5;
+        //clr = color(random(200,255),random(100,255),0);
+        var particle = new Particle(null, ParticleType.COIN, sprite);
+        this.coins.push(particle);
+      }
+    },
+    borrowCoin : function(){
+        //console.log("borrow coin");
+        if(this.coins.length >= 1) return this.coins.shift();
+        else return null;
+    },
+    returnCoin: function(particle){
+        //console.log("return flame");
+        this.coins.push(particle);
+        //console.log("this.coins.length: " + this.coins.length);
+    },
+
 	createText: function(){
 		this.texts = [];
 		this.addText(8);
@@ -68,16 +97,21 @@ ParticlesPool.prototype = {
 }
 
 function Particles(){
-    this.init();
+    this.create();
+    this.container = new PIXI.Container();
     this.pool = new ParticlesPool();
     this.createLookupTables();
 }
 Particles.prototype = {
-	init: function(){
+	create: function(){
 		// Particles on the stage Currently, Gained when borrowed from the pool
 		this.particles = [];
 		this.queue_particles = [];
+        //this.init();
 	},
+    init: function(){
+        stage0.addChild(this.container);
+    },
 	getLength: function(){
 		return this.particles.length;
 	},
@@ -139,10 +173,12 @@ Particles.prototype = {
 	createLookupTables: function(){
 		this.borrowParticleLookup = [];
 		this.borrowParticleLookup[ParticleType.FLAME] = this.pool.borrowFlame;
+        this.borrowParticleLookup[ParticleType.COIN] = this.pool.borrowCoin;
 		this.borrowParticleLookup[ParticleType.TEXT] = this.pool.borrowText;
 		this.borrowParticleLookup[ParticleType.ICON] = this.pool.borrowIcon;
 		this.returnParticleLookup = [];
 		this.returnParticleLookup[ParticleType.FLAME] = this.pool.returnFlame;
+        this.returnParticleLookup[ParticleType.COIN] = this.pool.returnCoin;
 		this.returnParticleLookup[ParticleType.TEXT] = this.pool.returnText;
 		this.returnParticleLookup[ParticleType.ICON] = this.pool.returnIcon;
 	},
@@ -265,8 +301,10 @@ Particle.prototype = {
 	if(input.does_not_die != null) this.does_not_die = input.does_not_die;
 	//console.log('this.does_not_die' + this.does_not_die)
 	if(input.container != undefined){
-		input.container.addChild(this.sprite);
+        this.container = input.container;
+		this.container.addChild(this.sprite);
 	}else{
+        this.container = stage;
 		stage.addChild(this.sprite);
 	}
   }, // end particle_init
@@ -276,7 +314,7 @@ Particle.prototype = {
   	this.lifespan_d = null;
   	this.index = 0;
   	if(this.input.play) this.sprite.stop();
-  	stage.removeChild(this.sprite);
+  	this.container.removeChild(this.sprite);
   },
   reset:function(){
 
