@@ -49,6 +49,9 @@ var hut_texture;
 var cow_texture;
 var coin_texture;
 var rect_texture;
+var attack_upgrade_texture;
+var defense_upgrade_texture;
+var speed_upgrade_texture;
 
 var cow_front_frames = [];
 var cow_front_attack_frames = [];

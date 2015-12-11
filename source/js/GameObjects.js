@@ -15,6 +15,9 @@ GameObjects.prototype = {
         .add('assets/cow/5.png')
         .add('assets/coin.png')
         .add('assets/rect.png')
+        .add('assets/attack_upgrade_lo.png')
+        .add('assets/defense_upgrade_lo.png')
+        .add('assets/speed_upgrade_lo.png')
         .add( 'assets/space.fnt')
         .add( 'assets/ataurusp.fnt')
         .add( 'assets/ataurus3d.fnt')
@@ -30,6 +33,10 @@ GameObjects.prototype = {
         hut_texture  = PIXI.Texture.fromFrame("hut_142.png");
         coin_texture = PIXI.Texture.fromFrame("assets/coin.png");
         rect_texture = PIXI.Texture.fromImage("assets/rect.png");
+        attack_upgrade_texture = PIXI.Texture.fromImage("assets/attack_upgrade_lo.png");
+        defense_upgrade_texture = PIXI.Texture.fromImage("assets/defense_upgrade_lo.png");
+        speed_upgrade_texture = PIXI.Texture.fromImage("assets/speed_upgrade_lo.png");
+
 		arrow_line_texture = PIXI.Texture.fromFrame("arrow_line.png");
 		arrow_head_texture = PIXI.Texture.fromFrame("arrow_head.png");
 
