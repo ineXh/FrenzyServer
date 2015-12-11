@@ -62,11 +62,14 @@ Hut.prototype.create = function(){
     this.rect_container.addChild(this.speed_sprite);
 
     this.progress = new PIXI.Graphics();
-    this.progress.lineStyle(width/200, 0x00, 1);
+    //this.progress.lineStyle(width/200, 0x00, 1);
     this.progress_angle = 0;
     this.progressed = true;
-    this.progress.beginFill(0x000000, 0.5);
-    this.progress.arc(0,0, this.attack_sprite.width/2, 0, PI, false);
+    this.progress.beginFill(0xFF0000, 0.5);
+    //this.progress.arc(0,0, this.attack_sprite.width/2, 0, PI, false);
+    this.progress.moveTo(100, 100)
+    this.progress.arcTo(100,50,150,50,25)
+    this.progress.endFill();
     //this.progress.drawRect(0, 0, stage_width, stage_height);
     this.rect_container.addChild(this.progress);
 
@@ -154,7 +157,7 @@ Hut.prototype.clean = function(){
 Hut.prototype.update = function(path){
     this.dropping();
     this.popping();
-    //this.progressing();
+    this.progressing();
     this.healthbar.update();
     if(this.hp <= 0) this.Dead = true;
 }
@@ -172,17 +175,35 @@ Hut.prototype.progressing = function(){
     if(this.progressed) return;
     //console.log('this.progress_angle ' + this.progress_angle)
     this.progress.clear();
-    //this.progress.lineStyle(this.attack_sprite.width/20, 0x00, 1);
-    this.progress.beginFill(0x000000, 0.5);
-    this.progress_angle += PI/20;
+    this.progress.lineStyle(width/200, 0x00, 1);
+    this.progress.beginFill(0xFF0000, 0.5);
 
-    this.progress.arc(0,0, this.attack_sprite.width/2, 0, PI/4, false);
+    this.i++;
+    count += 0.1;
+    //this.progress.arc(0,0, this.attack_sprite.width/2, 0, PI, false);
+    this.progress.moveTo(100, 100)
+    this.progress.arcTo(100,50,150,50 + count,25)
+    //this.progress.currentPath= null
+    //this.progress.lineTo(100,this.i);
+    //this.progress.drawRect(0, 0, this.i, 100);
+    this.progress.endFill();
+
+    //this.progress.lineStyle(this.attack_sprite.width/20, 0x00, 1);
+    /*this.progress.beginFill(0x000000, 0.5);
+    this.progress_angle += PI/200;
+
+
+
+    this.progress.arc(0,0, this.attack_sprite.width/2, 0, 6, false);
+    this.progress.endFill();*/
 } // end Hut progressing
+var count = 0;
 
 Hut.prototype.attack_touchstart = function(e){
-    /*console.log('attack_touchstart')
+    console.log('attack_touchstart')
     //this.progress.drawRect(0, 0, stage_width, stage_height);
-    this.progress_angle = -PI/2;
-    this.rect_container.addChild(this.progress);
-    this.progressed = false;*/
+    this.progress_angle = 0;
+    //this.rect_container.addChild(this.progress);
+    this.progressed = false;
+    this.i = 150;
 }
