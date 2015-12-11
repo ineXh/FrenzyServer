@@ -298,7 +298,7 @@ Team.prototype = {
     spawnSinglePlayer:function(){
         if(gamemode == GameMode.MultiPlayer) return;
 
-        if(this.characters[CharacterType.Cow].length > this.max_unit_count) return;
+        if(this.characters[CharacterType.Cow].length >= this.max_unit_count) return;
         this.spawn_count++;
         if(this.spawn_count < this.spawn_time) return;
         this.spawn_count = 0;
@@ -309,7 +309,7 @@ Team.prototype = {
             this.Dead = true;
             return;
         }
-        if(this.characters[CharacterType.Cow].length > this.max_unit_count) return;
+        if(this.characters[CharacterType.Cow].length >= this.max_unit_count) return;
         if(this.spawn_j > 2) this.spawn_j = -this.spawn_j;
         if(this.spawn_i > 2){
           this.spawn_i = -this.spawn_i;

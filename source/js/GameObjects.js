@@ -14,6 +14,7 @@ GameObjects.prototype = {
         .add('assets/cow/4.png')
         .add('assets/cow/5.png')
         .add('assets/coin.png')
+        .add('assets/rect.png')
         .add( 'assets/space.fnt')
         .add( 'assets/ataurusp.fnt')
         .add( 'assets/ataurus3d.fnt')
@@ -25,9 +26,10 @@ GameObjects.prototype = {
 	},
 	onassetsloaded : function(){
 		console.log("onassetsloaded")
-		cow_texture = new PIXI.Texture.fromImage("assets/cow.png");
+		cow_texture = PIXI.Texture.fromImage("assets/cow.png");
         hut_texture  = PIXI.Texture.fromFrame("hut_142.png");
         coin_texture = PIXI.Texture.fromFrame("assets/coin.png");
+        rect_texture = PIXI.Texture.fromImage("assets/rect.png");
 		arrow_line_texture = PIXI.Texture.fromFrame("arrow_line.png");
 		arrow_head_texture = PIXI.Texture.fromFrame("arrow_head.png");
 

@@ -29,6 +29,7 @@ function getMouse(event, touchobj){
 
 }
 function onMouseStart(event){
+  if(spritetouched) return;
 	//console.log("mouse start")
 	getMouse(event, undefined);
 	MousePos.sx = MousePos.x;
@@ -50,6 +51,7 @@ function onMouseMove(event){
     if(game != undefined) game.onTouchMove();
 }
 function onMouseUp(event){
+  if(spritetouched) spritetouched = false;
     if(!MousePos.touched) return;
     //console.log("mouse up")
 	getMouse(event, undefined);
@@ -59,7 +61,8 @@ function onMouseUp(event){
     if(game != undefined) game.onTouchEnd();
 }
 function onTouchStart(event){
-
+  if(spritetouched) return;
+  //console.log('utils touch start')
     //$( "#draggable" ).position()
 	//console.log(event.changedTouches[0]);
     event.preventDefault();
@@ -97,6 +100,8 @@ function onTouchMove(event){
     if(game != undefined) game.onTouchMove();
 } // end onTouchMove
 function onTouchEnd(event){
+  if(spritetouched) spritetouched = false;
+  //console.log('util touchend')
     event.preventDefault();
     if(!MousePos.touched) return;
 	//console.log('onTouchEnd')

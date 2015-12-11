@@ -24,6 +24,10 @@ var startTime, lastTime;
 var time;
 
 
+// Touch
+var spritetouched = false;
+//var spritereleased = true;
+
 // Modules
 var stagesetup;
 var stagelayout;
@@ -44,6 +48,7 @@ var arrow_line_texture;
 var hut_texture;
 var cow_texture;
 var coin_texture;
+var rect_texture;
 
 var cow_front_frames = [];
 var cow_front_attack_frames = [];
