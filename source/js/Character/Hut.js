@@ -27,6 +27,7 @@ Hut.prototype.create = function(){
     this.maxhp = 25;
     this.hp = this.maxhp;
     this.healthbar = new HealthBar(this);
+    this.defense_stat = 5;
     this.status = [StatusType.NotMovable];
 
     this.rect_container = new PIXI.Container();
@@ -47,12 +48,44 @@ Hut.prototype.create = function(){
     this.attack_sprite.position.y = 0;
     this.rect_container.addChild(this.attack_sprite);
 
+    this.attack_coin_sprite = new PIXI.Sprite(coin_texture);
+    this.attack_coin_sprite.scale.set(this.attack_sprite.width/3 / this.attack_coin_sprite.width);
+    this.attack_coin_sprite.anchor.x = 0.5;
+    this.attack_coin_sprite.anchor.y = 0.5;
+    this.attack_coin_sprite.position.x = -this.attack_sprite.width*1.8;
+    this.attack_coin_sprite.position.y = this.attack_sprite.width*0.5;
+    this.rect_container.addChild(this.attack_coin_sprite);
+
+    this.attack_coin_text = new PIXI.extras.BitmapText("12",
+          { font: '24px pixel-love',  align: 'left' });
+    this.attack_coin_text.position.x = -this.attack_sprite.width*1.6;
+    this.attack_coin_text.position.y = this.attack_sprite.width*0.4;
+    this.attack_coin_text.tint =  0xFF000077;
+    this.attack_coin_text.scale.set(1);
+    this.rect_container.addChild(this.attack_coin_text);
+
+
     this.defense_sprite = new PIXI.Sprite(defense_upgrade_texture);
     this.defense_sprite.scale.set(this.rect_sprite.width /4 / this.defense_sprite.width);
     this.defense_sprite.anchor.x = 0.5;
     this.defense_sprite.anchor.y = 0.5;
-
     this.rect_container.addChild(this.defense_sprite);
+
+    this.defense_coin_sprite = new PIXI.Sprite(coin_texture);
+    this.defense_coin_sprite.scale.set(this.defense_sprite.width/3 / this.defense_coin_sprite.width);
+    this.defense_coin_sprite.anchor.x = 0.5;
+    this.defense_coin_sprite.anchor.y = 0.5;
+    this.defense_coin_sprite.position.x = -this.defense_sprite.width*0.5;
+    this.defense_coin_sprite.position.y = this.defense_sprite.width*0.5;
+    this.rect_container.addChild(this.defense_coin_sprite);
+
+    this.defense_coin_text = new PIXI.extras.BitmapText("12",
+          { font: '24px pixel-love',  align: 'left' });
+    this.defense_coin_text.position.x = -this.defense_sprite.width*0.3;
+    this.defense_coin_text.position.y = this.defense_sprite.width*0.4;
+    this.defense_coin_text.tint =  0xFF000077;
+    this.defense_coin_text.scale.set(1);
+    this.rect_container.addChild(this.defense_coin_text);
 
     this.speed_sprite = new PIXI.Sprite(speed_upgrade_texture);
     this.speed_sprite.scale.set(this.rect_sprite.width /4 / this.speed_sprite.width);
@@ -61,12 +94,25 @@ Hut.prototype.create = function(){
     this.speed_sprite.position.x = this.speed_sprite.width*1.3;
     this.rect_container.addChild(this.speed_sprite);
 
+    this.speed_coin_sprite = new PIXI.Sprite(coin_texture);
+    this.speed_coin_sprite.scale.set(this.speed_sprite.width/3 / this.speed_coin_sprite.width);
+    this.speed_coin_sprite.anchor.x = 0.5;
+    this.speed_coin_sprite.anchor.y = 0.5;
+    this.speed_coin_sprite.position.x = this.speed_sprite.width*0.8;
+    this.speed_coin_sprite.position.y = this.speed_sprite.width*0.5;
+    this.rect_container.addChild(this.speed_coin_sprite);
+
+    this.speed_coin_text = new PIXI.extras.BitmapText("12",
+          { font: '24px pixel-love',  align: 'left' });
+    this.speed_coin_text.position.x = this.speed_sprite.width*1.0;
+    this.speed_coin_text.position.y = this.speed_sprite.width*0.4;
+    this.speed_coin_text.tint =  0xFF000077;
+    this.speed_coin_text.scale.set(1);
+    this.rect_container.addChild(this.speed_coin_text);
+
     this.progress = new PIXI.Graphics();
     //this.progress.lineStyle(width/200, 0x00, 1);
-    this.progress_angle = 0;
-    this.progressed = true;
 
-    this.rect_container.addChild(this.progress);
 
 }
 Hut.prototype.init = function(input){
@@ -85,6 +131,13 @@ Hut.prototype.init = function(input){
     this.menu_popped = false;
     this.menu_pop = false;
     this.menu_unpop = false;
+    this.progress_angle = -PI/2;
+    this.progressed = false;
+    this.progressing = false;
+    this.rect_container.addChild(this.progress);
+
+    this.update_upgrade_cost();
+
     if(this.team == myteam){
         // Hut Click
         this.sprite.interactive = true;
@@ -150,7 +203,7 @@ Hut.prototype.popping = function(){
 Hut.prototype.pop = function(){
     this.menu_popped = false;
     this.menu_pop = true;
-    stage.addChild(this.rect_container);
+    stage_front.addChild(this.rect_container);
     this.rect_container.x = this.pos.x - this.sprite.width *0 / 4;
     this.rect_container.y = this.pos.y - this.sprite.height;
     this.rect_scale = 0;
@@ -163,7 +216,7 @@ Hut.prototype.unpopping = function(){
     if(this.rect_scale <= 0){
         this.menu_unpop = false;
         this.menu_popped = false;
-        stage.removeChild(this.rect_container);
+        stage_front.removeChild(this.rect_container);
     }
 } // end Hut unpopping
 Hut.prototype.unpop = function(){
@@ -177,14 +230,14 @@ Hut.prototype.clean = function(){
     //this.sprite.stop();
     stage.removeChild(this.sprite);
     stage.removeChild(this.healthbar.bar);
-    stage.removeChild(this.rect_container);
+    stage_front.removeChild(this.rect_container);
 }
 
 Hut.prototype.update = function(path){
     this.dropping();
     this.popping();
     this.unpopping();
-    this.progressing();
+    this.progress_update();
     this.healthbar.update();
     if(this.hp <= 0) this.Dead = true;
 }
@@ -199,7 +252,7 @@ Hut.prototype.touchstart = function(e){
 Hut.prototype.touchend = function(e){
     //console.log('touchend');
 }
-Hut.prototype.progressing = function(){
+Hut.prototype.progress_update = function(){
     if(this.progressed) return;
     //console.log('this.progress_angle ' + this.progress_angle)
     this.progress.clear();
@@ -215,52 +268,78 @@ Hut.prototype.progressing = function(){
     this.progress.endFill();
 
     if(this.progress_angle >= 3*PI/2){
+        //this.progress_angle = -PI/2;
+        this.progressing = false;
+        this.rect_container.removeChild(this.progress);
         this.progressed = true;
         this.progressed_cb();
+        this.update_upgrade_cost();
         this.progress_angle = -PI/2;
         spritetouched_cancel_cb = this.unpop.bind(this);
     }
-} // end Hut progressing
+} // end Hut progress_update
 Hut.prototype.rect_touchstart = function(e){
     spritetouched = true;
 }
+Hut.prototype.update_upgrade_cost = function(){
+    this.attack_coin_text.text = '' + game.teams[this.team].upgrade_cost(UpgradeType.Attack);
+    this.defense_coin_text.text = '' + game.teams[this.team].upgrade_cost(UpgradeType.Defense);
+    this.speed_coin_text.text = '' + game.teams[this.team].upgrade_cost(UpgradeType.Speed);
+}
 Hut.prototype.attack_touchstart = function(e){
-    //console.log('attack_touchstart')
+    console.log('attack_touchstart')
+    if(this.progressing) return;
+
     spritetouched = true;
+    spritetouched_cancel_cb = spritetouched_cancel_cb = this.unpop.bind(this);
+    if(!game.teams[this.team].upgrade(UpgradeType.Attack)) return;
     spritetouched_cancel_cb = null;
     this.progress_angle = -PI/2;
     this.progress_r = this.attack_sprite.width/2;
     this.progress.x = this.attack_sprite.x;
     this.progress.y = this.attack_sprite.y;
     this.progress_level = game.teams[this.team].attack_upgrades;
-    //this.rect_container.addChild(this.progress);
+    this.rect_container.addChild(this.progress);
     this.progressed = false;
+    this.progressing = true;
     this.progressed_cb = game.teams[this.team].upgrade_finished.bind(game.teams[this.team], UpgradeType.Attack);
 }
 Hut.prototype.defense_touchstart = function(e){
     //console.log('attack_touchstart')
+    if(this.progressing) return;
+
     spritetouched = true;
+    spritetouched_cancel_cb = spritetouched_cancel_cb = this.unpop.bind(this);
+    if(!game.teams[this.team].upgrade(UpgradeType.Defense)) return;
     spritetouched_cancel_cb = null;
+
     this.progress_angle = -PI/2;
     this.progress_r = this.defense_sprite.width/2;
     this.progress.x = this.defense_sprite.x;
     this.progress.y = this.defense_sprite.y;
     this.progress_level = game.teams[this.team].defense_upgrades;
-    //this.rect_container.addChild(this.progress);
+    this.rect_container.addChild(this.progress);
     this.progressed = false;
+    this.progressing = true;
     this.progressed_cb = game.teams[this.team].upgrade_finished.bind(game.teams[this.team], UpgradeType.Defense);
 }
 Hut.prototype.speed_touchstart = function(e){
     //console.log('speed_touchstart')
+    if(this.progressing) return;
+
     spritetouched = true;
+    spritetouched_cancel_cb = spritetouched_cancel_cb = this.unpop.bind(this);
+    if(!game.teams[this.team].upgrade(UpgradeType.Speed)) return;
     spritetouched_cancel_cb = null;
+
     this.progress_angle = -PI/2;
     this.progress_r = this.speed_sprite.width/2;
     this.progress.x = this.speed_sprite.x;
     this.progress.y = this.speed_sprite.y;
     this.progress_level = game.teams[this.team].speed_upgrades;
-    //this.rect_container.addChild(this.progress);
+    this.rect_container.addChild(this.progress);
     this.progressed = false;
+    this.progressing = true;
     this.progressed_cb = game.teams[this.team].upgrade_finished.bind(game.teams[this.team], UpgradeType.Speed);
 }
 

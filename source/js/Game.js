@@ -235,7 +235,7 @@ function Team(team){
     this.sync_count = 0;
     this.sync_time = 5;
     this.spawn_count = 0;
-    this.spawn_time = 200;
+    this.spawn_time = 150;
     this.spawn_j = 0;
     this.spawn_i = 0;
     this.init();
@@ -395,9 +395,31 @@ Team.prototype = {
     sendSyncPath : function(){
 
     },
+    upgrade_cost: function(upgrade_type){
+        var upgrades;
+        switch(upgrade_type){
+            case UpgradeType.Attack:
+                upgrades = this.attack_upgrades;
+            break;
+            case UpgradeType.Defense:
+                upgrades = this.defense_upgrades;
+            break;
+            case UpgradeType.Speed:
+                upgrades = this.speed_upgrades;
+            break;
+        }
+        return 5 + upgrades *5;
+    },
+    upgrade:function(upgrade_type){
+        var cost = this.upgrade_cost(upgrade_type);
+        if(this.coins >= cost){
+            this.coins -= cost;
+            return true;
+        }
+        return false;
+    },
     upgrade_finished : function(upgrade_type){
-        console.log('upgrade_finished ' + upgrade_type)
-        console.log(this)
+        //console.log('upgrade_finished ' + upgrade_type)
         switch(upgrade_type){
             case UpgradeType.Attack:
                 this.attack_upgrades++;
@@ -408,6 +430,12 @@ Team.prototype = {
             case UpgradeType.Speed:
                 this.speed_upgrades++;
             break;
+        }
+        for(var i = 0; i < this.characters[CharacterType.Cow].length; i++){
+            var character = this.characters[CharacterType.Cow][i];
+            character.attack_stat = character.attack_base + this.attack_upgrades;
+            character.defense_stat = character.defense_base + this.defense_upgrades;
+            character.maxspeed = character.speed_base*(1 + 0.2*this.speed_upgrades);
         }
     }, // end Team upgrade_finished
 

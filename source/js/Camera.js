@@ -92,6 +92,8 @@ var pan = function(){
         stage.y += height/100;//MousePos.px - MousePos.x;
         if(stage.y > 0) stage.y = 0;
     }
+    stage_front.x = stage.x;
+    stage_front.y = stage.y;
 }
 var stageborder = function(){
     if(stage.x < -stage_width + width) stage.x = -stage_width + width;
@@ -103,4 +105,6 @@ var panTo = function(x, y){
     stage.x = -x + width/2;
     stage.y = -y + height/2;
     stageborder();
+    stage_front.x = stage.x;
+    stage_front.y = stage.y;
 }

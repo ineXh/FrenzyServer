@@ -210,7 +210,7 @@ Cow.prototype.create = function(){
 	this.sprite.scale.set(this.scale);
 	this.sprite.anchor.x = 0.5;
 	this.sprite.anchor.y = 0.5;
-	this.maxspeed = 2*big_dim/1000;
+
 	this.type = CharacterType.Cow;
 	this.seekOpponent_count = 0;
     this.seekOpponent_time = 0;
@@ -219,12 +219,16 @@ Cow.prototype.create = function(){
     this.attacking = false;
     this.Dead = false;
     this.border = true;
-    this.maxhp = 5;
+    this.maxhp = 10;
     this.hp = this.maxhp;
     this.healthbar = new HealthBar(this);
-    this.dmg = 1;
+    this.attack_base = 2;
+    this.attack_stat = this.attack_base;
+    this.defense_base = 1;
+    this.defense_stat = this.defense_base;
+    this.speed_base = 2*big_dim/1000
+    this.maxspeed = this.speed_base;
     this.status = [];
-
 }
 Cow.prototype.init = function(input){
 	//console.log(input)
@@ -248,8 +252,10 @@ Cow.prototype.animationdisplay = function(){
 				this.attacking = false;
 				this.animationtype = AnimationType.Walk_Front;
 				if(this.opponent != null){
-					if(this.opponent.hp <= this.dmg && this.opponent.hp > 0) getCoin(this.team, this.opponent);
-					this.opponent.hp -= this.dmg;
+					var dmg = this.attack_stat - this.opponent.defense_stat;
+					if(dmg <= 0) dmg = 1;
+					if(this.opponent.hp <= dmg && this.opponent.hp > 0) getCoin(this.team, this.opponent);
+					this.opponent.hp -= dmg;
 
 					this.opponent.healthbar.set(this.opponent.hp);
 				}
@@ -267,8 +273,10 @@ Cow.prototype.animationdisplay = function(){
 				this.attacking = false;
 				this.animationtype = AnimationType.Walk_Back;
 				if(this.opponent != null){
-					if(this.opponent.hp < this.dmg && this.opponent.hp > 0) getCoin(this.team, this.opponent);
-					this.opponent.hp -= this.dmg;
+					var dmg = this.attack_stat - this.opponent.defense_stat;
+					if(dmg <= 0) dmg = 1;
+					if(this.opponent.hp < dmg && this.opponent.hp > 0) getCoin(this.team, this.opponent);
+					this.opponent.hp -= dmg;
 					this.opponent.healthbar.set(this.opponent.hp);
 				}
 			}
