@@ -433,9 +433,7 @@ Team.prototype = {
         }
         for(var i = 0; i < this.characters[CharacterType.Cow].length; i++){
             var character = this.characters[CharacterType.Cow][i];
-            character.attack_stat = character.attack_base + this.attack_upgrades;
-            character.defense_stat = character.defense_base + this.defense_upgrades;
-            character.maxspeed = character.speed_base*(1 + 0.2*this.speed_upgrades);
+            character.upgrade_update();
         }
     }, // end Team upgrade_finished
 

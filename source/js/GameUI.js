@@ -45,7 +45,7 @@ GameUI.prototype = {
         this.attack_sprite.scale.set(height*0.03 / this.attack_sprite.width);
         this.attack_sprite.anchor.x = 0.5;
         this.attack_sprite.anchor.y = 0;
-        this.attack_sprite.position.x = width*0.60;
+        this.attack_sprite.position.x = width*0.57;
         this.attack_sprite.position.y = height*0.025;
         this.container.addChild(this.attack_sprite);
 
@@ -53,7 +53,7 @@ GameUI.prototype = {
         this.defense_sprite.scale.set(height*0.03 / this.defense_sprite.width);
         this.defense_sprite.anchor.x = 0.5;
         this.defense_sprite.anchor.y = 0;
-        this.defense_sprite.position.x = width*0.62;
+        this.defense_sprite.position.x = width*0.59;
         this.defense_sprite.position.y = height*0.025;
         this.container.addChild(this.defense_sprite);
 
@@ -61,13 +61,13 @@ GameUI.prototype = {
         this.speed_sprite.scale.set(height*0.03 / this.speed_sprite.width);
         this.speed_sprite.anchor.x = 0.5;
         this.speed_sprite.anchor.y = 0;
-        this.speed_sprite.position.x = width*0.64;
+        this.speed_sprite.position.x = width*0.61;
         this.speed_sprite.position.y = height*0.025;
         this.container.addChild(this.speed_sprite);
 
         this.upgrade_text = new PIXI.extras.BitmapText("12",
           { font: '36px pixel-love',  align: 'left' });
-        this.upgrade_text.position.x = width*0.66;
+        this.upgrade_text.position.x = width*0.63;
         this.upgrade_text.position.y = height*0.03;
         this.upgrade_text.tint =  0xFF000077;
         this.upgrade_text.scale.set(1);

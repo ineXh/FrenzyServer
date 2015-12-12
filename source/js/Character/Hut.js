@@ -287,7 +287,7 @@ Hut.prototype.update_upgrade_cost = function(){
     this.speed_coin_text.text = '' + game.teams[this.team].upgrade_cost(UpgradeType.Speed);
 }
 Hut.prototype.attack_touchstart = function(e){
-    console.log('attack_touchstart')
+    //console.log('attack_touchstart')
     if(this.progressing) return;
 
     spritetouched = true;

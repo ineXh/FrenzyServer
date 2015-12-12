@@ -235,6 +235,7 @@ Cow.prototype.init = function(input){
 	if(input.id != undefined) this.id = input.id;
 	this.team = input.team;
 	this.sprite.tint = input.color;
+	this.upgrade_update();
 	this.pos.x = input.x;
 	this.pos.y = input.y;
 	stage.addChild(this.sprite);
@@ -362,6 +363,11 @@ Cow.prototype.update = function(path){
 	this.healthbar.update();
 	this.animationdisplay();
 	if(this.hp <= 0) this.Dead = true;
+}
+Cow.prototype.upgrade_update = function(){
+	this.attack_stat = this.attack_base + game.teams[this.team].attack_upgrades;
+	this.defense_stat = this.defense_base + game.teams[this.team].defense_upgrades;
+	this.maxspeed = this.speed_base*(1 + 0.2*game.teams[this.team].speed_upgrades);
 }
 function HealthBar(character){
 	this.init(character);
