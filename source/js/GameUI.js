@@ -41,6 +41,40 @@ GameUI.prototype = {
         this.coin_text.scale.set(1);
         this.ui.addChild(this.coin_text);
 
+        this.attack_sprite = new PIXI.Sprite(attack_upgrade_texture);
+        this.attack_sprite.scale.set(height*0.03 / this.attack_sprite.width);
+        this.attack_sprite.anchor.x = 0.5;
+        this.attack_sprite.anchor.y = 0;
+        this.attack_sprite.position.x = width*0.60;
+        this.attack_sprite.position.y = height*0.025;
+        this.ui.addChild(this.attack_sprite);
+
+        this.defense_sprite = new PIXI.Sprite(defense_upgrade_texture);
+        this.defense_sprite.scale.set(height*0.03 / this.defense_sprite.width);
+        this.defense_sprite.anchor.x = 0.5;
+        this.defense_sprite.anchor.y = 0;
+        this.defense_sprite.position.x = width*0.62;
+        this.defense_sprite.position.y = height*0.025;
+        this.ui.addChild(this.defense_sprite);
+
+        this.speed_sprite = new PIXI.Sprite(speed_upgrade_texture);
+        this.speed_sprite.scale.set(height*0.03 / this.speed_sprite.width);
+        this.speed_sprite.anchor.x = 0.5;
+        this.speed_sprite.anchor.y = 0;
+        this.speed_sprite.position.x = width*0.64;
+        this.speed_sprite.position.y = height*0.025;
+        this.ui.addChild(this.speed_sprite);
+
+        this.upgrade_text = new PIXI.extras.BitmapText("12",
+          { font: '36px pixel-love',  align: 'left' });
+        this.upgrade_text.position.x = width*0.66;
+        this.upgrade_text.position.y = height*0.03;
+        this.upgrade_text.tint =  0xFF000077;
+        this.upgrade_text.scale.set(1);
+        this.ui.addChild(this.upgrade_text);
+
+
+
         this.update_count = 0;
         this.update_time = 10;
     },
@@ -54,6 +88,7 @@ GameUI.prototype = {
         this.update_count = 0;
         this.character_text.text = '' + game.teams[myteam].characters[0].length + '/'+ game.teams[myteam].max_unit_count;
         this.coin_text.text = '' + game.teams[myteam].coins;
+        this.upgrade_text.text = '9, 9, 9'
     }, // end update,
     onTouchStart: function(event){
 

@@ -26,6 +26,7 @@ var time;
 
 // Touch
 var spritetouched = false;
+var spritetouched_cancel_cb = null;
 //var spritereleased = true;
 
 // Modules
