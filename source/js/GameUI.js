@@ -5,7 +5,7 @@ GameUI.prototype = {
     create: function(game){
         this.game = game;
         //console.log('create ui')
-        this.ui = new PIXI.Container();
+        this.container = new PIXI.Container();
 
         this.character_sprite = new PIXI.Sprite(cow_texture);
         this.character_sprite.scale.set(height*0.03 / this.character_sprite.width);
@@ -13,7 +13,7 @@ GameUI.prototype = {
         this.character_sprite.anchor.y = 0;
         this.character_sprite.position.x = width*0.91;
         this.character_sprite.position.y = height*0.025;
-        this.ui.addChild(this.character_sprite);
+        this.container.addChild(this.character_sprite);
 
         this.character_text = new PIXI.extras.BitmapText("12",
           { font: '36px pixel-love',  align: 'left' }); //Space Invaders//fill:"black",//Alpha Taurus Pro
@@ -22,7 +22,7 @@ GameUI.prototype = {
         this.character_text.position.y = height*0.03;//this.sprite.y - this.sprite.height/6;
         this.character_text.tint =  0xFF000077;//RGBColor(getRandomInt(200, 255), getRandomInt(180, 220), 0);
         this.character_text.scale.set(1);
-        this.ui.addChild(this.character_text);
+        this.container.addChild(this.character_text);
 
         this.coin_sprite = new PIXI.Sprite(coin_texture);
         this.coin_sprite.scale.set(height*0.03 / this.coin_sprite.width);
@@ -30,7 +30,7 @@ GameUI.prototype = {
         this.coin_sprite.anchor.y = 0;
         this.coin_sprite.position.x = width*0.775;
         this.coin_sprite.position.y = height*0.025;
-        this.ui.addChild(this.coin_sprite);
+        this.container.addChild(this.coin_sprite);
 
         this.coin_text = new PIXI.extras.BitmapText("12",
           { font: '36px pixel-love',  align: 'left' }); //Space Invaders//fill:"black",//Alpha Taurus Pro
@@ -39,7 +39,7 @@ GameUI.prototype = {
         this.coin_text.position.y = height*0.03;//this.sprite.y - this.sprite.height/6;
         this.coin_text.tint =  0xFF000077;//RGBColor(getRandomInt(200, 255), getRandomInt(180, 220), 0);
         this.coin_text.scale.set(1);
-        this.ui.addChild(this.coin_text);
+        this.container.addChild(this.coin_text);
 
         this.attack_sprite = new PIXI.Sprite(attack_upgrade_texture);
         this.attack_sprite.scale.set(height*0.03 / this.attack_sprite.width);
@@ -47,7 +47,7 @@ GameUI.prototype = {
         this.attack_sprite.anchor.y = 0;
         this.attack_sprite.position.x = width*0.60;
         this.attack_sprite.position.y = height*0.025;
-        this.ui.addChild(this.attack_sprite);
+        this.container.addChild(this.attack_sprite);
 
         this.defense_sprite = new PIXI.Sprite(defense_upgrade_texture);
         this.defense_sprite.scale.set(height*0.03 / this.defense_sprite.width);
@@ -55,7 +55,7 @@ GameUI.prototype = {
         this.defense_sprite.anchor.y = 0;
         this.defense_sprite.position.x = width*0.62;
         this.defense_sprite.position.y = height*0.025;
-        this.ui.addChild(this.defense_sprite);
+        this.container.addChild(this.defense_sprite);
 
         this.speed_sprite = new PIXI.Sprite(speed_upgrade_texture);
         this.speed_sprite.scale.set(height*0.03 / this.speed_sprite.width);
@@ -63,7 +63,7 @@ GameUI.prototype = {
         this.speed_sprite.anchor.y = 0;
         this.speed_sprite.position.x = width*0.64;
         this.speed_sprite.position.y = height*0.025;
-        this.ui.addChild(this.speed_sprite);
+        this.container.addChild(this.speed_sprite);
 
         this.upgrade_text = new PIXI.extras.BitmapText("12",
           { font: '36px pixel-love',  align: 'left' });
@@ -71,7 +71,7 @@ GameUI.prototype = {
         this.upgrade_text.position.y = height*0.03;
         this.upgrade_text.tint =  0xFF000077;
         this.upgrade_text.scale.set(1);
-        this.ui.addChild(this.upgrade_text);
+        this.container.addChild(this.upgrade_text);
 
 
 
@@ -79,7 +79,7 @@ GameUI.prototype = {
         this.update_time = 10;
     },
     init: function(){
-        stage0.addChild(this.ui);
+        stage0.addChild(this.container);
     },
     update: function(){
         if(gamestate != GameState.InPlay) return;
@@ -88,7 +88,7 @@ GameUI.prototype = {
         this.update_count = 0;
         this.character_text.text = '' + game.teams[myteam].characters[0].length + '/'+ game.teams[myteam].max_unit_count;
         this.coin_text.text = '' + game.teams[myteam].coins;
-        this.upgrade_text.text = '9, 9, 9'
+        this.upgrade_text.text = '' + game.teams[myteam].attack_upgrades + ', '                        + game.teams[myteam].defense_upgrades + ', ' + game.teams[myteam].speed_upgrades;
     }, // end update,
     onTouchStart: function(event){
 

@@ -64,6 +64,11 @@ AnimationType.Attack_Front = 1;
 AnimationType.Walk_Back = 5;
 AnimationType.Attack_Back = 6;
 
+function UpgradeType(){}
+UpgradeType.Attack = 0;
+UpgradeType.Defense = 1;
+UpgradeType.Speed = 2;
+
 function MovementSetType(){}
 MovementSetType.Charge = 0;
 MovementSetType.Stand = 1;

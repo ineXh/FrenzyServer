@@ -23,6 +23,7 @@ var Engine = (function(global) {
     stage0 = new PIXI.Container();
     //stage00 = new PIXI.Container();
     stage = new PIXI.Container();
+    stage_front = new PIXI.Container();
     //stage.pivot = {x: width/2, y: height/2};
 
 

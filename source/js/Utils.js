@@ -63,7 +63,7 @@ function onMouseUp(event){
 function onTouchStart(event){
   if(spritetouched) return;
   if(spritetouched_cancel_cb != null){
-    console.log('not null')
+    //console.log('not null')
     spritetouched_cancel_cb();
     spritetouched_cancel_cb = null;
   }

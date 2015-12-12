@@ -117,8 +117,6 @@ Game.prototype = {
         myteam = 0;
         myteamcolor = this.getTeam(myteam.color);
 
-
-
         this.teams.forEach(function(t){
             t.startsingle();
         })
@@ -242,8 +240,6 @@ function Team(team){
     this.spawn_i = 0;
     this.init();
     this.max_unit_count = 50;
-
-    this.coins = 0;
 }
 Team.Team0 = 0;
 Team.Team1 = 1;
@@ -270,7 +266,14 @@ function getTeam(team){
 Team.prototype = {
     init: function(){
         this.characters = characters.pool.initList();
+        this.reset();
     },
+    reset: function(){
+        this.coins = 0;
+        this.attack_upgrades = 0;
+        this.defense_upgrades = 0;
+        this.speed_upgrades = 0;
+    }, // end Team reset
     clean: function(){
         this.Dead = false;
     },
@@ -391,7 +394,22 @@ Team.prototype = {
     },
     sendSyncPath : function(){
 
-    }
+    },
+    upgrade_finished : function(upgrade_type){
+        console.log('upgrade_finished ' + upgrade_type)
+        console.log(this)
+        switch(upgrade_type){
+            case UpgradeType.Attack:
+                this.attack_upgrades++;
+            break;
+            case UpgradeType.Defense:
+                this.defense_upgrades++;
+            break;
+            case UpgradeType.Speed:
+                this.speed_upgrades++;
+            break;
+        }
+    }, // end Team upgrade_finished
 
 } // end Team
 

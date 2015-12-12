@@ -65,12 +65,7 @@ Hut.prototype.create = function(){
     //this.progress.lineStyle(width/200, 0x00, 1);
     this.progress_angle = 0;
     this.progressed = true;
-    /*this.progress.beginFill(0xFF0000, 0.5);
-    //this.progress.arc(0,0, this.attack_sprite.width/2, 0, PI, false);
-    this.progress.moveTo(100, 100)
-    this.progress.arcTo(100,50,150,50,25)
-    this.progress.endFill();*/
-    //this.progress.drawRect(0, 0, stage_width, stage_height);
+
     this.rect_container.addChild(this.progress);
 
 }
@@ -91,17 +86,32 @@ Hut.prototype.init = function(input){
     this.menu_pop = false;
     this.menu_unpop = false;
     if(this.team == myteam){
+        // Hut Click
         this.sprite.interactive = true;
         this.sprite.mousedown = this.touchstart.bind(this);
         this.sprite.touchstart = this.touchstart.bind(this);
         this.sprite.mouseup = this.touchend.bind(this);
         this.sprite.touchend = this.touchend.bind(this);
 
+        // Rect
+        this.rect_sprite.interactive = true;
+        this.rect_sprite.mousedown = this.rect_touchstart.bind(this);
+        this.rect_sprite.touchstart = this.rect_touchstart.bind(this);
+
+        // Attack Upgrade Icon Click
         this.attack_sprite.interactive = true;
         this.attack_sprite.mousedown = this.attack_touchstart.bind(this);
         this.attack_sprite.touchstart = this.attack_touchstart.bind(this);
-        //this.attack_sprite.mouseup = this.attack_touchend.bind(this);
-        //this.attack_sprite.touchend = this.attack_touchend.bind(this);
+
+        // Defense Upgrade Icon Click
+        this.defense_sprite.interactive = true;
+        this.defense_sprite.mousedown = this.defense_touchstart.bind(this);
+        this.defense_sprite.touchstart = this.defense_touchstart.bind(this);
+
+        // Speed Upgrade Icon Click
+        this.speed_sprite.interactive = true;
+        this.speed_sprite.mousedown = this.speed_touchstart.bind(this);
+        this.speed_sprite.touchstart = this.speed_touchstart.bind(this);
     }
 
 
@@ -196,38 +206,61 @@ Hut.prototype.progressing = function(){
     //this.progress.lineStyle(width/2000, 0x00, 1);
     this.progress.beginFill(0xFF0000, 0.5);
 
-    this.progress_angle+=0.2;
-
-
-    /*this.progress.moveTo(0, 0)
-    var x = Math.cos(-PI/2 + this.progress_angle)*this.progress_r;
-    var y = Math.sin(-PI/2 + this.progress_angle)*this.progress_r;
-    this.progress.arcTo(0,-this.progress_r, x, y, this.progress_r)*/
+    // additional 5 counts of upgrade time per level
+    this.progress_angle += 2*PI / (200 + this.progress_level * 50);
+    if(this.progress_angle >= 3*PI/2)   this.progress_angle = 3*PI/2;
     this.progress.moveTo(0, 0);
     this.progress.lineTo(0, -this.progress_r);
     this.progress.arc(0,0, this.progress_r, -PI/2, this.progress_angle, false);
     this.progress.endFill();
 
-
-    //this.progress.lineStyle(this.attack_sprite.width/20, 0x00, 1);
-    /*this.progress.beginFill(0x000000, 0.5);
-    this.progress_angle += PI/200;
-
-
-
-    this.progress.arc(0,0, this.attack_sprite.width/2, 0, 6, false);
-    this.progress.endFill();*/
+    if(this.progress_angle >= 3*PI/2){
+        this.progressed = true;
+        this.progressed_cb();
+        this.progress_angle = -PI/2;
+        spritetouched_cancel_cb = this.unpop.bind(this);
+    }
 } // end Hut progressing
-
-
+Hut.prototype.rect_touchstart = function(e){
+    spritetouched = true;
+}
 Hut.prototype.attack_touchstart = function(e){
-    console.log('attack_touchstart')
-    //this.progress.drawRect(0, 0, stage_width, stage_height);
+    //console.log('attack_touchstart')
+    spritetouched = true;
+    spritetouched_cancel_cb = null;
     this.progress_angle = -PI/2;
     this.progress_r = this.attack_sprite.width/2;
     this.progress.x = this.attack_sprite.x;
     this.progress.y = this.attack_sprite.y;
-
+    this.progress_level = game.teams[this.team].attack_upgrades;
     //this.rect_container.addChild(this.progress);
     this.progressed = false;
+    this.progressed_cb = game.teams[this.team].upgrade_finished.bind(game.teams[this.team], UpgradeType.Attack);
 }
+Hut.prototype.defense_touchstart = function(e){
+    //console.log('attack_touchstart')
+    spritetouched = true;
+    spritetouched_cancel_cb = null;
+    this.progress_angle = -PI/2;
+    this.progress_r = this.defense_sprite.width/2;
+    this.progress.x = this.defense_sprite.x;
+    this.progress.y = this.defense_sprite.y;
+    this.progress_level = game.teams[this.team].defense_upgrades;
+    //this.rect_container.addChild(this.progress);
+    this.progressed = false;
+    this.progressed_cb = game.teams[this.team].upgrade_finished.bind(game.teams[this.team], UpgradeType.Defense);
+}
+Hut.prototype.speed_touchstart = function(e){
+    //console.log('speed_touchstart')
+    spritetouched = true;
+    spritetouched_cancel_cb = null;
+    this.progress_angle = -PI/2;
+    this.progress_r = this.speed_sprite.width/2;
+    this.progress.x = this.speed_sprite.x;
+    this.progress.y = this.speed_sprite.y;
+    this.progress_level = game.teams[this.team].speed_upgrades;
+    //this.rect_container.addChild(this.progress);
+    this.progressed = false;
+    this.progressed_cb = game.teams[this.team].upgrade_finished.bind(game.teams[this.team], UpgradeType.Speed);
+}
+
