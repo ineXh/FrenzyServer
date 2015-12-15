@@ -55,11 +55,11 @@ Communications.prototype = {
 }; // end Communications
 function onsomeevent(msg){
 	console.log('on some event')
-	console.log(msg)
+	//console.log(msg)
 }
 
 function onGameList(msg){
-	console.log(msg)
+	//console.log(msg)
 }
 function sendName(name){
 	username = name;
@@ -71,7 +71,7 @@ function joinGame(index){
 	communication.socket.emit('join game', index);
 }
 function onjoinGameSuccess(msg){
-	console.log('onjoinGameSuccess')
+	//console.log('onjoinGameSuccess')
 	myteam = msg.team;
 	myteamcolor = msg.color;
 	menu.multiplayermenu.init_gameroom();
@@ -81,12 +81,12 @@ function leaveGame(){
 	menu.multiplayermenu.init_main();
 }
 function startGame(){
-	console.log('start game press')
+	//console.log('start game press')
 	communication.socket.emit('start game');
 }
 function onstartGame(msg){
-	console.log('onstartGame');
-	console.log(msg)
+	//console.log('onstartGame');
+	//console.log(msg)
 	startlocation = msg.location;
 	menu.multiplayermenu.init_game();
 
@@ -102,8 +102,8 @@ function onChat(msg){
 	/*console.log(msg)
 	addMessage(msg.author, msg.text,
 				   msg.color, new Date(msg.time));*/
-	console.log('get chat')
-    console.log(msg)
+	//console.log('get chat')
+    //console.log(msg)
     if(Object.prototype.toString.call( msg ) === '[object Array]'){
     	msg.forEach(function(m){
         	placechat(m)
@@ -115,7 +115,7 @@ function onChat(msg){
 
 
 function onSpawnPeriod(msg){
-	console.log('onSpawnPeriod')
+	//console.log('onSpawnPeriod')
 	game.getTeam(myteam).spawn();
 	//console.log(msg)
 	//for(var i = 0; i < msg.teams.length; i++){

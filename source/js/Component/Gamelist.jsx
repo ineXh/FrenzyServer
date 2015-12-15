@@ -18,8 +18,8 @@ window.GameList = React.createClass({
         return {games: [], index: 0};
     },
   onGameList:function(msg){
-      console.log('componentx get game list')
-      console.log(msg)
+      //console.log('componentx get game list')
+      //console.log(msg)
       //this.setState({games: msg});
       /*msg.games.forEach(function(g){
         placegame(g);
@@ -29,7 +29,7 @@ window.GameList = React.createClass({
 
     },
   componentDidMount: function(){
-        console.log('GameList didmount')
+        //console.log('GameList didmount')
         this.socket = communication.socket;
         this.socket.on('game list', this.onGameList);
         //setTimeout(function(){communication.socket.emit('request game list');}, 500);
@@ -40,7 +40,7 @@ window.GameList = React.createClass({
             console.log('selected')
           }*/
           stop: function() {
-            console.log('selectable stop')
+            //console.log('selectable stop')
 
             //var result = $( "#select-result" ).empty();
             $( ".ui-selected", this ).each(function() {
@@ -56,7 +56,7 @@ window.GameList = React.createClass({
         });
       },
   getIndex: function(){
-    console.log('selectable stop')
+    //console.log('selectable stop')
      var list = this;
      $( ".ui-selected", this ).each(function() {
         var index = $( "#selectable li" ).index( this );

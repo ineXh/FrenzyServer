@@ -76,7 +76,7 @@ GameUI.prototype = {
 
 
         this.update_count = 0;
-        this.update_time = 10;
+        this.update_time = 30;
     },
     init: function(){
         stage0.addChild(this.container);

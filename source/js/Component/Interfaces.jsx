@@ -3,7 +3,7 @@
 // ///////////////////////////
 window.MainInterface = React.createClass({
   componentDidMount: function(){
-        console.log('main didmount')
+        //console.log('main didmount')
       },
   render: function() {
     return (
@@ -24,7 +24,7 @@ window.render_mymainInterface = function() {
 // //////////////////
 window.GameRoomInterface = React.createClass({
   componentDidMount: function(){
-    console.log('gameroom didmount')
+    //console.log('gameroom didmount')
     this.socket = communication.socket;
   },
   handleSubmitStart:function(e){
@@ -55,7 +55,7 @@ window.render_mygameroomInterface = function() {
 // //////////////////
 window.InGameInterface = React.createClass({
   componentDidMount: function(){
-    console.log('InGame didmount')
+    //console.log('InGame didmount')
     this.socket = communication.socket;
   },
   handleSubmitStart:function(e){

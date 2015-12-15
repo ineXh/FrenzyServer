@@ -226,7 +226,7 @@ Cow.prototype.create = function(){
     this.attack_stat = this.attack_base;
     this.defense_base = 1;
     this.defense_stat = this.defense_base;
-    this.speed_base = 2*big_dim/1000
+    this.speed_base = 3*big_dim/1000
     this.maxspeed = this.speed_base;
     this.status = [];
 }
@@ -362,6 +362,7 @@ Cow.prototype.update = function(path){
 	this.sprite.position.y = this.pos.y;
 	this.healthbar.update();
 	this.animationdisplay();
+	this.collision_count = 0;
 	if(this.hp <= 0) this.Dead = true;
 }
 Cow.prototype.upgrade_update = function(){

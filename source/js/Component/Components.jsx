@@ -9,9 +9,9 @@ window.ChatMonitor = React.createClass({
 
     },
     onChat:function(msg){
-      console.log('get chat')
+      //console.log('get chat')
       //this.state.chats.push(msg);
-      console.log(msg)
+      //console.log(msg)
       //Object.prototype.toString.call( a ) === '[object Array]'
       //if(msg.length > 1){
       if(Object.prototype.toString.call( msg ) === '[object Array]'){
@@ -30,7 +30,7 @@ window.ChatMonitor = React.createClass({
 
     },
     componentDidMount: function(){
-        console.log('chat monitor did mount')
+        //console.log('chat monitor did mount')
         this.socket = communication.socket;
         this.socket.on('chat', this.onChat);
         //this.socket.emit('request chat', '');
@@ -68,15 +68,15 @@ window.ChatMonitor = React.createClass({
         cb.focus();
     },
     componentWillUnmount: function(){
-      console.log('chat monitor will unmount')
+      //console.log('chat monitor will unmount')
       this.socket.removeListener('chat', this.onChat);
     },
     handleChange: function(event) {
-        console.log(event)
+        //console.log(event)
         this.setState({value: event.target.value});
     },
     handleSubmit: function(e) {
-        console.log('handleSubmit')
+        //console.log('handleSubmit')
           e.preventDefault();
           var chatmsg = this.refs.chatmsg.value.trim();
           if (!chatmsg) return;
@@ -119,7 +119,7 @@ window.render_myChatMonitor = function() {
 window.ChatList = React.createClass({
   render: function () {
     var Chats = (<div>Loading chats...</div>);
-    console.log(this.props)
+    //console.log(this.props)
     if (this.props.chats) {
       Chats = this.props.chats.map(function (chat) {
 

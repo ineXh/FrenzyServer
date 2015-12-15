@@ -21,7 +21,7 @@ MiniMap.prototype = {
 
 
         this.updateMap_count = 0;
-        this.updateMap_time = 10;
+        this.updateMap_time = 20;
 
         this.r = big_dim/5;
         this.scale = this.r / stage_width;

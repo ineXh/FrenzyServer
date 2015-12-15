@@ -21,8 +21,8 @@ window.GamePlayerList = React.createClass({
                 showteam2: true, showteam3: true};
     },
   onGamePlayerList:function(msg){
-    console.log('onGamePlayerList')
-    console.log(msg)
+    //console.log('onGamePlayerList')
+    //console.log(msg)
 
     var showteam0 = true;
     var showteam1 = true;
@@ -41,7 +41,7 @@ window.GamePlayerList = React.createClass({
 
   },
   componentDidMount: function(){
-        console.log('GamePlayerList didmount')
+        //console.log('GamePlayerList didmount')
         this.socket = communication.socket;
         this.socket.on('game player list', this.onGamePlayerList);
         //this.socket.emit('request chat', '');

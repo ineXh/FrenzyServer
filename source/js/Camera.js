@@ -44,9 +44,10 @@ var setBorder = function(container){
     }*/
 } // end setBorder
 var visiblecount = 0;
+var visibletime = 30;
 var visibleCheck = function(){
     visiblecount++;
-     if(visiblecount%30 == 0){
+     if(visiblecount%visibletime == 0){
         visiblecount = 0;
         //console.log('visible check')
         getScreenPos();
@@ -107,4 +108,5 @@ var panTo = function(x, y){
     stageborder();
     stage_front.x = stage.x;
     stage_front.y = stage.y;
+    visiblecount = visibletime-5;
 }

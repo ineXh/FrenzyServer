@@ -191,7 +191,7 @@ Hut.prototype.dropping = function(){
 } // end Hut dropping
 Hut.prototype.popping = function(){
     if(this.menu_popped) return;
-    this.rect_scale += 0.1;
+    this.rect_scale += 0.25;
     this.rect_container.scale.set(this.rect_scale);
     if(this.rect_scale >= 1.0 && this.menu_pop){
         this.menu_pop = false;
@@ -211,7 +211,7 @@ Hut.prototype.pop = function(){
 } // end Hut pop
 Hut.prototype.unpopping = function(){
     if(!this.menu_unpop) return;
-    this.rect_scale -= 0.1;
+    this.rect_scale -= 0.25;
     this.rect_container.scale.set(this.rect_scale);
     if(this.rect_scale <= 0){
         this.menu_unpop = false;
@@ -260,7 +260,7 @@ Hut.prototype.progress_update = function(){
     this.progress.beginFill(0xFF0000, 0.5);
 
     // additional 5 counts of upgrade time per level
-    this.progress_angle += 2*PI / (200 + this.progress_level * 50);
+    this.progress_angle += 2*PI / (100 + this.progress_level * 25);
     if(this.progress_angle >= 3*PI/2)   this.progress_angle = 3*PI/2;
     this.progress.moveTo(0, 0);
     this.progress.lineTo(0, -this.progress_r);

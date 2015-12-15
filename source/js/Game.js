@@ -13,19 +13,19 @@ Game.prototype = {
         this.collision_count = 0;
         this.collision_time = 1;
         this.updateOpponent_count = 0;
-        this.updateOpponent_time = 10;
+        this.updateOpponent_time = 20;
     },
     checkcollisions :function(){
         this.collision_count++;
         if(this.collision_count < this.collision_time) return;
         this.collision_count = 0;
-        this.resetcollisioncounts();
+        //this.resetcollisioncounts();
         for(var i = 0; i < this.teams.length; i++){
             for(var j = 0; j < this.teams[i].characters.length; j++){
                 for(var k = 0; k < this.teams[i].characters[j].length; k++){
                     var c = this.teams[i].characters[j][k];
                     if(!c.sprite.visible && i != myteam) continue;
-                    if(c.collision_count >= 4) continue;
+                    if(c.collision_count >= 2) continue;
 
                     this.checkcollision(c);
                 }
@@ -34,12 +34,12 @@ Game.prototype = {
     },
     checkcollision: function(c){
       for(var i = 0; i < this.teams.length; i++){
-            for(var j = 0; j < this.teams[i].characters.length; j++){
+            for(var j = 0; j < this.teams[i].characters.length; j++){                
                 for(var k = 0; k < this.teams[i].characters[j].length; k++){
                     var c2 = this.teams[i].characters[j][k];
                     if(arrayContains(c2.status, StatusType.Inanimate)) continue;
                     if(!c2.sprite.visible && i != myteam) continue;
-                    if(c2.collision_count >= 4) continue;
+                    if(c2.collision_count >= 2) continue;
                     c.collide(c2);
                 }
             }
@@ -233,13 +233,13 @@ function Team(team){
                          (team == 3)? StartLocation.SE: StartLocation.NW;
     this.startlocation_pos = getstartlocation(this.startlocation);
     this.sync_count = 0;
-    this.sync_time = 5;
+    this.sync_time = 1;
     this.spawn_count = 0;
     this.spawn_time = 150;
     this.spawn_j = 0;
     this.spawn_i = 0;
     this.init();
-    this.max_unit_count = 50;
+    this.max_unit_count = 30;
 }
 Team.Team0 = 0;
 Team.Team1 = 1;
