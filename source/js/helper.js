@@ -12,6 +12,10 @@ function placechat(msg) { // author, message, color, dt
     //console.log((msg.color).toString(16))
     chatmonitor.prepend('<p><span style="color:#' + (msg.color).toString(16) + '">' + msg.author + '</span> @ ' + convertTime(new Date(msg.time)) + ': ' + '<span style="color:#' + (msg.color).toString(16) + '">' + msg.msg + '</span></p>');
 }
+function emptychat(){
+    var chatmonitor = $('#chatmonitor');
+    chatmonitor.empty();
+}
 
 function placeplayer(player){
     var list = $('#gameroomplayerlist');

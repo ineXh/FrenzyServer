@@ -45,15 +45,18 @@
     opacity: 0.4;
 }
 .windowobject{
-  opacity: 0.8;
+  opacity: 0.9;
   background: #2C3E50;
+  /*background: #000;*/
 }
 #chatwindow {
     position: absolute;
-    width: 50%; height: 30%;
-    left: 40%; top: 5%;
+    width: 80%; height: 30%;
+    left: 15%; top: 50%;
     box-shadow: rgba(0,0,0,0.6) 0px 0px 8px;
     border: 2px solid #6898DD;
+    padding-right: 5px;
+    padding-left: 5px;
 }
 #chatmonitor {
     padding:10px;
@@ -62,22 +65,24 @@
     width:98%;
     height: 80%;
     background:#ddd;
-    margin-left:10px;
+    margin-left:5px;
+    margin-right:5px;
     margin-top:10px;
     margin-bottom:10px;
     border-radius:5px; overflow-y: scroll;
     /*user-select: auto;*/
     border:1px solid #CCC; /*margin-bottom:10px;*/
     background: #2C3E50;
-    font-size: 200%;
-    font-family: "Telefon Black", Sans-Serif;
+    font-size: 150%;
+    /*font-family: "Telefon Black", Sans-Serif;*/
+
     color: #000;
     /*font-size: 6rem;*/
     font-weight: bold;
 }
 #chatinput{
     margin-left:10px;
-    width:98%;
+    width:95%;
 }
 #chatsendbutton{
 margin-left:10px;
@@ -111,6 +116,12 @@ margin-left:10px;
   right: 0;
   width: 100%;
 }
+.panel-heading{
+  background: #C73C3C;
+  font-size: 16px;
+  line-height: 25px;
+  color: #fff;
+}
 #gamelist {
     position: absolute;
     border-bottom: 1px solid #34495E;
@@ -122,9 +133,23 @@ margin-left:10px;
     box-shadow: rgba(0,0,0,0.6) 0px 0px 8px;
     overflow: auto;
     top: 120px;
+
     /*bottom: 6px;*/
-    left: 60px;
-    opacity: 0.8;
+    width: 40%;
+    left: 15%;
+    opacity: 0.9;
+}
+button{
+  /*position:absolute;
+    top: 1%;
+    right: 5%;*/
+  float: right;
+  background: #0999d1;
+  color: #fff;
+  text-align: center;
+  border-radius: 2px;
+  display: inline-block;
+  font-family: "Source Sans Pro","Helvetica Neue",Helvetica,Arial,sans-serif;
 }
 .ui-selected { background: #F39814; color: white; }
 /*ol .ui-widget-content {

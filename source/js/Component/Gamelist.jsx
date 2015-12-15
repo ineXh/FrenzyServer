@@ -85,11 +85,14 @@ window.GameList = React.createClass({
       );
     });
     return (
-      <div id="gamelist" className=" windowobject">
+      <div id="gamelist" className="windowobject">
+      <div className="panel-heading"> Active Games
+      <button onClick={this.handleSubmit}>Join Game</button>
+      </div>
       <ol id="selectable" className="tabBodyOptions selectable">
         {gameNodes}
       </ol>
-      <button onClick={this.handleSubmit}>Join Game</button>
+
       </div>
     );
   }

@@ -41,8 +41,21 @@ Game.prototype = {
         this.players.push(player);
 
         var msg = {color    : player.gamecolor,
-                    team    : player.team}
-        player.emit('joinGameSuccess', msg)
+                    team    : player.team,
+                    room    : this.name
+                    }
+        player.join('Game Chat');
+        console.log('Client joins ' + this.name)
+        //player.emit('joinGameSuccess', msg)
+
+        var obj = {
+          time: (new Date()).getTime(),
+          msg: htmlEntities('Hey!'),
+          author: 'Game MaN',
+          color: 'Black',
+        };
+
+        this.io.to('Game Chat').emit('chat', obj);
         this.updateplayerlist();
         //this.spawncounter.add(player.team, 5);
         //this.spawn_existing(player);
@@ -52,6 +65,7 @@ Game.prototype = {
             this.teams.push(player.team);
             player.team = enums.Observer;
         }
+        player.leave(this.name);
         var index = this.players.indexOf(player);
         if(index > -1) this.players.splice(index, 1);
         this.updateplayerlist();
