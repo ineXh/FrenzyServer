@@ -41,6 +41,7 @@ Communications.prototype = {
 		communication.socket.on('spawn period', onSpawnPeriod);
 		communication.socket.on('joinGameSuccess', onjoinGameSuccess)
 		communication.socket.on('start game', onstartGame)
+		communication.socket.on('some event', onsomeevent)
 		//communication.socket.on('chat', onChat);
 		//communication.socket.on('game list', onGameList);
 	},
@@ -52,6 +53,11 @@ Communications.prototype = {
 
 	},
 }; // end Communications
+function onsomeevent(msg){
+	console.log('on some event')
+	console.log(msg)
+}
+
 function onGameList(msg){
 	console.log(msg)
 }

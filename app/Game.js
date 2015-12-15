@@ -44,18 +44,20 @@ Game.prototype = {
                     team    : player.team,
                     room    : this.name
                     }
-        player.join('Game Chat');
-        console.log('Client joins ' + this.name)
-        //player.emit('joinGameSuccess', msg)
+        player.socket.leave('Global Chat')
+        player.socket.join(this.name);
+        player.room = this.name;
+        //console.log('Client joins ' + this.name)
+        player.socket.emit('joinGameSuccess', msg)
 
         var obj = {
           time: (new Date()).getTime(),
-          msg: htmlEntities('Hey!'),
-          author: 'Game MaN',
+          msg: htmlEntities('Hey! You joined ' + this.name),
+          author: 'Game MaNager',
           color: 'Black',
         };
 
-        this.io.to('Game Chat').emit('chat', obj);
+        this.io.in(this.name).emit('chat', obj);
         this.updateplayerlist();
         //this.spawncounter.add(player.team, 5);
         //this.spawn_existing(player);
@@ -65,7 +67,9 @@ Game.prototype = {
             this.teams.push(player.team);
             player.team = enums.Observer;
         }
-        player.leave(this.name);
+        player.socket.leave(this.name);
+        player.socket.join('Global Chat')
+        player.room = 'Global Chat';
         var index = this.players.indexOf(player);
         if(index > -1) this.players.splice(index, 1);
         this.updateplayerlist();
@@ -79,7 +83,7 @@ Game.prototype = {
                 msg.location = p.location;
                 game.spawncounter.add(p.team, 5);
             }
-            p.emit('start game', msg);
+            p.socket.emit('start game', msg);
         });
         setTimeout(this.spawnPeriodUnit.bind(this), 5000);
         //this.gameStarted = true;
@@ -109,7 +113,7 @@ Game.prototype = {
             msg.players.push({name: this.players[i].name, team: this.players[i].team, id: this.players[i].id});
         }
         this.players.forEach(function(p){
-            p.emit('game player list', msg);
+            p.socket.emit('game player list', msg);
         });
     },
     spawn_existing: function(player){
@@ -122,7 +126,7 @@ Game.prototype = {
                         msg.characters.push(c)
                     })
                 })
-                if(msg.characters.length > 0) player.emit('spawn existing', msg)
+                if(msg.characters.length > 0) player.socket.emit('spawn existing', msg)
             }
         })
     }, // end spawn_existing
@@ -139,7 +143,7 @@ Game.prototype = {
         }
 
         this.players.forEach(function(p){
-            p.emit('spawn', msg)
+            p.socket.emit('spawn', msg)
         });
     }, // end spawn
     spawnPeriodUnit: function(){
@@ -150,7 +154,7 @@ Game.prototype = {
         //console.log(msg)
         if(msg != null){
             this.players.forEach(function(p){
-                p.emit('spawn period', msg)
+                p.socket.emit('spawn period', msg)
             });
         }
 
@@ -161,7 +165,7 @@ Game.prototype = {
         if(msg.id != player.characters[msg.type][msg.index].id) return;
         player.characters[msg.type].splice(msg.index,1);
         this.players.forEach(function(p){
-            p.emit('dead character', msg)
+            p.socket.emit('dead character', msg)
             //if(p != player){
                 //console.log('player ' + p.team + ' to spawn.')
 
@@ -174,7 +178,7 @@ Game.prototype = {
         this.players.forEach(function(p){
             if(p != player){
                 //console.log('player ' + p.team + ' to path.')
-                p.emit('path', msg)
+                p.socket.emit('path', msg)
             }
         });
     },
@@ -198,7 +202,7 @@ Game.prototype = {
         this.players.forEach(function(p){
             //if(p != player){
                 //console.log('player ' + p.team + ' to path.')
-                p.emit('sync', msg)
+                p.socket.emit('sync', msg)
             //}
         });
     }, // end sync

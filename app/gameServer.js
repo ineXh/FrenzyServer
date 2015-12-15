@@ -84,7 +84,7 @@ gameServer.prototype = {
     },
     sendChatHistory: function(player){
         //console.log(this.chathistory)
-        player.emit('chat', this.chathistory);
+        player.socket.emit('chat', this.chathistory);
     },
     sendChat : function(player, msg){
       var obj = {
@@ -99,7 +99,7 @@ gameServer.prototype = {
         this.chathistory.push(obj);
         this.chathistory = this.chathistory.slice(-10);
 
-        this.io.emit('chat', obj);
+        this.io.in(player.room).emit('chat', obj);
     },
     joinGame : function(player, index){
         if(index < 0) return;
@@ -128,17 +128,17 @@ gameServer.prototype = {
         if(player == null){
             this.players.forEach(function(p){
                 //console.log('player state ' + p.state)
-                if(p.state == enums.MultiPlayerMenu) p.emit('game list', msg)
+                if(p.state == enums.MultiPlayerMenu) p.socket.emit('game list', msg)
             });
         }else{
-            player.emit('game list', msg)
+            player.socket.emit('game list', msg)
         }
         //this.players.forEach(function(p){
 
         //});
     }, // end send_game_list
     send_joinserver_info: function(player){
-        player.emit('joinserver info',
+        player.socket.emit('joinserver info',
             {color      : player.color,
              id         : player.id,
              team       : player.team,

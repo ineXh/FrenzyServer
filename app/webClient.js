@@ -6,11 +6,12 @@ function webClient(io, clients, gameserver){
     //var client = this;
     var gameserver = gameserver;
 	io.on('connection', function(socket){
-        var client = socket;
+        var client = {socket: socket};
         client.characters = characterlist();
         client.path_points = [];
 
         onConnect(socket, gameserver);
+
         socket.on('name', onName);
         socket.on('chat', onChat);
         //socket.on('request chat', onrequestChat);
@@ -26,8 +27,11 @@ function webClient(io, clients, gameserver){
         socket.on('sync character', onSyncCharacter);
         socket.on('disconnect', onDisconnect);
 
-        function onConnect(){
+        function onConnect(socket, server){
             console.log('A webClient has connected.');
+            socket.join('Global Chat')
+            client.room = 'Global Chat';
+            //socket.join('Game Chat')
             //socket.emit('chat', 'Hi Client.');
         }
         function onDisconnect(){
