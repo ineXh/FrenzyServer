@@ -29,8 +29,9 @@ MultiPlayerMenu.prototype = {
 	},
 	init_game: function(){
 		gamestate = GameState.InPlay;
-		game.startgame();
 		render_myingameInterface();
+		game.startgame();
+
 	},
 	update: function(time){
 

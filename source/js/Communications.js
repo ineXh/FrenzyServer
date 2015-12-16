@@ -85,8 +85,8 @@ function startGame(){
 	communication.socket.emit('start game');
 }
 function onstartGame(msg){
-	//console.log('onstartGame');
-	//console.log(msg)
+	console.log('onstartGame');
+	console.log(msg)
 	startlocation = msg.location;
 	menu.multiplayermenu.init_game();
 
@@ -115,9 +115,10 @@ function onChat(msg){
 
 
 function onSpawnPeriod(msg){
-	//console.log('onSpawnPeriod')
+	console.log('onSpawnPeriod')
+	console.log(msg)
 	game.getTeam(myteam).spawn();
-	//console.log(msg)
+
 	//for(var i = 0; i < msg.teams.length; i++){
 	//}
 }

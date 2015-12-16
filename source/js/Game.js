@@ -4,6 +4,7 @@ function Game(){
     this.teams.push(new Team(1));
     this.teams.push(new Team(2));
     this.teams.push(new Team(3));
+    this.players = [];
     this.init();
 }
 Game.prototype = {
@@ -14,6 +15,9 @@ Game.prototype = {
         this.collision_time = 1;
         this.updateOpponent_count = 0;
         this.updateOpponent_time = 20;
+    },
+    clean: function(){
+        this.players.splice(0,this.players.length)
     },
     checkcollisions :function(){
         this.collision_count++;
@@ -34,7 +38,7 @@ Game.prototype = {
     },
     checkcollision: function(c){
       for(var i = 0; i < this.teams.length; i++){
-            for(var j = 0; j < this.teams[i].characters.length; j++){                
+            for(var j = 0; j < this.teams[i].characters.length; j++){
                 for(var k = 0; k < this.teams[i].characters[j].length; k++){
                     var c2 = this.teams[i].characters[j][k];
                     if(arrayContains(c2.status, StatusType.Inanimate)) continue;
@@ -98,6 +102,9 @@ Game.prototype = {
         }
     }, // end find_closest_opponent
     update: function(){
+        if(gamestate != GameState.InPlay) return;
+
+
         this.checkcollisions();
         this.updateOpponent();
         this.teams.forEach(function(team){
@@ -125,6 +132,7 @@ Game.prototype = {
         this.ui.init();
 
     },
+    // Multiplayer Start Game
     startgame: function(){
         stagelayout.place_stage();
         this.teams.forEach(function(t){
@@ -132,9 +140,14 @@ Game.prototype = {
         })
         //stage.width = width;
         //stage.height = height;
+        gamestartCount = 0;
+        gameCount = 0;
+
         var loc = getstartlocation(startlocation);
         stage.x = -loc.x;
         stage.y = -loc.y;
+
+        this.spawnBase();
 
        /* var input = {   x: this.startlocation_pos.x + width/2,
                                 y: this.startlocation_pos.y + height/2,
@@ -143,8 +156,8 @@ Game.prototype = {
         this.characters[input.type].push(character);*/
 
 
-    var msg = {team: myteam, color: myteamcolor, characters: []};
-    spawnUnitMsg(loc.x + width/2,loc.y + height/2, msg, CharacterType.Hut);
+    //var msg = {team: myteam, color: myteamcolor, characters: []};
+    //spawnUnitMsg(loc.x + width/2,loc.y + height/2, msg, CharacterType.Hut);
 
     /*for(var i = -3; i < 3; i++){
         for(var j = -3; j < 3; j++){
@@ -152,7 +165,7 @@ Game.prototype = {
         }
     }*/
 
-    communication.socket.emit('spawn', msg);
+    //communication.socket.emit('spawn', msg);
     //spawnCow(-stage.x + width/2,-stage.y + height/2);
 
     //spawnCow(-stage.x + width/2 + width/50,-stage.y + height/2);
@@ -161,6 +174,15 @@ Game.prototype = {
     this.minimap.init();
     this.ui.init();
 
+    },
+    spawnBase:function(){
+        /*console.log('Spawn Base')
+        console.log(this.players)
+        debugger;*/
+        var teams = this.teams;
+        this.players.forEach(function(p){
+            teams[parseInt(p.team)].startsingle();
+        });
     },
     onTouchStart: function(){
         if(gamestate == GameState.InPlay){
@@ -323,9 +345,9 @@ Team.prototype = {
                     type: CharacterType.Cow, team: this.team, color: this.color};
 
         if(gamemode == GameMode.MultiPlayer && this.team == myteam){
-            var msg = {team: myteam, color: myteamcolor, characters: []};
+            /*var msg = {team: myteam, color: myteamcolor, characters: []};
             spawnUnitMsg(input.x, input.y, msg, CharacterType.Cow);
-            communication.socket.emit('spawn', msg);
+            communication.socket.emit('spawn', msg);*/
         }else if(gamemode != GameMode.MultiPlayer){
             var character = characters.spawn(input);
             this.characters[input.type].push(character);

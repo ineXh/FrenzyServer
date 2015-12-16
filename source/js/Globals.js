@@ -23,6 +23,9 @@ var path_container;
 var startTime, lastTime;
 var time;
 
+var gamestartCount = 0;
+var gameCount = 0;
+
 
 // Touch
 var spritetouched = false;

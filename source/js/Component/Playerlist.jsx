@@ -47,7 +47,10 @@ window.GamePlayerList = React.createClass({
         //this.socket.emit('request chat', '');
         //var list = this;
 
-    },
+  },
+  componentWillUnmount: function(){
+    game.players = this.state.players.slice();
+  },
   handleChange:function(event){
     this.setState({team: event.target.value});
     //console.log(event.target.value)

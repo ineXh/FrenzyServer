@@ -112,11 +112,12 @@ Game.prototype = {
         for(var i = 0; i < this.players.length; i++){
             msg.players.push({name: this.players[i].name, team: this.players[i].team, id: this.players[i].id});
         }
-        this.players.forEach(function(p){
+        /*this.players.forEach(function(p){
             p.socket.emit('game player list', msg);
-        });
+        });*/
+        this.io.in(this.name).emit('game player list', msg);
     },
-    spawn_existing: function(player){
+    /*spawn_existing: function(player){
         //this.cows.forEach(function(team){
         this.players.forEach(function(p){
             if(p != player){
@@ -145,7 +146,7 @@ Game.prototype = {
         this.players.forEach(function(p){
             p.socket.emit('spawn', msg)
         });
-    }, // end spawn
+    }, // end spawn*/
     spawnPeriodUnit: function(){
         //console.log('spawnPeriodUnit')
         //this.spawn_count++;
@@ -153,9 +154,10 @@ Game.prototype = {
         var msg = this.spawncounter.update();
         //console.log(msg)
         if(msg != null){
-            this.players.forEach(function(p){
+            this.io.in(this.name).emit('spawn period', msg);
+            /*this.players.forEach(function(p){
                 p.socket.emit('spawn period', msg)
-            });
+            });*/
         }
 
         setTimeout(this.spawnPeriodUnit.bind(this), 1000);
@@ -221,7 +223,6 @@ SpawnCounter.prototype = {
     },
     update: function(){
         this.counter++;
-        var counter = this.counter;
         var msg = {teams: []};
         for(var i = 0; i < this.time.length; i++){
             if(this.time[i] == undefined) continue;
