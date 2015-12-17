@@ -1,9 +1,24 @@
-- Camera Pan with arrow
-- Border
-- Map Texture
-- Global Chat
-- Game List
-- Game Chat Rooms
-- Mini Map
-- Main Building
-- Spawn Units
+12/16/2015 Update
+- Minimize Button for Chat Window in game
+- gameCount since start game
+- consider not emitting pathes, but just let unit owner apply updates
+- unit owner does an infrequent periodic update, once a second
+- unit owner does a packet update if units are off from threshold, due to new controls
+- Multiplayer game room has ability
+- Client List for Global Chat, In Main Multiplayer Menu
+- Main Multiplayer Menu, add news area
+- two Fingers touch screen to pan
+- zoom with fingers expand/contract
+- Start database
+- Facebook / Google Login instead of Nickname
+- Server should know a player has max units and should not emit spawn msg
+
+- Camera Pan with arrow - Done
+- Border - Done
+- Map Texture - 1 Map
+- Global Chat - Done
+- Game List - Done
+- Game Chat Rooms - Done
+- Mini Map - Done
+- Main Building - Done
+- Spawn Units - Done

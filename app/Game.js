@@ -6,6 +6,7 @@ function htmlEntities(str) {
                       .replace(/>/g, '&gt;').replace(/"/g, '&quot;');
 }
 
+var max_unit_count = 1;
 function Game(io, server, name){
     this.io = io;
     this.server = server;
@@ -24,6 +25,10 @@ Game.prototype = {
         this.state = enums.GameRoom;
         //this.gameStarted = false;
     }, // end init
+    clean: function(){
+        console.log('Clean ' + this.name);
+        this.state = enums.GameRoom;
+    },
     getName:function(){
         return this.name;
     },
@@ -72,20 +77,46 @@ Game.prototype = {
         player.room = 'Global Chat';
         var index = this.players.indexOf(player);
         if(index > -1) this.players.splice(index, 1);
+        if(this.players.length < 1){
+            this.clean();
+            return;
+        }
         this.updateplayerlist();
     },
     startGame : function(){
         var game = this;
-        this.players.forEach(function(p){
-            var msg = {};
-            if(p.team != enums.Observer){
+        //this.players.forEach(function(p){
+            var msg = {players: [{},{},{},{}]};
+
+            for(var i = 0; i < this.players.length; i++){
+                var player = this.players[i];
+                if(player.team == enums.Observer) continue;
+                var location = game.locations.shift();
+                var id = this.character_ids.shift();
+                var team = player.team;
+                player.location = location;
+                //msg.players.push({team: player.team, location: location, base_id: id})
+
+                msg.players[team].location = location;
+                msg.players[team].team = team;
+                msg.players[team].base_id = id;
+
+                player.characters[enums.Hut].push({
+                    x: 0, y:0,
+                    type: enums.Hut, id: id});
+
+                game.spawncounter.add(player.team, 4);
+            }
+            this.io.in(this.name).emit('start game', msg);
+
+            /*if(p.team != enums.Observer){
                 p.location = game.locations.shift();
                 msg.location = p.location;
-                game.spawncounter.add(p.team, 5);
-            }
-            p.socket.emit('start game', msg);
-        });
-        setTimeout(this.spawnPeriodUnit.bind(this), 5000);
+                game.spawncounter.add(p.team, 4);
+            }*/
+            //p.socket.emit('start game', msg);
+        //});
+        setTimeout(this.spawnPeriodUnit.bind(this), 4000);
         //this.gameStarted = true;
         this.state = enums.InGame;
         this.server.send_game_list(null);
@@ -116,6 +147,12 @@ Game.prototype = {
             p.socket.emit('game player list', msg);
         });*/
         this.io.in(this.name).emit('game player list', msg);
+    },
+    getPlayer:function(team){
+        for(var i = 0; i < this.players.length; i++){
+            if(this.players[i].team == team) return this.players[i];
+        }
+        return null;
     },
     /*spawn_existing: function(player){
         //this.cows.forEach(function(team){
@@ -151,16 +188,34 @@ Game.prototype = {
         //console.log('spawnPeriodUnit')
         //this.spawn_count++;
         //var msg = {teams: []};
+
         var msg = this.spawncounter.update();
-        //console.log(msg)
         if(msg != null){
-            this.io.in(this.name).emit('spawn period', msg);
+            msg.character_ids = [];
+            for(var i = 0; i < msg.teams.length; i++){
+                //console.log('i ' + i)
+                //console.log('msg.teams[i] ' + msg.teams[i])
+                var player = this.getPlayer(msg.teams[i]);//this.players[msg.teams[i]];
+                var id = this.character_ids.shift();
+                if(player.characters[enums.Cow].length >= max_unit_count)
+                    continue;
+                msg.character_ids.push(id);
+                player.characters[enums.Cow].push({
+                    x: 0, y:0,
+                    type: enums.Cow, id: id});
+            }
+            if(msg.character_ids.length >= 1)
+               this.io.in(this.name).emit('spawn period', msg);
+        }
+        //console.log(msg)
+        //if(msg != null){
+
             /*this.players.forEach(function(p){
                 p.socket.emit('spawn period', msg)
             });*/
-        }
+        //}
 
-        setTimeout(this.spawnPeriodUnit.bind(this), 1000);
+        setTimeout(this.spawnPeriodUnit.bind(this), 4000);
     },
     DeadCharacter: function(player, msg){
         if(player.characters[msg.type][msg.index] == undefined) return;

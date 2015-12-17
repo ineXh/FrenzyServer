@@ -87,12 +87,24 @@ function startGame(){
 function onstartGame(msg){
 	console.log('onstartGame');
 	console.log(msg)
-	startlocation = msg.location;
+	//startlocation = msg.location;
+	startlocation = msg.players[myteam].location;
 	menu.multiplayermenu.init_game();
 
+
+	//game.spawnBase(msg);
+
+	var teams = game.teams;
+	for(var i = 0; i < game.players.length; i++){
+		var player = game.players[i];
+		var team = player.team;
+		teams[team].startmultiplayer(msg.players[team]);
+	}
+    /*game.players.forEach(function(p){
+        teams[parseInt(p.team)].startmultiplayer(msg);
+    });*/
 	//myteam = msg.team;
 	//myteamcolor = msg.color;
-
 
 }
 function sendChat(msg){
@@ -115,12 +127,11 @@ function onChat(msg){
 
 
 function onSpawnPeriod(msg){
-	console.log('onSpawnPeriod')
+	//console.log('onSpawnPeriod')
 	console.log(msg)
-	game.getTeam(myteam).spawn();
-
-	//for(var i = 0; i < msg.teams.length; i++){
-	//}
+	for(var i = 0; i < msg.teams.length; i++){
+		game.getTeam(i).spawn(msg.character_ids[i]);
+	}
 }
 function onSpawn(msg){
 	//console.log('onSpawn')

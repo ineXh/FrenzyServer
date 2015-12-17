@@ -147,7 +147,7 @@ Game.prototype = {
         stage.x = -loc.x;
         stage.y = -loc.y;
 
-        this.spawnBase();
+        //this.spawnBase();
 
        /* var input = {   x: this.startlocation_pos.x + width/2,
                                 y: this.startlocation_pos.y + height/2,
@@ -175,14 +175,11 @@ Game.prototype = {
     this.ui.init();
 
     },
-    spawnBase:function(){
+    spawnBase:function(msg){
         /*console.log('Spawn Base')
         console.log(this.players)
         debugger;*/
-        var teams = this.teams;
-        this.players.forEach(function(p){
-            teams[parseInt(p.team)].startsingle();
-        });
+
     },
     onTouchStart: function(){
         if(gamestate == GameState.InPlay){
@@ -261,7 +258,7 @@ function Team(team){
     this.spawn_j = 0;
     this.spawn_i = 0;
     this.init();
-    this.max_unit_count = 30;
+    this.max_unit_count = 1;
 }
 Team.Team0 = 0;
 Team.Team1 = 1;
@@ -320,6 +317,16 @@ Team.prototype = {
             }
         }*/
     },
+    startmultiplayer:function(player){
+        this.restartPath();
+        var input = {   x: this.startlocation_pos.x + width/2,
+                                y: this.startlocation_pos.y + height/2,
+                    type: CharacterType.Hut, team: this.team,
+                    color: this.color, id: player.id
+                };
+        var character = characters.spawn(input);
+        this.characters[input.type].push(character);
+    },
     spawnSinglePlayer:function(){
         if(gamemode == GameMode.MultiPlayer) return;
 
@@ -327,9 +334,9 @@ Team.prototype = {
         this.spawn_count++;
         if(this.spawn_count < this.spawn_time) return;
         this.spawn_count = 0;
-        this.spawn();
+        this.spawn(0);
     },
-    spawn:function(){
+    spawn:function(id){
         if(this.characters[CharacterType.Hut].length <= 0){
             this.Dead = true;
             return;
@@ -342,16 +349,17 @@ Team.prototype = {
         }
         var input = {   x: this.startlocation_pos.x + width/2 + this.spawn_i++*big_dim/20,
                         y: this.startlocation_pos.y + height/2 + this.spawn_j*big_dim/20, // + this.characters[CharacterType.Hut][0].r
+                        id: id,
                     type: CharacterType.Cow, team: this.team, color: this.color};
 
-        if(gamemode == GameMode.MultiPlayer && this.team == myteam){
-            /*var msg = {team: myteam, color: myteamcolor, characters: []};
+        /*if(gamemode == GameMode.MultiPlayer && this.team == myteam){
+            var msg = {team: myteam, color: myteamcolor, characters: []};
             spawnUnitMsg(input.x, input.y, msg, CharacterType.Cow);
-            communication.socket.emit('spawn', msg);*/
-        }else if(gamemode != GameMode.MultiPlayer){
+            communication.socket.emit('spawn', msg);
+        }else if(gamemode != GameMode.MultiPlayer){*/
             var character = characters.spawn(input);
             this.characters[input.type].push(character);
-        }
+        //}
     },
     update: function(){
         for (var i = 0; i < this.characters.length; i++) {
