@@ -98,6 +98,7 @@ function onstartGame(msg){
 	for(var i = 0; i < game.players.length; i++){
 		var player = game.players[i];
 		var team = player.team;
+		if(team == Team.Observer) continue;
 		teams[team].startmultiplayer(msg.players[team]);
 	}
     /*game.players.forEach(function(p){

@@ -217,7 +217,7 @@ Game.prototype = {
             this.minimaptouched = false;
             //console.log('minimap not touched')
             game.getTeam(myteam).path.endPath(MousePos.stage_x, MousePos.stage_y);
-            if(gamemode == GameMode.MultiPlayer) communication.socket.emit('path', game.getTeam(myteam).path.getLastTwoPoints());
+            //if(gamemode == GameMode.MultiPlayer) communication.socket.emit('path', game.getTeam(myteam).path.getLastTwoPoints());
         }
     },
     onTouching:function(){
@@ -371,7 +371,7 @@ Team.prototype = {
             }
         }
         this.spawnSinglePlayer();
-        this.sendSyncCharacter();
+        this.sendPeriodicSync();
     }, // end update
     check_dead:function(c){
         if(c.isDead()){
@@ -389,7 +389,7 @@ Team.prototype = {
         }
     }, // end check_dead
 
-    sendSyncCharacter:function(){
+    sendPeriodicSync:function(){
         if(gamemode != GameMode.MultiPlayer) return;
         if(gamestate != GameState.InPlay) return;
         if(this.team != myteam) return;
@@ -414,7 +414,7 @@ Team.prototype = {
         }
         communication.socket.emit('sync character', msg)
         this.sendSyncPath();
-    }, // end sendSyncCharacter
+    }, // end sendPeriodicSync
     sendSyncDeadCharacter:function(type, index, id){
         if(gamemode != GameMode.MultiPlayer) return;
         //if(this.team != myteam) return;
