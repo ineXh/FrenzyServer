@@ -198,6 +198,7 @@ Game.prototype = {
                 //console.log('i ' + i)
                 //console.log('msg.teams[i] ' + msg.teams[i])
                 var player = this.getPlayer(msg.teams[i]);//this.players[msg.teams[i]];
+                if(player == null) continue;
                 var id = this.character_ids.shift();
                 if(player.characters[enums.Cow].length >= max_unit_count)
                     continue;
