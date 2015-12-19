@@ -6,6 +6,7 @@ var GamePlayerListItem = React.createClass({
 
   render: function() {
     var team = getTeam(parseInt(this.props.team));
+    //console.log(this.props)
     //console.log(this.props.team)
     //console.log(team)
     return (
@@ -22,7 +23,7 @@ window.GamePlayerList = React.createClass({
     },
   onGamePlayerList:function(msg){
     //console.log('onGamePlayerList')
-    //console.log(msg)
+    console.log(msg)
 
     var showteam0 = true;
     var showteam1 = true;
@@ -30,10 +31,10 @@ window.GamePlayerList = React.createClass({
     var showteam3 = true;
 
     msg.players.forEach(function(p){
-      if(p.team == Team.Team0 && p.id != playerid) showteam0 = false;
-      if(p.team == Team.Team1 && p.id != playerid) showteam1 = false;
-      if(p.team == Team.Team2 && p.id != playerid) showteam2 = false;
-      if(p.team == Team.Team3 && p.id != playerid) showteam3 = false;
+      if(p.team == Team0 && p.id != playerid) showteam0 = false;
+      if(p.team == Team1 && p.id != playerid) showteam1 = false;
+      if(p.team == Team2 && p.id != playerid) showteam2 = false;
+      if(p.team == Team3 && p.id != playerid) showteam3 = false;
     });
     this.setState({players: msg.players,
                   showteam0: showteam0, showteam1: showteam1,
@@ -44,6 +45,7 @@ window.GamePlayerList = React.createClass({
         //console.log('GamePlayerList didmount')
         this.socket = communication.socket;
         this.socket.on('game player list', this.onGamePlayerList);
+        console.log('myteam ' + myteam)
         //this.socket.emit('request chat', '');
         //var list = this;
 

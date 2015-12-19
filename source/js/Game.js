@@ -252,31 +252,27 @@ function Team(team){
                          (team == 3)? StartLocation.SE: StartLocation.NW;
     this.startlocation_pos = getstartlocation(this.startlocation);
     this.sync_count = 0;
-    this.sync_time = 1;
+    this.sync_time = Server_to_Client_Sync_Period;
     this.spawn_count = 0;
-    this.spawn_time = 150;
+    this.spawn_time = SinglePlayer_Spawn_Period;
     this.spawn_j = 0;
     this.spawn_i = 0;
     this.init();
     this.max_unit_count = 1;
 }
-Team.Team0 = 0;
-Team.Team1 = 1;
-Team.Team2 = 2;
-Team.Team3 = 3;
-Team.Observer = 4;
+
 function getTeam(team){
     //console.log(team)
     switch(team){
-        case Team.Team0:
+        case Team0:
             return 'Team 0';
-        case Team.Team1:
+        case Team1:
             return 'Team 1';
-        case Team.Team2:
+        case Team2:
             return 'Team 2';
-        case Team.Team3:
+        case Team3:
             return 'Team 3';
-        case Team.Observer:
+        case Observer:
             return 'Observer';
     }
     return '';

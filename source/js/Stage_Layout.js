@@ -3,7 +3,7 @@ var tile_index;
 function Stage_Layout(){
 	this.init();
 }
-Stage_Layout.prototype = {   
+Stage_Layout.prototype = {
   init: function(){
   	this.tiles = [];
   	//this.sprites = [];
@@ -21,7 +21,7 @@ Stage_Layout.prototype = {
   },
   load_s1: function(){
   	//this.stage_width = s1.width * s1.tilewidth;
-  	//stage_width 
+  	//stage_width
   	// tile width = stage width / number of tiles
     var stage_layout = this;
     return new Promise(function(resolve, reject){
@@ -31,25 +31,25 @@ Stage_Layout.prototype = {
       stage_layout.tilewidth = stage_width*1.1 / (stage_layout.num_tiles_x);
       stage_layout.tileheight = stage_height*1.1 / stage_layout.num_tiles_y;
 
-      console.log("stage_width: " + stage_width)
-      console.log("this.tilewidth: " + stage_layout.tilewidth);
-      console.log("stage_height: " + stage_height)
-      console.log("this.tileheight: " + stage_layout.tileheight);
+      //console.log("stage_width: " + stage_width)
+      //console.log("this.tilewidth: " + stage_layout.tilewidth);
+      //console.log("stage_height: " + stage_height)
+      //console.log("this.tileheight: " + stage_layout.tileheight);
       var texture;
       for(var i = 0; i < s1.tilesets.length; i++){
         texture = PIXI.Texture.fromFrame(s1.tilesets[i].image);
-        stage_layout.tiles.push({texture: texture, id: i+1});  
+        stage_layout.tiles.push({texture: texture, id: i+1});
       }
-          
+
       stage_layout.data = s1.layers[0].data.slice(0);
       //
       stage_layout.place(stage_layout.data);
-      console.log('stage loaded')
+      //console.log('stage loaded')
       resolve();
     });
-  	
-  	
-  },  
+
+
+  },
   place: function(data){
   	this.container = new PIXI.Container();
     this.container.sprites = [];
@@ -57,11 +57,11 @@ Stage_Layout.prototype = {
   		for(var j = 0; j < this.end_x; j++){
   			//var tile_index = this.get_tile_index(data, i, j);
   			this.fill_tile_sprite(data,i,j, this.container);
-  		}  			
+  		}
   	}
-	
 
-  	
+
+
   }, // end place
   get_tile_index : function(data, i, j){
 	  	// add extra column on the right
@@ -82,7 +82,7 @@ Stage_Layout.prototype = {
 			data[i*(this.end_x)+j] = value;
 		}
 	},
-   
+
   fill_tile_sprite : function(data, i, j, platformcontainer){
     var tile_index = this.get_tile_index(data, i, j);
     var sprite = new PIXI.Sprite(this.tiles[tile_index].texture);
@@ -94,10 +94,10 @@ Stage_Layout.prototype = {
       //sprite.alpha = 0.3;
       platformcontainer.sprites.push(sprite);
       platformcontainer.addChild(sprite);
-      
+
       return sprite;
   }, // end fill_tile_sprite
-  
+
   update : function(){
 
   },
@@ -109,7 +109,7 @@ Stage_Layout.prototype = {
         if(s.bound_point(pos, dist)) return check = true;
       });
       if(check) return true;
-    });   
+    });
     if(check) return true;
     return false;
   }, // end bound
@@ -118,7 +118,7 @@ Stage_Layout.prototype = {
   		PC.surfaces.forEach(function(s){
   			s.interact(object);
   		});
-  	});  	
+  	});
   },
   getRelevantTiles: function(object){
   	var left = (object.x - Math.abs(object.width)*(object.anchor.x));

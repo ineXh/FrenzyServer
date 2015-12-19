@@ -1,4 +1,6 @@
 var enums = require("./enums.js");
+var utils = require("./Utils.js");
+
 module.exports = exports = Game;
 
 function htmlEntities(str) {
@@ -7,7 +9,12 @@ function htmlEntities(str) {
 }
 
 var max_unit_count = 1;
-var update_character_period = 1000;
+
+// Character Spawn Period
+var period_unit_spawn = 3000;
+// Server to Client Periodic Sync
+var period_server_sync = 1000;
+
 function Game(io, server, name){
     this.io = io;
     this.server = server;
@@ -20,6 +27,9 @@ Game.prototype = {
         this.players = [];
         this.teams = [enums.Team0, enums.Team1, enums.Team2, enums.Team3];
         this.locations = [enums.NW, enums.NE,enums.SW, enums.SE];
+        this.colors = [enums.Red, enums.Blue, enums.Teal, enums.Purple];
+        //var colors = ['Red', 'Blue', 'Teal', 'Purple'];
+
         this.character_ids = [];
         for(var i = 0; i < 10000; i++) this.character_ids.push(i);
         this.spawncounter = new SpawnCounter();
@@ -40,14 +50,15 @@ Game.prototype = {
         return this.state;
     },
     join : function(player){
-        console.log(player.name + ' joins ' + this.name);
-        player.team = this.teams.shift();
-        if(player.team == undefined) player.team = enums.Observer;
-        //this.players.push({player: player, name: player.name, team: player.team});
+        player.gameinfo.team = this.teams.shift();
+        if(player.gameinfo.team == undefined) player.gameinfo.team = enums.Observer;
+
+        console.log(player.name + ' joins ' + this.name + ' in team ' + player.gameinfo.team);
+
         this.players.push(player);
 
-        var msg = {color    : player.gamecolor,
-                    team    : player.team,
+        var msg = {//color    : player.gameinfo.gamecolor,
+                    team    : player.gameinfo.team,
                     room    : this.name
                     }
         player.socket.leave('Global Chat')
@@ -65,13 +76,13 @@ Game.prototype = {
 
         this.io.in(this.name).emit('chat', obj);
         this.updateplayerlist();
-        //this.spawncounter.add(player.team, 5);
+        //this.spawncounter.add(player.gameinfo.team, 5);
         //this.spawn_existing(player);
     },
     leave: function(player){
-        if(player.team != undefined && player.team != enums.Observer){
-            this.teams.push(player.team);
-            player.team = enums.Observer;
+        if(player.gameinfo.team != undefined && player.gameinfo.team != enums.Observer){
+            this.teams.push(player.gameinfo.team);
+            player.gameinfo.team = enums.Observer;
         }
         player.socket.leave(this.name);
         player.socket.join('Global Chat')
@@ -91,22 +102,22 @@ Game.prototype = {
 
             for(var i = 0; i < this.players.length; i++){
                 var player = this.players[i];
-                if(player.team == enums.Observer) continue;
+                if(player.gameinfo.team == enums.Observer) continue;
                 var location = game.locations.shift();
                 var id = this.character_ids.shift();
-                var team = player.team;
-                player.location = location;
-                //msg.players.push({team: player.team, location: location, base_id: id})
+                var team = player.gameinfo.team;
+                player.gameinfo.location = location;
+                //msg.players.push({team: player.gameinfo.team, location: location, base_id: id})
 
                 msg.players[team].location = location;
                 msg.players[team].team = team;
                 msg.players[team].base_id = id;
 
-                player.characters[enums.Hut].push({
+                player.gameinfo.characters[enums.Hut].push({
                     x: 0, y:0,
                     type: enums.Hut, id: id});
 
-                game.spawncounter.add(player.team, 4);
+                game.spawncounter.add(player.gameinfo.team, 4);
             }
             this.io.in(this.name).emit('start game', msg);
 
@@ -117,8 +128,8 @@ Game.prototype = {
             }*/
             //p.socket.emit('start game', msg);
         //});
-        setTimeout(this.periodicSpawn.bind(this), 4000);
-        setTimeout(this.periodicSync.bind(this), update_character_period);
+        setTimeout(this.periodicSpawn.bind(this), period_unit_spawn);
+        setTimeout(this.periodicSync.bind(this), period_server_sync);
         //this.gameStarted = true;
         this.state = enums.InGame;
         this.server.send_game_list(null);
@@ -131,11 +142,11 @@ Game.prototype = {
         //console.log('index ' + index)
         if(index > -1){
             this.teams.splice(index,1);
-            this.teams.push(player.team);
-            player.team = team;
+            this.teams.push(player.gameinfo.team);
+            player.gameinfo.team = team;
         }else if(team == enums.Observer){
-            if(player.team != enums.Observer) this.teams.push(player.team);
-            player.team = team;
+            if(player.gameinfo.team != enums.Observer) this.teams.push(player.gameinfo.team);
+            player.gameinfo.team = team;
         }
         this.updateplayerlist();
     },
@@ -143,7 +154,11 @@ Game.prototype = {
         console.log('updateplayerlist')
         var msg = {players: []};
         for(var i = 0; i < this.players.length; i++){
-            msg.players.push({name: this.players[i].name, team: this.players[i].team, id: this.players[i].id});
+            console.log(this.players[i].gameinfo.team)
+            msg.players.push(
+                {name: this.players[i].name,
+                 team: this.players[i].gameinfo.team,
+                 id: this.players[i].id});
         }
         /*this.players.forEach(function(p){
             p.socket.emit('game player list', msg);
@@ -152,7 +167,7 @@ Game.prototype = {
     },
     getPlayer:function(team){
         for(var i = 0; i < this.players.length; i++){
-            if(this.players[i].team == team) return this.players[i];
+            if(this.players[i].gameinfo.team == team) return this.players[i];
         }
         return null;
     },
@@ -178,7 +193,7 @@ Game.prototype = {
             var id = this.character_ids.shift();
             //console.log(id)
             msg.characters[i].id = id;
-            player.characters[character.type].push({x: character.x, y: character.y, type: character.type, id: id});
+            player.gameinfo.characters[character.type].push({x: character.x, y: character.y, type: character.type, id: id});
 
         }
 
@@ -200,10 +215,10 @@ Game.prototype = {
                 var player = this.getPlayer(msg.teams[i]);//this.players[msg.teams[i]];
                 if(player == null) continue;
                 var id = this.character_ids.shift();
-                if(player.characters[enums.Cow].length >= max_unit_count)
+                if(player.gameinfo.characters[enums.Cow].length >= max_unit_count)
                     continue;
                 msg.character_ids.push(id);
-                player.characters[enums.Cow].push({
+                player.gameinfo.characters[enums.Cow].push({
                     x: 0, y:0,
                     type: enums.Cow, id: id});
             }
@@ -218,12 +233,12 @@ Game.prototype = {
             });*/
         //}
 
-        setTimeout(this.periodicSpawn.bind(this), 4000);
+        setTimeout(this.periodicSpawn.bind(this), period_unit_spawn);
     },
     DeadCharacter: function(player, msg){
-        if(player.characters[msg.type][msg.index] == undefined) return;
-        if(msg.id != player.characters[msg.type][msg.index].id) return;
-        player.characters[msg.type].splice(msg.index,1);
+        if(player.gameinfo.characters[msg.type][msg.index] == undefined) return;
+        if(msg.id != player.gameinfo.characters[msg.type][msg.index].id) return;
+        player.gameinfo.characters[msg.type].splice(msg.index,1);
         this.players.forEach(function(p){
             p.socket.emit('dead character', msg)
             //if(p != player){
@@ -234,7 +249,7 @@ Game.prototype = {
     },
     path: function(player, input){
         //console.log('path')
-        var msg = {team: player.team, points: input};
+        var msg = {team: player.gameinfo.team, points: input};
         this.players.forEach(function(p){
             if(p != player){
                 //console.log('player ' + p.team + ' to path.')
@@ -245,15 +260,17 @@ Game.prototype = {
     periodicSync: function(){
         if(this.state != enums.InGame) return;
 
-        //this.io.in(this.name).emit('spawn period', msg);
 
-        setTimeout(this.periodicSync.bind(this), update_character_period);
+        var msg = {};
+        this.io.in(this.name).emit('periodic server sync', msg);
+
+        setTimeout(this.periodicSync.bind(this), period_server_sync);
     }, // end periodicSync
     sync: function(player, msg){
-        for(var i = 0; i < player.characters.length; i++){
-                if(player.characters[i] == undefined) continue;
-                for(var j = 0; j < player.characters[i].length; j++){
-                    var c = player.characters[i][j];
+        for(var i = 0; i < player.gameinfo.characters.length; i++){
+                if(player.gameinfo.characters[i] == undefined) continue;
+                for(var j = 0; j < player.gameinfo.characters[i].length; j++){
+                    var c = player.gameinfo.characters[i][j];
                     var m = msg[i][j];
                     if(c != null && m != null && m.id == c.id){
                         c.x = m.x;
@@ -265,7 +282,7 @@ Game.prototype = {
                 }
             }
 
-        var msg = {team: player.team, characters: msg};
+        var msg = {team: player.gameinfo.team, characters: msg};
         this.players.forEach(function(p){
             //if(p != player){
                 //console.log('player ' + p.team + ' to path.')

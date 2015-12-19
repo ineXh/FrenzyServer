@@ -14,15 +14,9 @@ var colors = [enums.Red, enums.Blue, enums.Teal, enums.Purple,
               enums.Burlywood  ];
 colors.sort(function(a,b) { return Math.random() > 0.5; } );
 
-
-//var colors = ['Red', 'Blue', 'Teal', 'Purple'];
-var teams = [enums.Team0, enums.Team1, enums.Team2, enums.Team3];
-var locations = [enums.NW, enums.NE,enums.SW, enums.SE];
-
-function gameServer(io, clients, games){
+function gameServer(io){
     this.io = io;
-    this.games = games;
-    this.clients = clients;
+    this.games = [];
 
     this.init();
     //return this;
@@ -49,9 +43,7 @@ gameServer.prototype = {
         this.player_ids = [];
         for(var i = 0; i < 90000; i++) this.player_ids.push(i);
     }, // end init
-    newgame: function(){
 
-    },
     join: function(player){
         this.players.push(player);
         console.log('total players on server ' + this.players.length);
@@ -59,9 +51,6 @@ gameServer.prototype = {
         player.id = this.player_ids.shift();
         player.color = colors.shift();
         colors.push(player.color);
-
-        player.team = teams.shift();
-        player.location = locations.shift();
 
         player.state = enums.MultiPlayerMenu;
         this.send_joinserver_info(player);
@@ -71,9 +60,8 @@ gameServer.prototype = {
     leave: function(player){
         if(player.game != null) this.leaveGame(player);
         this.player_ids.push(player.id);
-        colors.push(player.color)
-        teams.push(player.team)
-        locations.push(player.location)
+
+        //locations.push(player.location)
         var index = this.players.indexOf(player);
         if(index > -1) this.players.splice(index, 1);
         console.log('total players ' + this.players.length);
@@ -138,13 +126,10 @@ gameServer.prototype = {
         //});
     }, // end send_game_list
     send_joinserver_info: function(player){
-        player.socket.emit('joinserver info',
+        player.socket.emit('joinServer',
             {color      : player.color,
              id         : player.id,
-             team       : player.team,
-             location   : player.location
          });
     }, // end send_joinserver_info
-
 } // end gameServer
 

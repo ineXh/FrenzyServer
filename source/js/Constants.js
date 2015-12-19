@@ -57,6 +57,13 @@ StartLocation.NE = 1;
 StartLocation.SW = 2;
 StartLocation.SE = 3;
 
+var Team0 = 0;
+var Team1 = 1;
+var Team2 = 2;
+var Team3 = 3;
+var Observer = 4;
+
+
 function AnimationType(){}
 AnimationType.Walk_Front = 0;
 AnimationType.Attack_Front = 1;

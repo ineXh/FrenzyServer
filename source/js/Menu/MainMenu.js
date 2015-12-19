@@ -303,7 +303,7 @@ var playbuttonpress = function(){
 };
 var playbuttonrelease = function(){
 	//playbuttonpressd = false;
-	console.log('playbuttonrelease')
+	//console.log('playbuttonrelease')
 	//gamestate = GameState.MainMenu2StageSelect;
 	//gamestate = GameState.InPlay;
 	menu.mainmenu.clean();
@@ -324,7 +324,7 @@ var playbuttonreleaseout = function(){
 	icon_play.duration = 200;
 	icon_play.time_s = time.t;
 
-	console.log('playbuttonreleaseout')
+	//console.log('playbuttonreleaseout')
 	//menu.clean();
 	//icon_play.does_not_die  = false;
 };
@@ -342,7 +342,7 @@ var playmultibuttonpress = function(){
 };
 var playmultibuttonrelease = function(){
 	//playbuttonpressd = false;
-	console.log('playmultibuttonrelease')
+	//console.log('playmultibuttonrelease')
 	gamestate = GameState.MultiPlayerMenu;
 	menu.mainmenu.clean();
 	stage0.addChild(stage);
@@ -361,7 +361,7 @@ var playmultibuttonreleaseout = function(){
 	icon_multiplay.duration = 200;
 	icon_multiplay.time_s = time.t;
 
-	console.log('playmultibuttonreleaseout')
+	//console.log('playmultibuttonreleaseout')
 	//menu.clean();
 	//icon_play.does_not_die  = false;
 };

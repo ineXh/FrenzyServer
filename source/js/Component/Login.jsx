@@ -1,6 +1,6 @@
 window.loginWindow = React.createClass({
   handleSubmit: function(e) {
-        console.log('handleSubmit')
+        //console.log('handleSubmit')
           e.preventDefault();
           var nameinput = this.refs.nameinput.value.trim();
           if (!nameinput) return;

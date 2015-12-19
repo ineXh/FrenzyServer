@@ -1,14 +1,15 @@
 var enums = require("./enums.js");
 module.exports = exports = webClient;
-var maxline = 3;
 
-function webClient(io, clients, gameserver){
+function webClient(io, gameserver){
     //var client = this;
     var gameserver = gameserver;
 	io.on('connection', function(socket){
-        var client = {socket: socket};
-        client.characters = characterlist();
-        client.path_points = [];
+
+        var GameInfo = require('./GameInfo.js');
+        this.gameinfo = new GameInfo();
+
+        var client = {socket: socket, gameinfo: this.gameinfo};
 
         onConnect(socket, gameserver);
 
@@ -53,10 +54,10 @@ function webClient(io, clients, gameserver){
             gameserver.sendChat(client, msg);
         }
         function onClientInfo(msg){
-            client.width = msg.width;
-            client.height = msg.height;
-            client.stage_width = msg.stage_width;
-            client.stage_height = msg.stage_height;
+            client.gameinfo.width = msg.width;
+            client.gameinfo.height = msg.height;
+            client.gameinfo.stage_width = msg.stage_width;
+            client.gameinfo.stage_height = msg.stage_height;
         }
         function onRequestGameList(){
             gameserver.send_game_list(client);
@@ -78,17 +79,7 @@ function webClient(io, clients, gameserver){
         }
         function onPath(msg){
             //console.log(msg);
-            if(client.path_points.length >= 2*maxline){
-                client.path_points.splice(0,2);
-            }
-            msg[0].x = msg[0].x / client.stage_width;
-            msg[0].y = msg[0].y / client.stage_height;
-            msg[1].x = msg[1].x / client.stage_width;
-            msg[1].y = msg[1].y / client.stage_height;
-            client.path_points.push({x: msg[0].x,
-                                     y: msg[0].y});
-            client.path_points.push({x: msg[1].x,
-                                     y: msg[1].y});
+            client.gameinfo.onPath(msg);
             client.game.path(client, msg);
         }
         function onSpawn(msg){
@@ -98,7 +89,6 @@ function webClient(io, clients, gameserver){
                 var character = msg.characters[i];
                 client.characters[character.type].push({x: character.x, y: character.y, type: character.type})
             }*/
-
             msg.team = client.team;
             msg.color = client.color;
             client.game.spawn(client, msg);
@@ -112,17 +102,7 @@ function webClient(io, clients, gameserver){
             //console.log('onSync')
             //console.log(client.characters)
             //console.log(msg)
-            for(var i = 0; i < client.characters.length; i++){
-                if(client.characters[i] == undefined) continue;
-                for(var j = 0; j < client.characters[i].length; j++){
-                    var c = client.characters[i][j];
-                    var m = msg[i][j];
-                    if(c != null && m != null){
-                        c.x = m.x;
-                        c.y = m.y;
-                    }
-                }
-            }
+            client.gameinfo.onSyncCharacter(msg);
             client.game.sync(client, msg);
         } // end onSync
 	}); // end io connection callback

@@ -32,18 +32,22 @@ Communications.prototype = {
 	setupconnection:function(){
 		communication.sendClientInfo();
 		//this.socket.on('chat', onChat);
-		communication.socket.on('joinserver info', onjoinServerInfo);
-		communication.socket.on('spawn existing', onSpawnExisting);
-		communication.socket.on('spawn', onSpawnExisting);
+		communication.socket.on('joinServer', onjoinServer);
+		communication.socket.on('joinGameSuccess', onjoinGameSuccess)
+		communication.socket.on('start game', onstartGame)
+
+
 		communication.socket.on('dead character', onDeadCharacter);
 		communication.socket.on('path', onPath);
 		communication.socket.on('sync', onSync);
 		communication.socket.on('spawn period', onSpawnPeriod);
-		communication.socket.on('joinGameSuccess', onjoinGameSuccess)
-		communication.socket.on('start game', onstartGame)
+		communication.socket.on('periodic server sync', onSyncPeriod);
+
 		communication.socket.on('some event', onsomeevent)
 		//communication.socket.on('chat', onChat);
 		//communication.socket.on('game list', onGameList);
+		//communication.socket.on('spawn existing', onSpawnExisting); // obsolete
+		//communication.socket.on('spawn', onSpawnExisting); // obsolete
 	},
 
 	sendClientInfo: function(){
@@ -71,9 +75,10 @@ function joinGame(index){
 	communication.socket.emit('join game', index);
 }
 function onjoinGameSuccess(msg){
-	//console.log('onjoinGameSuccess')
+	console.log('onjoinGameSuccess')
+	console.log(msg)
 	myteam = msg.team;
-	myteamcolor = msg.color;
+	//myteamcolor = msg.color;
 	menu.multiplayermenu.init_gameroom();
 }
 function leaveGame(){
@@ -125,7 +130,10 @@ function onChat(msg){
     	placechat(msg)
 	}
 }
-
+function onSyncPeriod(msg){
+	// console.log('onSyncPeriod');
+	// console.log(msg)
+} // end onSyncPeriod
 
 function onSpawnPeriod(msg){
 	//console.log('onSpawnPeriod')
@@ -160,8 +168,9 @@ function onSpawnExisting(msg){
 	}
 	game.getTeam(msg.team).color = msg.color;
 }
-function onjoinServerInfo(msg){
+function onjoinServer(msg){
 	playerid = msg.id;
+	//globalchatcolor = msg.color;
 	//gamestate = GameState.InPlay;
 	//myteam = msg.team;
 	//myteamcolor = msg.color;
