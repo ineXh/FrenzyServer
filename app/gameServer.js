@@ -49,7 +49,8 @@ gameServer.prototype = {
         console.log('total players on server ' + this.players.length);
         //player.name = 'Bob';
         player.id = this.player_ids.shift();
-        player.color = colors.shift();
+        player.globachatcolor = colors.shift();
+        player.color = player.globachatcolor
         colors.push(player.color);
 
         player.state = enums.MultiPlayerMenu;

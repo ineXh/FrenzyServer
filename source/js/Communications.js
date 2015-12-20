@@ -131,8 +131,11 @@ function onChat(msg){
 	}
 }
 function onSyncPeriod(msg){
-	// console.log('onSyncPeriod');
-	// console.log(msg)
+	console.log('onSyncPeriod');
+	console.log(msg)
+	/*if(msg.players[0].characters[0][0] != undefined){
+		if(msg.players[0].characters[0][0].vx > 0) debugger;
+	}*/
 } // end onSyncPeriod
 
 function onSpawnPeriod(msg){

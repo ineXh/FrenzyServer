@@ -339,7 +339,10 @@ Cow.prototype.update = function(path){
 	//if(this.animationtype == AnimationType.Attack_Front){
 	//}else{
 	if(!this.attacking){
-		this.vel = this.accel;
+		//this.vel = this.accel;
+		//this.vel.add(this.accel);
+		this.vel.x = this.accel.x;
+		this.vel.y = this.accel.y;
 	    this.vel.limit(this.maxspeed);
 	    this.pos.add(this.vel);
 	    this.accel.mult(0);

@@ -103,10 +103,10 @@ Game.prototype = {
     }, // end find_closest_opponent
     update: function(){
         if(gamestate != GameState.InPlay) return;
+        gameCount++;
 
-
-        this.checkcollisions();
-        this.updateOpponent();
+        //this.checkcollisions();
+        //this.updateOpponent();
         this.teams.forEach(function(team){
             team.update();
         });
@@ -117,6 +117,7 @@ Game.prototype = {
         return this.teams[team];
     },
     startsingle:function(){
+        gameCount = 0;
         stagelayout.place_stage();
         gamestate = GameState.InPlay;
         stage.x = 0;
@@ -252,7 +253,7 @@ function Team(team){
                          (team == 3)? StartLocation.SE: StartLocation.NW;
     this.startlocation_pos = getstartlocation(this.startlocation);
     this.sync_count = 0;
-    this.sync_time = Server_to_Client_Sync_Period;
+    this.sync_time = Client_to_Server_Sync_Period;
     this.spawn_count = 0;
     this.spawn_time = SinglePlayer_Spawn_Period;
     this.spawn_j = 0;
@@ -318,7 +319,7 @@ Team.prototype = {
         var input = {   x: this.startlocation_pos.x + width/2,
                                 y: this.startlocation_pos.y + height/2,
                     type: CharacterType.Hut, team: this.team,
-                    color: this.color, id: player.id
+                    color: this.color, id: player.base_id
                 };
         var character = characters.spawn(input);
         this.characters[input.type].push(character);
@@ -393,13 +394,14 @@ Team.prototype = {
         if(this.sync_count < this.sync_time) return;
         this.sync_count = 0;
         //console.log('sendSync')
-        var msg = [];
+        var msg = {gameCount    : gameCount,
+                    characters  : []};
         for (var i = 0; i < this.characters.length; i++) {
             if(this.characters[i] == undefined) continue;
-            msg[i] = [];
+            msg.characters[i] = [];
             for(var j = 0; j < this.characters[i].length;j++){
                 var c = this.characters[i][j];
-                msg[i].push({x: c.pos.x / stage_width,
+                msg.characters[i].push({x: c.pos.x / stage_width,
                              y: c.pos.y / stage_height,
                             vx: c.vel.x / stage_width,
                             vy: c.vel.y / stage_height,
@@ -408,7 +410,7 @@ Team.prototype = {
                             id: c.id})
             }
         }
-        communication.socket.emit('sync character', msg)
+        communication.socket.emit('periodic client sync', msg)
         this.sendSyncPath();
     }, // end sendPeriodicSync
     sendSyncDeadCharacter:function(type, index, id){

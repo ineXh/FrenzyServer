@@ -23,10 +23,6 @@ var path_container;
 var startTime, lastTime;
 var time;
 
-var gamestartCount = 0;
-var gameCount = 0;
-
-
 // Touch
 var spritetouched = false;
 var spritetouched_cancel_cb = null;
@@ -83,10 +79,12 @@ var myteamcolor;
 var startlocation = -1;
 
 // Multiplayer
+var gamestartCount = 0;
+var gameCount = 0;
 var playerid = -1;
 var globalchatcolor;
 var username = "";
-var Server_to_Client_Sync_Period = 100;
+var Client_to_Server_Sync_Period = 500;
 
 // SinglePlayer
 var SinglePlayer_Spawn_Period = 150;

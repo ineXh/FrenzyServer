@@ -25,7 +25,7 @@ function webClient(io, gameserver){
         socket.on('path', onPath);
         socket.on('spawn', onSpawn);
         socket.on('sync dead character', onSyncDeadCharacter)
-        socket.on('sync character', onSyncCharacter);
+        socket.on('periodic client sync', onSyncPeriodClient);
         socket.on('disconnect', onDisconnect);
 
         function onConnect(socket, server){
@@ -98,12 +98,12 @@ function webClient(io, gameserver){
 
             client.game.DeadCharacter(client, msg);
         }
-        function onSyncCharacter(msg){
+        function onSyncPeriodClient(msg){
             //console.log('onSync')
             //console.log(client.characters)
             //console.log(msg)
-            client.gameinfo.onSyncCharacter(msg);
-            client.game.sync(client, msg);
+            client.gameinfo.onSyncPeriodClient(msg);
+            //client.game.sync(client, msg);
         } // end onSync
 	}); // end io connection callback
 

@@ -57,6 +57,9 @@ Game.prototype = {
 
         this.players.push(player);
 
+        player.color = getColor(player.gameinfo.team);
+        //console.log('player.color ' + player.color)
+
         var msg = {//color    : player.gameinfo.gamecolor,
                     team    : player.gameinfo.team,
                     room    : this.name
@@ -84,6 +87,7 @@ Game.prototype = {
             this.teams.push(player.gameinfo.team);
             player.gameinfo.team = enums.Observer;
         }
+        player.color = player.globachatcolor;
         player.socket.leave(this.name);
         player.socket.join('Global Chat')
         player.room = 'Global Chat';
@@ -148,13 +152,15 @@ Game.prototype = {
             if(player.gameinfo.team != enums.Observer) this.teams.push(player.gameinfo.team);
             player.gameinfo.team = team;
         }
+        player.color = getColor(player.gameinfo.team);
+        //console.log('player.color ' + player.color)
         this.updateplayerlist();
     },
     updateplayerlist : function(){
-        console.log('updateplayerlist')
+        //console.log('updateplayerlist')
         var msg = {players: []};
         for(var i = 0; i < this.players.length; i++){
-            console.log(this.players[i].gameinfo.team)
+            //console.log(this.players[i].gameinfo.team)
             msg.players.push(
                 {name: this.players[i].name,
                  team: this.players[i].gameinfo.team,
@@ -260,8 +266,15 @@ Game.prototype = {
     periodicSync: function(){
         if(this.state != enums.InGame) return;
 
+        var msg = {players: [{},{},{},{}]};
 
-        var msg = {};
+        for(var i = 0; i < this.players.length; i++){
+            var player = this.players[i];
+            if(player.gameinfo.team == enums.Observer) continue;
+            var team = player.gameinfo.team;
+            msg.players[team].gameCount = player.gameinfo.gameCount;
+            msg.players[team].characters = player.gameinfo.characters;
+        }
         this.io.in(this.name).emit('periodic server sync', msg);
 
         setTimeout(this.periodicSync.bind(this), period_server_sync);
@@ -291,6 +304,23 @@ Game.prototype = {
         });
     }, // end sync
 } // end Game
+
+function getColor(team){
+    team = parseInt(team);
+    switch(team){
+        case enums.Team0:
+            return enums.Red;
+        case enums.Team1:
+            return enums.Blue;
+        case enums.Team2:
+            return enums.Teal;
+        case enums.Team3:
+            return enums.Purple;
+        case enums.Observer:
+            return enums.Black;
+    }
+    return enums.Black;
+}
 
 function SpawnCounter(){
     this.init();

@@ -13,6 +13,7 @@ GameInfo.prototype = {
         this.height = 0;
         this.stage_width = 0;
         this.stage_height = 0;
+        this.gameCount = 0;
         this.team = enums.Observer;
         this.location = 0;
         this.characters = characterlist();
@@ -31,18 +32,25 @@ GameInfo.prototype = {
         this.path_points.push({x: msg[1].x,
                                  y: msg[1].y});
     },
-    onSyncCharacter : function(msg){
+    onSyncPeriodClient : function(msg){
+        this.gameCount = msg.gameCount;
+        //console.log('gameCount ' + this.gameCount);
         for(var i = 0; i < this.characters.length; i++){
-                if(this.characters[i] == undefined) continue;
-                for(var j = 0; j < this.characters[i].length; j++){
-                    var c = this.characters[i][j];
-                    var m = msg[i][j];
-                    if(c != null && m != null){
-                        c.x = m.x;
-                        c.y = m.y;
-                    }
+            if(this.characters[i] == undefined) continue;
+            for(var j = 0; j < this.characters[i].length; j++){
+                var c = this.characters[i][j];
+                var m = msg.characters[i][j];
+                if(c != null && m != null){
+                    c.x = m.x;
+                    c.y = m.y;
+                    c.vx = m.vx;
+                    c.vy = m.vy;
+                    c.hp = m.hp;
                 }
             }
+        }
+        //console.log('onSyncPeriodClient')
+        //console.log(this.characters)
     },
 }; // end GameInfo
 function characterlist(){
