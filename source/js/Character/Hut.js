@@ -8,6 +8,8 @@ Hut.prototype.create = function(){
     this.pos = new PVector(0,0);
     this.vel = new PVector(0,0);
     this.accel = new PVector(0,0);
+    this.s_pos = new PVector(0,0);
+    this.s_vel = new PVector(0,0);
     this.sprite = new PIXI.Sprite(hut_texture);
 
     this.r = big_dim*0.1;
@@ -122,6 +124,8 @@ Hut.prototype.init = function(input){
     if(input.color != undefined) this.sprite.tint = input.color;
     this.pos.x = input.x;
     this.pos.y = input.y;
+
+
 
     stage.addChild(this.sprite);
 

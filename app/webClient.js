@@ -26,6 +26,7 @@ function webClient(io, gameserver){
         socket.on('spawn', onSpawn);
         socket.on('sync dead character', onSyncDeadCharacter)
         socket.on('periodic client sync', onSyncPeriodClient);
+        socket.on('force client sync', onSyncForceClient);
         socket.on('disconnect', onDisconnect);
 
         function onConnect(socket, server){
@@ -102,9 +103,13 @@ function webClient(io, gameserver){
             //console.log('onSync')
             //console.log(client.characters)
             //console.log(msg)
-            client.gameinfo.onSyncPeriodClient(msg);
+            client.gameinfo.onSyncUpdateClient(msg);
             //client.game.sync(client, msg);
-        } // end onSync
+        } // end onSyncPeriodClient
+        function onSyncForceClient(msg){
+            client.gameinfo.onSyncUpdateClient(msg);
+            //clearTimeout(myVar);
+        }// end onSyncForceClient
 	}); // end io connection callback
 
 	return this;

@@ -257,6 +257,8 @@ function Team(team){
     this.startlocation_pos = getstartlocation(this.startlocation);
     this.sync_count = 0;
     this.sync_time = Client_to_Server_Sync_Period;
+    this.sync_force = false;
+
     this.spawn_count = 0;
     this.spawn_time = SinglePlayer_Spawn_Period;
     this.spawn_j = 0;
@@ -372,6 +374,7 @@ Team.prototype = {
         }
         this.spawnSinglePlayer();
         this.sendPeriodicSync();
+        this.sendForceSync();
     }, // end update
     check_dead:function(c){
         if(c.isDead()){
@@ -404,6 +407,9 @@ Team.prototype = {
             msg.characters[i] = [];
             for(var j = 0; j < this.characters[i].length;j++){
                 var c = this.characters[i][j];
+                if(c.s_vel == undefined) debugger;
+                c.s_vel.x = c.vel.x;
+                c.s_vel.y = c.vel.y;
                 msg.characters[i].push({x: c.pos.x / stage_width,
                              y: c.pos.y / stage_height,
                             vx: c.vel.x / stage_width,
@@ -416,6 +422,47 @@ Team.prototype = {
         communication.socket.emit('periodic client sync', msg)
         this.sendSyncPath();
     }, // end sendPeriodicSync
+    sendForceSync : function(){
+        if(!this.sync_force) return;
+        if(gamemode != GameMode.MultiPlayer) return;
+        if(gamestate != GameState.InPlay) return;
+        if(this.team != myteam) return;
+        this.sync_force = false;
+        console.log('send Force Sync')
+        this.sync_count = 0;
+        //console.log('sendSync')
+        var msg = {gameCount    : gameCount,
+                    characters  : []};
+        for (var i = 0; i < this.characters.length; i++) {
+            if(this.characters[i] == undefined) continue;
+            msg.characters[i] = [];
+            for(var j = 0; j < this.characters[i].length;j++){
+                var c = this.characters[i][j];
+                var predict = new PVector(
+                            c.pos.x +
+                            c.vel.x*Server_Sync_Period_Estimate,
+                            c.pos.y +
+                            c.vel.y*Server_Sync_Period_Estimate);
+
+                c.s_vel.x = predict.x / Server_Sync_Period_Estimate;
+                c.s_vel.y = predict.y / Server_Sync_Period_Estimate;
+                msg.characters[i].push({
+                            x: c.s_pos.x / stage_width,
+                            y: c.s_pos.y / stage_height,
+                            vx: c.s_vel.x / stage_width,
+                            vy: c.s_vel.y / stage_height,
+                            hp: c.hp,
+                            type: c.type,
+                            id: c.id})
+                c.s_pos.x = c.pos.x;
+                c.s_pos.y = c.pos.y;
+                c.s_vel.x = c.vel.x;
+                c.s_vel.y = c.vel.y;
+            }
+        }
+        communication.socket.emit('force client sync', msg)
+
+    }, // end sendForceSync
     sendSyncDeadCharacter:function(type, index, id){
         if(gamemode != GameMode.MultiPlayer) return;
         //if(this.team != myteam) return;

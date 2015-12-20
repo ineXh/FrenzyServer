@@ -32,7 +32,7 @@ GameInfo.prototype = {
         this.path_points.push({x: msg[1].x,
                                  y: msg[1].y});
     },
-    onSyncPeriodClient : function(msg){
+    onSyncUpdateClient : function(msg){
         this.gameCount = msg.gameCount;
         //console.log('gameCount ' + this.gameCount);
         for(var i = 0; i < this.characters.length; i++){
@@ -49,7 +49,7 @@ GameInfo.prototype = {
                 }
             }
         }
-        //console.log('onSyncPeriodClient')
+        //console.log('onSyncUpdateClient')
         //console.log(this.characters)
     },
 }; // end GameInfo

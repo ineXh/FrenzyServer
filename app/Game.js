@@ -119,6 +119,7 @@ Game.prototype = {
 
                 player.gameinfo.characters[enums.Hut].push({
                     x: 0, y:0,
+                    vx:0, vy:0,
                     type: enums.Hut, id: id});
 
                 game.spawncounter.add(player.gameinfo.team, 4);
@@ -132,8 +133,8 @@ Game.prototype = {
             }*/
             //p.socket.emit('start game', msg);
         //});
-        setTimeout(this.periodicSpawn.bind(this), period_unit_spawn);
-        setTimeout(this.periodicSync.bind(this), period_server_sync);
+        this.periodicSpawnTimeoout = setTimeout(this.periodicSpawn.bind(this), period_unit_spawn);
+        this.periodicSyncTimeoout = setTimeout(this.periodicSync.bind(this), period_server_sync);
         //this.gameStarted = true;
         this.state = enums.InGame;
         this.server.send_game_list(null);
@@ -240,7 +241,7 @@ Game.prototype = {
             });*/
         //}
 
-        setTimeout(this.periodicSpawn.bind(this), period_unit_spawn);
+        this.periodicSpawnTimeoout = setTimeout(this.periodicSpawn.bind(this), period_unit_spawn);
     },
     DeadCharacter: function(player, msg){
         if(player.gameinfo.characters[msg.type][msg.index] == undefined) return;
@@ -267,7 +268,8 @@ Game.prototype = {
     periodicSync: function(){
         if(this.state != enums.InGame) return;
 
-        var msg = {players: [{},{},{},{}]};
+        var msg = { sync_type: 'periodic',
+                    players: [{},{},{},{}]};
 
         for(var i = 0; i < this.players.length; i++){
             var player = this.players[i];
@@ -278,8 +280,26 @@ Game.prototype = {
         }
         this.io.in(this.name).emit('periodic server sync', msg);
 
-        setTimeout(this.periodicSync.bind(this), period_server_sync);
+        this.periodicSyncTimeoout = setTimeout(this.periodicSync.bind(this), period_server_sync);
     }, // end periodicSync
+    forceSync: function(){
+        if(this.state != enums.InGame) return;
+        console.log('forceSync')
+        var msg = { sync_type: 'force',
+                    players: [{},{},{},{}]};
+
+        for(var i = 0; i < this.players.length; i++){
+            var player = this.players[i];
+            if(player.gameinfo.team == enums.Observer) continue;
+            var team = player.gameinfo.team;
+            msg.players[team].gameCount = player.gameinfo.gameCount;
+            msg.players[team].characters = player.gameinfo.characters;
+        }
+        this.io.in(this.name).emit('periodic server sync', msg);
+        clearTimeout(this.periodicSyncTimeoout);
+        this.periodicSyncTimeoout = setTimeout(this.periodicSync.bind(this), period_server_sync);
+    }, // end forceSync
+    // Obsolete sync
     sync: function(player, msg){
         for(var i = 0; i < player.gameinfo.characters.length; i++){
                 if(player.gameinfo.characters[i] == undefined) continue;

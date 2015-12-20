@@ -69,6 +69,8 @@ function Character(){
 	this.accel = new PVector(0,0);
 	this.vel = new PVector(0,0);
 	this.pos = new PVector(0,0);
+	this.s_vel = new PVector(0,0);
+	this.s_pos = new PVector(0,0);
 	this.maxspeed = big_dim/200;
 	this.Dead = false;
 }
@@ -199,6 +201,10 @@ Cow.prototype.create = function(){
 
 	this.pos = new PVector(0,0);
 	this.vel = new PVector(0,0);
+	// Simulated Postion for Other Clients
+	this.s_pos = new PVector(0,0);
+	this.s_vel = new PVector(0,0);
+
 	this.accel = new PVector(0,0);
 	//this.sprite = new PIXI.Sprite(cow_texture);
 	this.sprite = new PIXI.extras.MovieClip(cow_front_frames);
@@ -240,6 +246,10 @@ Cow.prototype.init = function(input){
 	this.pos.y = input.y;
 	this.vel.x = 0;
 	this.vel.y = 0;
+	this.s_pos.x = input.x;
+	this.s_pos.y = input.y;
+	this.s_vel.x = 0;
+	this.s_vel.y = 0;
 	stage.addChild(this.sprite);
 	stage.addChild(this.healthbar.bar);
 } // gotoAndPlay // currentFramenumber
@@ -343,15 +353,31 @@ Cow.prototype.update = function(path){
 	if(!this.attacking){
 		//this.vel = this.accel;
 		//this.vel.add(this.accel);
-		if(gamemode == GameMode.SinglePlayer || this.team == myteam){
+		if(gamemode == GameMode.SinglePlayer){
 			this.vel.x = this.accel.x;
 			this.vel.y = this.accel.y;
 	    	this.vel.limit(this.maxspeed);
+	    	this.pos.add(this.vel);
 		}else if(gamemode == GameMode.MultiPlayer){
-
+			if(this.team == myteam){
+				this.vel.x = this.accel.x;
+				this.vel.y = this.accel.y;
+		    	this.vel.limit(this.maxspeed);
+				this.s_pos.add(this.s_vel);
+				this.pos.add(this.vel);
+				// Check if Out of Sync
+				if((Math.abs(this.pos.x - this.s_pos.x)
+					>= Client_Sync_Tolerance*stage_width) ||
+					(Math.abs(this.pos.y - this.s_pos.y)
+					>= Client_Sync_Tolerance*stage_height)){
+					//debugger;
+					game.teams[myteam].sync_force = true;
+				}
+			}else{
+				this.pos.add(this.vel);
+			}
 		}
 
-	    this.pos.add(this.vel);
 	    this.accel.mult(0);
 	    if(this.border)   this.stayinBorder();
 	}
