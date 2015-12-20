@@ -141,14 +141,14 @@ function onSyncPeriod(msg){
 	// Loop Message Players
 	for(var i = 0; i < msg.players.length; i++){
 		//if(i == myteam) console.log(gameCount - msg.players[i].gameCount)
-		if(i == myteam) continue;
+		//if(i == myteam) continue;
 		if(msg.players[i].characters == undefined) continue;
 		// Loop Player CharacterTypes
 		for(var j = 0; j < msg.players[i].characters.length; j++){
 			if(msg.players[i].characters[j] == undefined) continue;
 			for(var k = 0; k < msg.players[i].characters[j].length; k++){
 				if(game.teams[i].characters[j][k] == undefined) debugger;
-				//if(msg.players[i].characters[j][k].vx > 0) debugger;
+				if(msg.players[i].characters[j][k].vx > 0) debugger;
 				//game.teams[i].characters[j][k].pos.x = msg.players[i].characters[j][k].x*stage_width;
 				//game.teams[i].characters[j][k].pos.y = msg.players[i].characters[j][k].y*stage_height;
 				game.teams[i].characters[j][k].vel.x = msg.players[i].characters[j][k].vx*stage_width;
