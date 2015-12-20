@@ -85,6 +85,8 @@ var playerid = -1;
 var globalchatcolor;
 var username = "";
 var Client_to_Server_Sync_Period = 500;
+var Server_Sync_gameCounts = [0];
+var Server_Sync_Period_Estimate = 0;
 
 // SinglePlayer
 var SinglePlayer_Spawn_Period = 150;

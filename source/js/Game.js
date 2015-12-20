@@ -120,6 +120,7 @@ Game.prototype = {
         gameCount = 0;
         stagelayout.place_stage();
         gamestate = GameState.InPlay;
+        gamemode = GameMode.SinglePlayer;
         stage.x = 0;
         stage.y = 0;
         myteam = 0;
@@ -136,6 +137,8 @@ Game.prototype = {
     // Multiplayer Start Game
     startgame: function(){
         stagelayout.place_stage();
+        gamestate = GameState.InPlay;
+        gamemode = GameMode.MultiPlayer;
         this.teams.forEach(function(t){
             t.restartPath();
         })

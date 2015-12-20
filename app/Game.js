@@ -11,7 +11,7 @@ function htmlEntities(str) {
 var max_unit_count = 1;
 
 // Character Spawn Period
-var period_unit_spawn = 3000;
+var period_unit_spawn = 1000;
 // Server to Client Periodic Sync
 var period_server_sync = 1000;
 
@@ -72,8 +72,8 @@ Game.prototype = {
 
         var obj = {
           time: (new Date()).getTime(),
-          msg: htmlEntities('Hey! You joined ' + this.name),
-          author: 'Game MaNager',
+          msg: htmlEntities('Hey! Welcome ' + player.name + '! You joined ' + this.name),
+          author: this.name + ' MaNagEr',
           color: 'Black',
         };
 
@@ -226,6 +226,7 @@ Game.prototype = {
                 msg.character_ids.push(id);
                 player.gameinfo.characters[enums.Cow].push({
                     x: 0, y:0,
+                    vx:0, vy: 0,
                     type: enums.Cow, id: id});
             }
             if(msg.character_ids.length >= 1)

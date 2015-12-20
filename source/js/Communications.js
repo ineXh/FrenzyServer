@@ -131,16 +131,42 @@ function onChat(msg){
 	}
 }
 function onSyncPeriod(msg){
-	console.log('onSyncPeriod');
-	console.log(msg)
+	//console.log('onSyncPeriod');
+	//console.log(msg)
 	/*if(msg.players[0].characters[0][0] != undefined){
 		if(msg.players[0].characters[0][0].vx > 0) debugger;
 	}*/
+	// Loop Message Players
+	for(var i = 0; i < msg.players.length; i++){
+		//if(i == myteam) console.log(gameCount - msg.players[i].gameCount)
+		if(i == myteam) continue;
+		if(msg.players[i].characters == undefined) continue;
+		// Loop Player CharacterTypes
+		for(var j = 0; j < msg.players[i].characters.length; j++){
+			if(msg.players[i].characters[j] == undefined) continue;
+			for(var k = 0; k < msg.players[i].characters[j].length; k++){
+				//game.teams[i].characters[j][k].pos.x = msg.players[i].characters[j][k].x*stage_width;
+				//game.teams[i].characters[j][k].pos.y = msg.players[i].characters[j][k].y*stage_height;
+				game.teams[i].characters[j][k].vel.x = msg.players[i].characters[j][k].vx*stage_width;
+				game.teams[i].characters[j][k].vel.y = msg.players[i].characters[j][k].vy*stage_height;
+				game.teams[i].characters[j][k].hp = msg.players[i].characters[j][k].hp;
+			}
+		}
+	}
+
+	Server_Sync_gameCounts.push(gameCount);
+	Server_Sync_gameCounts = Server_Sync_gameCounts.slice(-4);
+	var sum = 0;
+	for(var i = 1; i < Server_Sync_gameCounts.length; i++){
+		sum += Server_Sync_gameCounts[i] - Server_Sync_gameCounts[i-1];
+	}
+	Server_Sync_Period_Estimate = Math.ceil(sum / (Server_Sync_gameCounts.length - 1));
 } // end onSyncPeriod
 
 function onSpawnPeriod(msg){
 	//console.log('onSpawnPeriod')
 	console.log(msg)
+	//debugger;
 	for(var i = 0; i < msg.teams.length; i++){
 		game.getTeam(i).spawn(msg.character_ids[i]);
 	}

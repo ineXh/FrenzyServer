@@ -238,6 +238,8 @@ Cow.prototype.init = function(input){
 	this.upgrade_update();
 	this.pos.x = input.x;
 	this.pos.y = input.y;
+	this.vel.x = 0;
+	this.vel.y = 0;
 	stage.addChild(this.sprite);
 	stage.addChild(this.healthbar.bar);
 } // gotoAndPlay // currentFramenumber
@@ -341,9 +343,14 @@ Cow.prototype.update = function(path){
 	if(!this.attacking){
 		//this.vel = this.accel;
 		//this.vel.add(this.accel);
-		this.vel.x = this.accel.x;
-		this.vel.y = this.accel.y;
-	    this.vel.limit(this.maxspeed);
+		if(gamemode == GameMode.SinglePlayer || this.team == myteam){
+			this.vel.x = this.accel.x;
+			this.vel.y = this.accel.y;
+	    	this.vel.limit(this.maxspeed);
+		}else if(gamemode == GameMode.MultiPlayer){
+
+		}
+
 	    this.pos.add(this.vel);
 	    this.accel.mult(0);
 	    if(this.border)   this.stayinBorder();
