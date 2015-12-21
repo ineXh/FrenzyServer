@@ -148,7 +148,10 @@ function onSyncPeriod(msg){
 			if(msg.players[i].characters[j] == undefined) continue;
 			for(var k = 0; k < msg.players[i].characters[j].length; k++){
 				if(game.teams[i].characters[j][k] == undefined) debugger;
-				if(msg.players[i].characters[j][k].vx > 0) debugger;
+				if(msg.players[i].characters[j][k].vx > 0){
+					communication.socket.removeListener('periodic server sync', onSyncPeriod);
+					debugger;	
+				} 
 				//game.teams[i].characters[j][k].pos.x = msg.players[i].characters[j][k].x*stage_width;
 				//game.teams[i].characters[j][k].pos.y = msg.players[i].characters[j][k].y*stage_height;
 				game.teams[i].characters[j][k].vel.x = msg.players[i].characters[j][k].vx*stage_width;
