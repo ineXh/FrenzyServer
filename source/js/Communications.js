@@ -151,12 +151,12 @@ function onSyncPeriod(msg){
 			if(msg.players[i].characters[j] == undefined) continue;
 			for(var k = 0; k < msg.players[i].characters[j].length; k++){
 				if(game.teams[i].characters[j][k] == undefined) debugger;
-				if(msg.players[i].characters[j][k].vx > 0){
+				/*if(msg.players[i].characters[j][k].vx > 0){
 					var a = 1;
 					//communication.socket.removeListener('periodic server sync', onSyncPeriod);
 					//debugger;
 				}
-				game.teams[i].characters[j][k].hp = msg.players[i].characters[j][k].hp;
+
 
 				if(Server_Sync_Period_Estimate == 0) continue;
 				if(msg.players[i].characters[j][k].x == null) continue;
@@ -170,11 +170,13 @@ function onSyncPeriod(msg){
 				game.teams[i].characters[j][k].vel.y = (predict.y - game.teams[i].characters[j][k].pos.y) / Server_Sync_Period_Estimate;
 
 				//if(game.teams[i].characters[j][k].vel.x > 0.1) debugger;
+				*/
+				game.teams[i].characters[j][k].hp = msg.players[i].characters[j][k].hp;
+				game.teams[i].characters[j][k].pos.x = msg.players[i].characters[j][k].x*stage_width;
+				game.teams[i].characters[j][k].pos.y = msg.players[i].characters[j][k].y*stage_height;
+				game.teams[i].characters[j][k].vel.x = msg.players[i].characters[j][k].vx*stage_width;
+				game.teams[i].characters[j][k].vel.y = msg.players[i].characters[j][k].vy*stage_height;
 
-				//game.teams[i].characters[j][k].pos.x = msg.players[i].characters[j][k].x*stage_width;
-				//game.teams[i].characters[j][k].pos.y = msg.players[i].characters[j][k].y*stage_height;
-				//game.teams[i].characters[j][k].vel.x = msg.players[i].characters[j][k].vx*stage_width;
-				//game.teams[i].characters[j][k].vel.y = msg.players[i].characters[j][k].vy*stage_height;
 			}
 		}
 	}

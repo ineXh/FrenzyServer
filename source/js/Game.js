@@ -222,7 +222,7 @@ Game.prototype = {
             this.minimaptouched = false;
             //console.log('minimap not touched')
             game.getTeam(myteam).path.endPath(MousePos.stage_x, MousePos.stage_y);
-            //if(gamemode == GameMode.MultiPlayer) communication.socket.emit('path', game.getTeam(myteam).path.getLastTwoPoints());
+            if(gamemode == GameMode.MultiPlayer) communication.socket.emit('path', game.getTeam(myteam).path.getLastTwoPoints());
         }
     },
     onTouching:function(){

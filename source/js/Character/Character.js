@@ -353,12 +353,12 @@ Cow.prototype.update = function(path){
 	if(!this.attacking){
 		//this.vel = this.accel;
 		//this.vel.add(this.accel);
-		if(gamemode == GameMode.SinglePlayer){
+		//if(gamemode == GameMode.SinglePlayer){
 			this.vel.x = this.accel.x;
 			this.vel.y = this.accel.y;
 	    	this.vel.limit(this.maxspeed);
 	    	this.pos.add(this.vel);
-		}else if(gamemode == GameMode.MultiPlayer){
+		/*}else if(gamemode == GameMode.MultiPlayer){
 			if(this.team == myteam){
 				this.vel.x = this.accel.x;
 				this.vel.y = this.accel.y;
@@ -376,7 +376,7 @@ Cow.prototype.update = function(path){
 			}else{
 				this.pos.add(this.vel);
 			}
-		}
+		}*/
 
 	    this.accel.mult(0);
 	    if(this.border)   this.stayinBorder();
