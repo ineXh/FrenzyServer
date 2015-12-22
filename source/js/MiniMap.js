@@ -52,7 +52,9 @@ MiniMap.prototype = {
     }, // end update,
     update_viewbox:function(){
         this.view.clear();
-        this.view.lineStyle(dim/80, 0xFF0000, 1);
+        //this.view.lineStyle(dim/80, 0xFF0000, 1);
+        this.view.lineStyle(dim/80, myteamcolor, 1);
+
         this.view.drawRect(ScreenPos.left, ScreenPos.top,
                              width, height);
 

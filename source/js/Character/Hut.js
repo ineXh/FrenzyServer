@@ -5,11 +5,11 @@ function Hut(){
     this.create();
 }
 Hut.prototype.create = function(){
-    this.pos = new PVector(0,0);
-    this.vel = new PVector(0,0);
-    this.accel = new PVector(0,0);
-    this.s_pos = new PVector(0,0);
-    this.s_vel = new PVector(0,0);
+    this.pos = new PVector(0,0,0);
+    this.vel = new PVector(0,0,0);
+    this.accel = new PVector(0,0,0);
+    this.s_pos = new PVector(0,0,0);
+    this.s_vel = new PVector(0,0,0);
     this.sprite = new PIXI.Sprite(hut_texture);
 
     this.r = big_dim*0.1;
@@ -175,19 +175,24 @@ Hut.prototype.init = function(input){
 } // gotoAndPlay // currentFramenumber
 Hut.prototype.dropping = function(){
     if(this.dropped) return;
+    if(isNaN(this.accel.x)) debugger;
     this.accel.add(new PVector(0, 0, -this.sprite.height/20));
+    if(isNaN(this.accel.x)) debugger;
     this.z_scale = 1 + this.pos.z/this.sprite.height;
     this.sprite.scale.set(this.scale*this.z_scale);
 
     this.vel = this.accel;
     this.vel.limit(this.maxspeed);
     this.pos.add(this.vel);
+    if(isNaN(this.accel.x)) debugger;
     this.accel.mult(0);
+    if(isNaN(this.accel.x)) debugger;
     if(this.pos.z <= 0){
         this.pos.z = 0;
         this.dropped = true;
         stage.addChild(this.healthbar.bar);
     }
+    if(isNaN(this.pos.x)) debugger;
 
     this.sprite.position.x = this.pos.x;
     //this.sprite.position.y = this.pos.y;

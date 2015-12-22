@@ -144,6 +144,7 @@ Game.prototype = {
         })
         //stage.width = width;
         //stage.height = height;
+        myteamcolor = this.getTeam(myteam.color);
         gamestartCount = 0;
         gameCount = 0;
 
@@ -410,7 +411,8 @@ Team.prototype = {
                 if(c.s_vel == undefined) debugger;
                 c.s_vel.x = c.vel.x;
                 c.s_vel.y = c.vel.y;
-                msg.characters[i].push({x: c.pos.x / stage_width,
+                msg.characters[i].push({
+                            x: c.pos.x / stage_width,
                              y: c.pos.y / stage_height,
                             vx: c.vel.x / stage_width,
                             vy: c.vel.y / stage_height,
@@ -438,19 +440,25 @@ Team.prototype = {
             msg.characters[i] = [];
             for(var j = 0; j < this.characters[i].length;j++){
                 var c = this.characters[i][j];
+                /*
+                // Where the character will actually be - Where they are simulated / Period to get the adjusted simulated velocity
                 var predict = new PVector(
                             c.pos.x +
                             c.vel.x*Server_Sync_Period_Estimate,
                             c.pos.y +
                             c.vel.y*Server_Sync_Period_Estimate);
 
-                c.s_vel.x = predict.x / Server_Sync_Period_Estimate;
-                c.s_vel.y = predict.y / Server_Sync_Period_Estimate;
+                c.s_vel.x = (predict.x - c.s_pos.x) / Server_Sync_Period_Estimate;
+                c.s_vel.y = (predict.y - c.s_pos.y) / Server_Sync_Period_Estimate;*/
                 msg.characters[i].push({
-                            x: c.s_pos.x / stage_width,
-                            y: c.s_pos.y / stage_height,
-                            vx: c.s_vel.x / stage_width,
-                            vy: c.s_vel.y / stage_height,
+                            //x: c.s_pos.x / stage_width,
+                            //y: c.s_pos.y / stage_height,
+                            //vx: c.s_vel.x / stage_width,
+                            //vy: c.s_vel.y / stage_height,
+                             x: c.pos.x / stage_width,
+                             y: c.pos.y / stage_height,
+                            vx: c.vel.x / stage_width,
+                            vy: c.vel.y / stage_height,
                             hp: c.hp,
                             type: c.type,
                             id: c.id})
@@ -460,8 +468,9 @@ Team.prototype = {
                 c.s_vel.y = c.vel.y;
             }
         }
-        communication.socket.emit('force client sync', msg)
 
+        communication.socket.emit('force client sync', msg)
+        //debugger;
     }, // end sendForceSync
     sendSyncDeadCharacter:function(type, index, id){
         if(gamemode != GameMode.MultiPlayer) return;

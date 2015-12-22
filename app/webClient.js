@@ -108,6 +108,7 @@ function webClient(io, gameserver){
         } // end onSyncPeriodClient
         function onSyncForceClient(msg){
             client.gameinfo.onSyncUpdateClient(msg);
+            client.game.forceSync();
             //clearTimeout(myVar);
         }// end onSyncForceClient
 	}); // end io connection callback

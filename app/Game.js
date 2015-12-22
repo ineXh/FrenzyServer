@@ -13,7 +13,7 @@ var max_unit_count = 1;
 // Character Spawn Period
 var period_unit_spawn = 1000;
 // Server to Client Periodic Sync
-var period_server_sync = 1000;
+var period_server_sync = 100;
 
 function Game(io, server, name){
     this.io = io;
@@ -118,7 +118,7 @@ Game.prototype = {
                 msg.players[team].base_id = id;
 
                 player.gameinfo.characters[enums.Hut].push({
-                    x: 0, y:0,
+                    x: null, y:null,
                     vx:0, vy:0,
                     type: enums.Hut, id: id});
 
@@ -134,7 +134,7 @@ Game.prototype = {
             //p.socket.emit('start game', msg);
         //});
         this.periodicSpawnTimeoout = setTimeout(this.periodicSpawn.bind(this), period_unit_spawn);
-        this.periodicSyncTimeoout = setTimeout(this.periodicSync.bind(this), period_server_sync);
+        this.periodicSyncTimeout = setTimeout(this.periodicSync.bind(this), period_server_sync);
         //this.gameStarted = true;
         this.state = enums.InGame;
         this.server.send_game_list(null);
@@ -226,8 +226,9 @@ Game.prototype = {
                     continue;
                 msg.character_ids.push(id);
                 player.gameinfo.characters[enums.Cow].push({
-                    x: 0, y:0,
-                    vx:0, vy: 0,
+                    x: null, y:null,
+                    vx:0, vy:0,
+                    //state:'new',
                     type: enums.Cow, id: id});
             }
             if(msg.character_ids.length >= 1)
@@ -280,7 +281,7 @@ Game.prototype = {
         }
         this.io.in(this.name).emit('periodic server sync', msg);
 
-        this.periodicSyncTimeoout = setTimeout(this.periodicSync.bind(this), period_server_sync);
+        this.periodicSyncTimeout = setTimeout(this.periodicSync.bind(this), period_server_sync);
     }, // end periodicSync
     forceSync: function(){
         if(this.state != enums.InGame) return;
@@ -296,8 +297,8 @@ Game.prototype = {
             msg.players[team].characters = player.gameinfo.characters;
         }
         this.io.in(this.name).emit('periodic server sync', msg);
-        clearTimeout(this.periodicSyncTimeoout);
-        this.periodicSyncTimeoout = setTimeout(this.periodicSync.bind(this), period_server_sync);
+        clearTimeout(this.periodicSyncTimeout);
+        this.periodicSyncTimeout = setTimeout(this.periodicSync.bind(this), period_server_sync);
     }, // end forceSync
     // Obsolete sync
     sync: function(player, msg){
