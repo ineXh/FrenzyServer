@@ -41,7 +41,7 @@ GameInfo.prototype = {
             if(this.characters[i] == undefined) continue;
             for(var j = 0; j < this.characters[i].length; j++){
                 var c = this.characters[i][j];
-                var m = msg.characters[i][j];
+                var m = msg.players[this.team].characters[i][j];
                 if(c != null && m != null){
                     c.x = m.x;
                     c.y = m.y;

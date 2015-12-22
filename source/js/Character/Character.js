@@ -228,6 +228,9 @@ Cow.prototype.create = function(){
     this.maxhp = 10;
     this.hp = this.maxhp;
     this.healthbar = new HealthBar(this);
+    // Damage Taken by this character on this client
+    this.dmg = 0;
+
     this.attack_base = 2;
     this.attack_stat = this.attack_base;
     this.defense_base = 1;
@@ -269,6 +272,7 @@ Cow.prototype.animationdisplay = function(){
 					if(dmg <= 0) dmg = 1;
 					if(this.opponent.hp <= dmg && this.opponent.hp > 0) getCoin(this.team, this.opponent);
 					this.opponent.hp -= dmg;
+					if(this.opponent.team != myteam) this.opponent.dmg += dmg;
 
 					this.opponent.healthbar.set(this.opponent.hp);
 				}
@@ -290,6 +294,7 @@ Cow.prototype.animationdisplay = function(){
 					if(dmg <= 0) dmg = 1;
 					if(this.opponent.hp < dmg && this.opponent.hp > 0) getCoin(this.team, this.opponent);
 					this.opponent.hp -= dmg;
+					if(this.opponent.team != myteam) this.opponent.dmg += dmg;
 					this.opponent.healthbar.set(this.opponent.hp);
 				}
 			}

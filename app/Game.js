@@ -313,7 +313,7 @@ Game.prototype = {
     },
     forceSync: function(){
         if(this.state != enums.InGame) return;
-        console.log('forceSync')
+        //console.log('forceSync')
         var msg = { sync_type: 'force',
                     players: [{},{},{},{}]};
 

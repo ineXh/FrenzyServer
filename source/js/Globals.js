@@ -77,6 +77,7 @@ var gamemode;
 var myteam = -1;
 var myteamcolor;
 var startlocation = -1;
+var max_unit_count = 1;
 
 // Multiplayer
 var gamestartCount = 0;
@@ -93,4 +94,4 @@ var Server_Sync_Period_Estimate = 0;
 
 
 // SinglePlayer
-var SinglePlayer_Spawn_Period = 150;
+var SinglePlayer_Spawn_Period = 50;

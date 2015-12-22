@@ -12,7 +12,7 @@ Game.prototype = {
         this.minimap = new MiniMap();
         this.ui = new GameUI(this);
         this.collision_count = 0;
-        this.collision_time = 1;
+        this.collision_time = 2;
         this.updateOpponent_count = 0;
         this.updateOpponent_time = 20;
     },
@@ -28,7 +28,8 @@ Game.prototype = {
             for(var j = 0; j < this.teams[i].characters.length; j++){
                 for(var k = 0; k < this.teams[i].characters[j].length; k++){
                     var c = this.teams[i].characters[j][k];
-                    if(!c.sprite.visible && i != myteam) continue;
+                    if(!c.sprite.visible) continue;
+                    //if(!c.sprite.visible && i != myteam) continue;
                     if(c.collision_count >= 2) continue;
 
                     this.checkcollision(c);
@@ -41,8 +42,9 @@ Game.prototype = {
             for(var j = 0; j < this.teams[i].characters.length; j++){
                 for(var k = 0; k < this.teams[i].characters[j].length; k++){
                     var c2 = this.teams[i].characters[j][k];
-                    if(arrayContains(c2.status, StatusType.Inanimate)) continue;
-                    if(!c2.sprite.visible && i != myteam) continue;
+                    //if(arrayContains(c2.status, StatusType.Inanimate)) continue;
+                    if(!c.sprite.visible) continue;
+                    //if(!c2.sprite.visible && i != myteam) continue;
                     if(c2.collision_count >= 2) continue;
                     c.collide(c2);
                 }
@@ -105,8 +107,8 @@ Game.prototype = {
         if(gamestate != GameState.InPlay) return;
         gameCount++;
 
-        //this.checkcollisions();
-        //this.updateOpponent();
+        this.checkcollisions();
+        this.updateOpponent();
         this.teams.forEach(function(team){
             team.update();
         });
@@ -265,7 +267,7 @@ function Team(team){
     this.spawn_j = 0;
     this.spawn_i = 0;
     this.init();
-    this.max_unit_count = 1;
+    this.max_unit_count = max_unit_count;
 }
 
 function getTeam(team){
@@ -402,10 +404,11 @@ Team.prototype = {
         this.sync_count = 0;
         //console.log('sendSync')
         var msg = {gameCount    : gameCount,
-                    characters  : []};
+            players: [{characters: []},{characters: []},{characters: []},{characters: []}]};
+                    //characters  : []};
         for (var i = 0; i < this.characters.length; i++) {
             if(this.characters[i] == undefined) continue;
-            msg.characters[i] = [];
+            msg.players[myteam].characters[i] = [];
             for(var j = 0; j < this.characters[i].length;j++){
                 var c = this.characters[i][j];
                 if(c.s_vel == undefined) debugger;
@@ -413,7 +416,7 @@ Team.prototype = {
                 c.s_vel.y = c.vel.y;
                 c.s_pos.x = c.pos.x;
                 c.s_pos.y = c.pos.y;
-                msg.characters[i].push({
+                msg.players[myteam].characters[i].push({
                             x: c.pos.x / stage_width,
                              y: c.pos.y / stage_height,
                             vx: c.vel.x / stage_width,
