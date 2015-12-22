@@ -51,8 +51,8 @@
 }
 #chatwindow {
     position: absolute;
-    width: 80%; height: 30%;
-    left: 15%; top: 50%;
+    width: 40%; height: 20%;
+    left: 15%; top: 70%;
     box-shadow: rgba(0,0,0,0.6) 0px 0px 8px;
     border: 2px solid #6898DD;
     padding-right: 5px;

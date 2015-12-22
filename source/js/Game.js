@@ -374,7 +374,7 @@ Team.prototype = {
         }
         this.spawnSinglePlayer();
         this.sendPeriodicSync();
-        //this.sendForceSync();
+        this.sendForceSync();
     }, // end update
     check_dead:function(c){
         if(c.isDead()){

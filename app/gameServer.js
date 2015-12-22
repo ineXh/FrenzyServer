@@ -30,6 +30,10 @@ gameServer.prototype = {
         this.games.push(game)
         game = new Game(this.io, this, 'Game 3');
         this.games.push(game)
+        game = new Game(this.io, this, 'Game 4');
+        this.games.push(game)
+        game = new Game(this.io, this, 'Game 5');
+        this.games.push(game)
 
         var obj = {
           time: (new Date()).getTime(),
