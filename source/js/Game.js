@@ -411,6 +411,8 @@ Team.prototype = {
                 if(c.s_vel == undefined) debugger;
                 c.s_vel.x = c.vel.x;
                 c.s_vel.y = c.vel.y;
+                c.s_pos.x = c.pos.x;
+                c.s_pos.y = c.pos.y;
                 msg.characters[i].push({
                             x: c.pos.x / stage_width,
                              y: c.pos.y / stage_height,

@@ -356,6 +356,7 @@ Cow.prototype.update = function(path){
 		//if(gamemode == GameMode.SinglePlayer){
 			//this.vel.x = this.accel.x;
 			//this.vel.y = this.accel.y;
+			//this.multisync_seek();
 			this.vel = this.accel;
 	    	this.vel.limit(this.maxspeed);
 	    	this.pos.add(this.vel);
@@ -401,6 +402,18 @@ Cow.prototype.update = function(path){
 	this.animationdisplay();
 	this.collision_count = 0;
 	if(this.hp <= 0) this.Dead = true;
+}
+Cow.prototype.multisync_seek = function(){
+	if(gamemode != GameMode.MultiPlayer) return;
+	if(this.accel.mag() > 0) return;
+	if((Math.abs(this.pos.x - this.s_pos.x)
+					>= Client_Sync_Tolerance*stage_width) ||
+					(Math.abs(this.pos.y - this.s_pos.y)
+					>= Client_Sync_Tolerance*stage_height)){
+		applyForce.call(this, this.seek(this.s_pos));
+					//debugger;
+					//game.teams[myteam].sync_force = true;
+				}
 }
 Cow.prototype.upgrade_update = function(){
 	this.attack_stat = this.attack_base + game.teams[this.team].attack_upgrades;

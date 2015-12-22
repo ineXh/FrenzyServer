@@ -14,6 +14,7 @@ var max_unit_count = 1;
 var period_unit_spawn = 1000;
 // Server to Client Periodic Sync
 var period_server_sync = 1000;
+var period_request_sync = 5000;
 
 function Game(io, server, name){
     this.io = io;
@@ -34,6 +35,7 @@ Game.prototype = {
         for(var i = 0; i < 10000; i++) this.character_ids.push(i);
         this.spawncounter = new SpawnCounter();
         this.state = enums.GameRoom;
+        this.requested = false;
         //this.gameStarted = false;
     }, // end init
     clean: function(){
@@ -134,7 +136,10 @@ Game.prototype = {
             //p.socket.emit('start game', msg);
         //});
         this.periodicSpawnTimeoout = setTimeout(this.periodicSpawn.bind(this), period_unit_spawn);
-        this.periodicSyncTimeout = setTimeout(this.periodicSync.bind(this), period_server_sync);
+        //this.periodicSyncTimeout = setTimeout(this.periodicSync.bind(this), period_server_sync);
+
+        this.periodicRequestSyncTimeout = setTimeout(this.requestSync.bind(this), period_request_sync);
+
         //this.gameStarted = true;
         this.state = enums.InGame;
         this.server.send_game_list(null);
@@ -283,6 +288,29 @@ Game.prototype = {
 
         this.periodicSyncTimeout = setTimeout(this.periodicSync.bind(this), period_server_sync);
     }, // end periodicSync
+    requestSync:function(){
+        if(this.state != enums.InGame) return;
+        this.io.in(this.name).emit('request server sync');
+
+        for(var i = 0; i < this.players.length; i++){
+            var player = this.players[i];
+            if(player.gameinfo.team == enums.Observer) continue;
+            player.gameinfo.requested = true;
+        }
+        this.requested = true;
+
+        this.periodicRequestSyncTimeout = setTimeout(this.requestSync.bind(this), period_request_sync);
+    }, // end requestSync
+    checkGotPlayerSync:function(){
+        if(!this.requested) return;
+        for(var i = 0; i < this.players.length; i++){
+            var player = this.players[i];
+            if(player.gameinfo.team == enums.Observer) continue;
+            if(player.gameinfo.requested) return;
+        }
+        this.forceSync();
+        console.log('GotPlayerSync')
+    },
     forceSync: function(){
         if(this.state != enums.InGame) return;
         console.log('forceSync')

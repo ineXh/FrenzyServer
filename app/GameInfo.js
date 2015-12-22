@@ -18,6 +18,7 @@ GameInfo.prototype = {
         this.location = 0;
         this.characters = characterlist();
         this.path_points = [];
+        this.requested = false;
     },
     onPath : function(msg){
         if(this.path_points.length >= 2*maxline){
@@ -34,6 +35,7 @@ GameInfo.prototype = {
     },
     onSyncUpdateClient : function(msg){
         this.gameCount = msg.gameCount;
+        if(this.requested) this.requested = false;
         //console.log('gameCount ' + this.gameCount);
         for(var i = 0; i < this.characters.length; i++){
             if(this.characters[i] == undefined) continue;

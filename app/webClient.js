@@ -82,6 +82,7 @@ function webClient(io, gameserver){
             //console.log(msg);
             client.gameinfo.onPath(msg);
             client.game.path(client, msg);
+            client.game.periodicSync();
         }
         function onSpawn(msg){
             //msg.x = msg.x / client.stage_width;
@@ -104,6 +105,7 @@ function webClient(io, gameserver){
             //console.log(client.characters)
             //console.log(msg)
             client.gameinfo.onSyncUpdateClient(msg);
+            client.game.checkGotPlayerSync();
             //client.game.sync(client, msg);
         } // end onSyncPeriodClient
         function onSyncForceClient(msg){

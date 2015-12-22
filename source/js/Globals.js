@@ -84,7 +84,7 @@ var gameCount = 0;
 var playerid = -1;
 var globalchatcolor;
 var username = "";
-var Client_to_Server_Sync_Period = 200;
+var Client_to_Server_Sync_Period = 500;
 var Client_Sync_Tolerance = 0.02;
 
 

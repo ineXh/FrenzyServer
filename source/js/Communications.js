@@ -42,7 +42,7 @@ Communications.prototype = {
 		communication.socket.on('sync', onSync);
 		communication.socket.on('spawn period', onSpawnPeriod);
 		communication.socket.on('periodic server sync', onSyncPeriod);
-
+		communication.socket.on('request server sync', onRequestedSync);
 		communication.socket.on('some event', onsomeevent)
 		//communication.socket.on('chat', onChat);
 		//communication.socket.on('game list', onGameList);
@@ -130,6 +130,7 @@ function onChat(msg){
     	placechat(msg)
 	}
 }
+//game.teams[0].characters[0][0].pos.x -= 200
 function onSyncPeriod(msg){
 	//console.log('onSyncPeriod ' + Server_Sync_Period_Estimate);
 	//console.log(msg)
@@ -161,21 +162,24 @@ function onSyncPeriod(msg){
 				if(Server_Sync_Period_Estimate == 0) continue;
 				if(msg.players[i].characters[j][k].x == null) continue;
 
-				var predict = new PVector(0, 0);
+				/*var predict = new PVector(0, 0);
 				predict.x = msg.players[i].characters[j][k].x*stage_width +
 					Server_Sync_Period_Estimate*msg.players[i].characters[j][k].vx*stage_width;
 				predict.y = msg.players[i].characters[j][k].y*stage_height +
 					Server_Sync_Period_Estimate*msg.players[i].characters[j][k].vx*stage_height;
-				game.teams[i].characters[j][k].vel.x = (predict.x - game.teams[i].characters[j][k].pos.x) / Server_Sync_Period_Estimate;
-				game.teams[i].characters[j][k].vel.y = (predict.y - game.teams[i].characters[j][k].pos.y) / Server_Sync_Period_Estimate;
-
+				//game.teams[i].characters[j][k].vel.x = (predict.x - game.teams[i].characters[j][k].pos.x) / Server_Sync_Period_Estimate;
+				//game.teams[i].characters[j][k].vel.y = (predict.y - game.teams[i].characters[j][k].pos.y) / Server_Sync_Period_Estimate;
+				game.teams[i].characters[j][k].s_pos.x = predict.x;
+				game.teams[i].characters[j][k].s_pos.y = predict.y;
 				//if(game.teams[i].characters[j][k].vel.x > 0.1) debugger;
-
-				game.teams[i].characters[j][k].hp = msg.players[i].characters[j][k].hp;
-				//game.teams[i].characters[j][k].pos.x = msg.players[i].characters[j][k].x*stage_width;
-				//game.teams[i].characters[j][k].pos.y = msg.players[i].characters[j][k].y*stage_height;
-				//game.teams[i].characters[j][k].vel.x = msg.players[i].characters[j][k].vx*stage_width;
-				//game.teams[i].characters[j][k].vel.y = msg.players[i].characters[j][k].vy*stage_height;
+*/
+				//game.teams[i].characters[j][k].hp = msg.players[i].characters[j][k].hp;
+				if(msg.sync_type == 'force'){
+					game.teams[i].characters[j][k].pos.x = msg.players[i].characters[j][k].x*stage_width;
+					game.teams[i].characters[j][k].pos.y = msg.players[i].characters[j][k].y*stage_height;
+					game.teams[i].characters[j][k].vel.x = msg.players[i].characters[j][k].vx*stage_width;
+					game.teams[i].characters[j][k].vel.y = msg.players[i].characters[j][k].vy*stage_height;
+				}
 
 			}
 		}
@@ -189,7 +193,9 @@ function onSyncPeriod(msg){
 	}
 	Server_Sync_Period_Estimate = Math.ceil(sum / (Server_Sync_gameCounts.length - 1));
 } // end onSyncPeriod
-
+function onRequestedSync(msg){
+	game.teams[myteam].sendPeriodicSync();
+}
 function onSpawnPeriod(msg){
 	//console.log('onSpawnPeriod')
 	console.log(msg)
