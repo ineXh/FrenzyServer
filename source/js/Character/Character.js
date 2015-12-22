@@ -354,8 +354,9 @@ Cow.prototype.update = function(path){
 		//this.vel = this.accel;
 		//this.vel.add(this.accel);
 		//if(gamemode == GameMode.SinglePlayer){
-			this.vel.x = this.accel.x;
-			this.vel.y = this.accel.y;
+			//this.vel.x = this.accel.x;
+			//this.vel.y = this.accel.y;
+			this.vel = this.accel;
 	    	this.vel.limit(this.maxspeed);
 	    	this.pos.add(this.vel);
 		/*}else if(gamemode == GameMode.MultiPlayer){

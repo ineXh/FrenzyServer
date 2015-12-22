@@ -13,7 +13,7 @@ var max_unit_count = 1;
 // Character Spawn Period
 var period_unit_spawn = 1000;
 // Server to Client Periodic Sync
-var period_server_sync = 100;
+var period_server_sync = 1000;
 
 function Game(io, server, name){
     this.io = io;
