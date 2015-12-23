@@ -287,8 +287,8 @@ Game.prototype = {
     },
     periodicSync: function(){
         if(this.state != enums.InGame) return;
+        this.periodicSyncTimeout = setTimeout(this.periodicSync.bind(this), period_server_sync);
         if(!this.gameinfo.requireUpdate){
-            this.periodicSyncTimeout = setTimeout(this.periodicSync.bind(this), period_server_sync);
           return;
         }
         this.gameinfo.requireUpdate = false;
@@ -310,7 +310,7 @@ Game.prototype = {
             this.gameinfo.clean_dead_units();
         }
 
-        this.periodicSyncTimeout = setTimeout(this.periodicSync.bind(this), period_server_sync);
+        //this.periodicSyncTimeout = setTimeout(this.periodicSync.bind(this), period_server_sync);
     }, // end periodicSync
     requestSync:function(){
         if(this.state != enums.InGame) return;

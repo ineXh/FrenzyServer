@@ -28,7 +28,7 @@ GameInfo.prototype = {
     },
     leave: function(player){
         var team = player.playerinfo.team;
-        console.log('gameinfo leave ' + player.name + ' ' + player.gameinfo.team);
+        console.log('gameinfo leave ' + player.name + ' ' + player.playerinfo.team);
         console.log(this.players)
         this.players[team].playerinfo = null;
     },
