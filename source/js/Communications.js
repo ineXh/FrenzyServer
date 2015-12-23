@@ -138,25 +138,44 @@ function onSyncPeriod(msg){
 	/*if(msg.players[0].characters[0][0] != undefined){
 		if(msg.players[0].characters[0][0].vx > 0) debugger;
 	}*/
-	if(msg.sync_type == 'force'){
+	/*if(msg.sync_type == 'force'){
 		var b = 2;
 		//debugger;
-	}
+	}*/
 	// Loop Message Players
 	for(var i = 0; i < msg.players.length; i++){
 		//if(i == myteam) console.log(gameCount - msg.players[i].gameCount)
-		if(i == myteam) continue;
+		if(i == myteam){
+			game.getTeam(i).coins = msg.players[i].coins;
+		}
 		if(msg.players[i].characters == undefined) continue;
 		// Loop Player CharacterTypes
 		for(var j = 0; j < msg.players[i].characters.length; j++){
 			if(msg.players[i].characters[j] == undefined) continue;
-			for(var k = 0; k < msg.players[i].characters[j].length; k++){
+			for(var k = msg.players[i].characters[j].length -1; k > 0; k--){
+			//for(var k = 0; k < msg.players[i].characters[j].length; k++){
 				if(game.teams[i].characters[j][k] == undefined) debugger;
-				if(msg.players[i].characters[j][k].vx > 0){
+
+				var m = msg.players[i].characters[j][k];
+				var c = game.teams[i].characters[j][k];
+				if(c.id != m.id){
+                    console.log('c.id: ' + c.id);
+                    console.log('m.id: ' + m.id);
+                    debugger;
+                }
+				if(m.Dead){
+					characters.clean(c);
+					msg.teams[i].characters[j].splice(k,1);
+					game.getTeam(i).characters[m.type].splice(k,1);
+					debugger;
+					continue;
+				}
+
+				/*if(msg.players[i].characters[j][k].vx > 0){
 					var a = 1;
 					//communication.socket.removeListener('periodic server sync', onSyncPeriod);
 					//debugger;
-				}
+				}*/
 
 
 				if(Server_Sync_Period_Estimate == 0) continue;
@@ -175,6 +194,7 @@ function onSyncPeriod(msg){
 */
 				//game.teams[i].characters[j][k].hp = msg.players[i].characters[j][k].hp;
 				if(msg.sync_type == 'force'){
+					if(i == myteam) continue;
 					game.teams[i].characters[j][k].pos.x = msg.players[i].characters[j][k].x*stage_width;
 					game.teams[i].characters[j][k].pos.y = msg.players[i].characters[j][k].y*stage_height;
 					game.teams[i].characters[j][k].vel.x = msg.players[i].characters[j][k].vx*stage_width;

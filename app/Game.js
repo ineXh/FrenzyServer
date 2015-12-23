@@ -25,6 +25,9 @@ function Game(io, server, name){
 } // end Game
 Game.prototype = {
     init: function(){
+        var GameInfo = require('./GameInfo.js');
+        this.gameinfo = new GameInfo();
+
         this.players = [];
         this.teams = [enums.Team0, enums.Team1, enums.Team2, enums.Team3];
         this.locations = [enums.NW, enums.NE,enums.SW, enums.SE];
@@ -52,18 +55,19 @@ Game.prototype = {
         return this.state;
     },
     join : function(player){
-        player.gameinfo.team = this.teams.shift();
-        if(player.gameinfo.team == undefined) player.gameinfo.team = enums.Observer;
+        player.playerinfo.team = this.teams.shift();
+        if(player.playerinfo.team == undefined) player.playerinfo.team = enums.Observer;
 
-        console.log(player.name + ' joins ' + this.name + ' in team ' + player.gameinfo.team);
+        console.log(player.name + ' joins ' + this.name + ' in team ' + player.playerinfo.team);
 
         this.players.push(player);
+        this.gameinfo.join(player);
 
-        player.color = getColor(player.gameinfo.team);
+        player.color = getColor(player.playerinfo.team);
         //console.log('player.color ' + player.color)
 
-        var msg = {//color    : player.gameinfo.gamecolor,
-                    team    : player.gameinfo.team,
+        var msg = {//color    : player.playerinfo.gamecolor,
+                    team    : player.playerinfo.team,
                     room    : this.name
                     }
         player.socket.leave('Global Chat')
@@ -81,14 +85,15 @@ Game.prototype = {
 
         this.io.in(this.name).emit('chat', obj);
         this.updateplayerlist();
-        //this.spawncounter.add(player.gameinfo.team, 5);
+        //this.spawncounter.add(player.playerinfo.team, 5);
         //this.spawn_existing(player);
     },
     leave: function(player){
-        if(player.gameinfo.team != undefined && player.gameinfo.team != enums.Observer){
-            this.teams.push(player.gameinfo.team);
-            player.gameinfo.team = enums.Observer;
+        if(player.playerinfo.team != undefined && player.playerinfo.team != enums.Observer){
+            this.teams.push(player.playerinfo.team);
+            player.playerinfo.team = enums.Observer;
         }
+        this.gameinfo.join(player);
         player.color = player.globachatcolor;
         player.socket.leave(this.name);
         player.socket.join('Global Chat')
@@ -108,23 +113,24 @@ Game.prototype = {
 
             for(var i = 0; i < this.players.length; i++){
                 var player = this.players[i];
-                if(player.gameinfo.team == enums.Observer) continue;
+                if(player.playerinfo.team == enums.Observer) continue;
                 var location = game.locations.shift();
                 var id = this.character_ids.shift();
-                var team = player.gameinfo.team;
-                player.gameinfo.location = location;
-                //msg.players.push({team: player.gameinfo.team, location: location, base_id: id})
+                var team = player.playerinfo.team;
+                player.playerinfo.location = location;
+                //msg.players.push({team: player.playerinfo.team, location: location, base_id: id})
 
                 msg.players[team].location = location;
                 msg.players[team].team = team;
                 msg.players[team].base_id = id;
 
-                player.gameinfo.characters[enums.Hut].push({
+                this.gameinfo.players[team].characters[enums.Hut].push({
                     x: null, y:null,
                     vx:0, vy:0,
+                    Dead: false,
                     type: enums.Hut, id: id});
 
-                game.spawncounter.add(player.gameinfo.team, 4);
+                game.spawncounter.add(player.playerinfo.team, 4);
             }
             this.io.in(this.name).emit('start game', msg);
 
@@ -136,7 +142,7 @@ Game.prototype = {
             //p.socket.emit('start game', msg);
         //});
         this.periodicSpawnTimeoout = setTimeout(this.periodicSpawn.bind(this), period_unit_spawn);
-        //this.periodicSyncTimeout = setTimeout(this.periodicSync.bind(this), period_server_sync);
+        this.periodicSyncTimeout = setTimeout(this.periodicSync.bind(this), period_server_sync);
 
         this.periodicRequestSyncTimeout = setTimeout(this.requestSync.bind(this), period_request_sync);
 
@@ -150,15 +156,19 @@ Game.prototype = {
             if(team == this.teams[i]) index = i;
         }
         //console.log('index ' + index)
+        // Found Team in Pool
         if(index > -1){
             this.teams.splice(index,1);
-            this.teams.push(player.gameinfo.team);
-            player.gameinfo.team = team;
+            this.teams.push(player.playerinfo.team);
+            this.gameinfo.players[player.playerinfo.team].playerinfo = null;
+            player.playerinfo.team = team;
+            this.gameinfo.players[team].playerinfo = player.info;
         }else if(team == enums.Observer){
-            if(player.gameinfo.team != enums.Observer) this.teams.push(player.gameinfo.team);
-            player.gameinfo.team = team;
+            if(player.playerinfo.team != enums.Observer) this.teams.push(player.playerinfo.team);
+            this.gameinfo.players[player.playerinfo.team].playerinfo = null;
+            player.playerinfo.team = team;
         }
-        player.color = getColor(player.gameinfo.team);
+        player.color = getColor(player.playerinfo.team);
         //console.log('player.color ' + player.color)
         this.updateplayerlist();
     },
@@ -169,7 +179,7 @@ Game.prototype = {
             //console.log(this.players[i].gameinfo.team)
             msg.players.push(
                 {name: this.players[i].name,
-                 team: this.players[i].gameinfo.team,
+                 team: this.players[i].playerinfo.team,
                  id: this.players[i].id});
         }
         /*this.players.forEach(function(p){
@@ -179,7 +189,7 @@ Game.prototype = {
     },
     getPlayer:function(team){
         for(var i = 0; i < this.players.length; i++){
-            if(this.players[i].gameinfo.team == team) return this.players[i];
+            if(this.players[i].playerinfo.team == team) return this.players[i];
         }
         return null;
     },
@@ -224,15 +234,18 @@ Game.prototype = {
             for(var i = 0; i < msg.teams.length; i++){
                 //console.log('i ' + i)
                 //console.log('msg.teams[i] ' + msg.teams[i])
-                var player = this.getPlayer(msg.teams[i]);//this.players[msg.teams[i]];
+                var team = msg.teams[i];
+                var player = this.getPlayer(team);//this.players[msg.teams[i]];
+
                 if(player == null) continue;
                 var id = this.character_ids.shift();
-                if(player.gameinfo.characters[enums.Cow].length >= max_unit_count)
+                if(this.gameinfo.players[team].characters[enums.Cow].length >= max_unit_count)
                     continue;
                 msg.character_ids.push(id);
-                player.gameinfo.characters[enums.Cow].push({
+                this.gameinfo.players[team].characters[enums.Cow].push({
                     x: null, y:null,
                     vx:0, vy:0,
+                    Dead: false,
                     //state:'new',
                     type: enums.Cow, id: id});
             }
@@ -250,6 +263,7 @@ Game.prototype = {
         this.periodicSpawnTimeoout = setTimeout(this.periodicSpawn.bind(this), period_unit_spawn);
     },
     DeadCharacter: function(player, msg){
+        /*
         if(player.gameinfo.characters[msg.type][msg.index] == undefined) return;
         if(msg.id != player.gameinfo.characters[msg.type][msg.index].id) return;
         player.gameinfo.characters[msg.type].splice(msg.index,1);
@@ -259,11 +273,11 @@ Game.prototype = {
                 //console.log('player ' + p.team + ' to spawn.')
 
             //}
-        });
+        });*/
     },
     path: function(player, input){
         //console.log('path')
-        var msg = {team: player.gameinfo.team, points: input};
+        var msg = {team: player.playerinfo.team, points: input};
         this.players.forEach(function(p){
             if(p != player){
                 //console.log('player ' + p.team + ' to path.')
@@ -273,18 +287,28 @@ Game.prototype = {
     },
     periodicSync: function(){
         if(this.state != enums.InGame) return;
+        if(!this.gameinfo.requireUpdate){
+            this.periodicSyncTimeout = setTimeout(this.periodicSync.bind(this), period_server_sync);
+          return;
+        }
+        this.gameinfo.requireUpdate = false;
 
         var msg = { sync_type: 'periodic',
                     players: [{},{},{},{}]};
 
         for(var i = 0; i < this.players.length; i++){
             var player = this.players[i];
-            if(player.gameinfo.team == enums.Observer) continue;
-            var team = player.gameinfo.team;
-            msg.players[team].gameCount = player.gameinfo.gameCount;
-            msg.players[team].characters = player.gameinfo.characters;
+            if(player.playerinfo.team == enums.Observer) continue;
+            var team = player.playerinfo.team;
+            msg.players[team].gameCount = player.playerinfo.gameCount;
+            msg.players[team].characters = this.gameinfo.players[team].characters;
+            msg.players[team].coins = player.playerinfo.coins;
         }
         this.io.in(this.name).emit('periodic server sync', msg);
+
+        if(this.gameinfo.units_have_died){
+            this.gameinfo.clean_dead_units();
+        }
 
         this.periodicSyncTimeout = setTimeout(this.periodicSync.bind(this), period_server_sync);
     }, // end periodicSync
@@ -294,8 +318,8 @@ Game.prototype = {
 
         for(var i = 0; i < this.players.length; i++){
             var player = this.players[i];
-            if(player.gameinfo.team == enums.Observer) continue;
-            player.gameinfo.requested = true;
+            if(player.playerinfo.team == enums.Observer) continue;
+            this.gameinfo.requested = true;
         }
         this.requested = true;
 
@@ -305,24 +329,24 @@ Game.prototype = {
         if(!this.requested) return;
         for(var i = 0; i < this.players.length; i++){
             var player = this.players[i];
-            if(player.gameinfo.team == enums.Observer) continue;
-            if(player.gameinfo.requested) return;
+            if(player.playerinfo.team == enums.Observer) continue;
+            if(player.playerinfo.requested) return;
         }
         this.forceSync();
-        console.log('GotPlayerSync')
+        //console.log('GotPlayerSync')
     },
     forceSync: function(){
         if(this.state != enums.InGame) return;
-        //console.log('forceSync')
+        console.log('forceSync')
         var msg = { sync_type: 'force',
                     players: [{},{},{},{}]};
 
         for(var i = 0; i < this.players.length; i++){
             var player = this.players[i];
-            if(player.gameinfo.team == enums.Observer) continue;
-            var team = player.gameinfo.team;
-            msg.players[team].gameCount = player.gameinfo.gameCount;
-            msg.players[team].characters = player.gameinfo.characters;
+            if(player.playerinfo.team == enums.Observer) continue;
+            var team = player.playerinfo.team;
+            msg.players[team].gameCount = player.playerinfo.gameCount;
+            msg.players[team].characters = this.gameinfo.players[team].characters;
         }
         this.io.in(this.name).emit('periodic server sync', msg);
         clearTimeout(this.periodicSyncTimeout);
@@ -330,6 +354,7 @@ Game.prototype = {
     }, // end forceSync
     // Obsolete sync
     sync: function(player, msg){
+        /*
         for(var i = 0; i < player.gameinfo.characters.length; i++){
                 if(player.gameinfo.characters[i] == undefined) continue;
                 for(var j = 0; j < player.gameinfo.characters[i].length; j++){
@@ -345,13 +370,13 @@ Game.prototype = {
                 }
             }
 
-        var msg = {team: player.gameinfo.team, characters: msg};
+        var msg = {team: player.playerinfo.team, characters: msg};
         this.players.forEach(function(p){
             //if(p != player){
                 //console.log('player ' + p.team + ' to path.')
                 p.socket.emit('sync', msg)
             //}
-        });
+        });*/
     }, // end sync
 } // end Game
 
@@ -378,7 +403,7 @@ function SpawnCounter(){
 SpawnCounter.prototype = {
     init: function(){
         this.counter = 0;
-        this.time = [];
+        this.time = [0, 0, 0, 0];
     },
     add: function(team, timer){
         this.time[team] = timer;
@@ -387,7 +412,7 @@ SpawnCounter.prototype = {
         this.counter++;
         var msg = {teams: []};
         for(var i = 0; i < this.time.length; i++){
-            if(this.time[i] == undefined) continue;
+            if(this.time[i] == 0) continue;
             if(this.counter % this.time[i] == 0){
                 msg.teams.push(i);
             }

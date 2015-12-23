@@ -4,12 +4,14 @@ module.exports = exports = webClient;
 function webClient(io, gameserver){
     //var client = this;
     var gameserver = gameserver;
+    var PlayerInfo = require('./PlayerInfo.js');
+
 	io.on('connection', function(socket){
-
-        var GameInfo = require('./GameInfo.js');
-        this.gameinfo = new GameInfo();
-
-        var client = {socket: socket, gameinfo: this.gameinfo};
+        var playerinfo = new PlayerInfo();
+        var client = {socket: socket,
+                     game: null,
+                     playerinfo: playerinfo
+                    };
 
         onConnect(socket, gameserver);
 
@@ -55,10 +57,10 @@ function webClient(io, gameserver){
             gameserver.sendChat(client, msg);
         }
         function onClientInfo(msg){
-            client.gameinfo.width = msg.width;
-            client.gameinfo.height = msg.height;
-            client.gameinfo.stage_width = msg.stage_width;
-            client.gameinfo.stage_height = msg.stage_height;
+            client.playerinfo.width = msg.width;
+            client.playerinfo.height = msg.height;
+            client.playerinfo.stage_width = msg.stage_width;
+            client.playerinfo.stage_height = msg.stage_height;
         }
         function onRequestGameList(){
             gameserver.send_game_list(client);
@@ -80,7 +82,7 @@ function webClient(io, gameserver){
         }
         function onPath(msg){
             //console.log(msg);
-            client.gameinfo.onPath(msg);
+            client.game.gameinfo.onPath(client, msg);
             client.game.path(client, msg);
             client.game.periodicSync();
         }
@@ -104,12 +106,12 @@ function webClient(io, gameserver){
             //console.log('onSync')
             //console.log(client.characters)
             //console.log(msg)
-            client.gameinfo.onSyncUpdateClient(msg);
+            client.game.gameinfo.onSyncUpdateClient(client, msg);
             client.game.checkGotPlayerSync();
             //client.game.sync(client, msg);
         } // end onSyncPeriodClient
         function onSyncForceClient(msg){
-            client.gameinfo.onSyncUpdateClient(msg);
+            client.game.gameinfo.onSyncUpdateClient(client, msg);
             client.game.forceSync();
             //clearTimeout(myVar);
         }// end onSyncForceClient

@@ -425,7 +425,7 @@ Team.prototype = {
                             id: c.id})
                     }else{
                         msg.players[i].characters[j].push({
-                            dmg: c.dmg;
+                            dmg: c.dmg,
                             type: c.type,
                             id: c.id})
                         c.dmg = 0;
