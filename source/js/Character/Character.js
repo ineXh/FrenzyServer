@@ -272,8 +272,7 @@ Cow.prototype.animationdisplay = function(){
 					if(dmg <= 0) dmg = 1;
 					if(this.opponent.hp <= dmg && this.opponent.hp > 0) getCoin(this.team, this.opponent);
 					this.opponent.hp -= dmg;
-					if(this.opponent.team != myteam) this.opponent.dmg += dmg;
-
+					if(this.team == myteam) this.opponent.dmg += dmg;
 					this.opponent.healthbar.set(this.opponent.hp);
 				}
 			}
@@ -294,7 +293,7 @@ Cow.prototype.animationdisplay = function(){
 					if(dmg <= 0) dmg = 1;
 					if(this.opponent.hp < dmg && this.opponent.hp > 0) getCoin(this.team, this.opponent);
 					this.opponent.hp -= dmg;
-					if(this.opponent.team != myteam) this.opponent.dmg += dmg;
+					if(this.team == myteam) this.opponent.dmg += dmg;
 					this.opponent.healthbar.set(this.opponent.hp);
 				}
 			}

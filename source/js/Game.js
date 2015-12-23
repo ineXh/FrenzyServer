@@ -404,7 +404,36 @@ Team.prototype = {
         this.sync_count = 0;
         //console.log('sendSync')
         var msg = {gameCount    : gameCount,
-            players: [{characters: []},{characters: []},{characters: []},{characters: []}]};
+            players: [{characters: []}, {characters: []}, {characters: []}, {characters: []}]};
+
+        for(var i = 0; i < game.teams.length; i++){
+        var team = game.teams[i];
+            for(var j = 0; j < team.characters.length; j++){
+                if(team.characters[j] == undefined) continue;
+                msg.players[i].characters[j] = [];
+                for(var k = 0; k < team.characters[j].length; k++){
+                    var c = team.characters[j][k];
+                    // Player Team
+                    if(i == myteam){
+                        msg.players[i].characters[j].push({
+                            x: c.pos.x / stage_width,
+                             y: c.pos.y / stage_height,
+                            vx: c.vel.x / stage_width,
+                            vy: c.vel.y / stage_height,
+                            hp: c.hp,
+                            type: c.type,
+                            id: c.id})
+                    }else{
+                        msg.players[i].characters[j].push({
+                            dmg: c.dmg;
+                            type: c.type,
+                            id: c.id})
+                        c.dmg = 0;
+                    }
+                }
+            }
+        }
+        /*
                     //characters  : []};
         for (var i = 0; i < this.characters.length; i++) {
             if(this.characters[i] == undefined) continue;
@@ -425,7 +454,7 @@ Team.prototype = {
                             type: c.type,
                             id: c.id})
             }
-        }
+        }*/
         communication.socket.emit('periodic client sync', msg)
         this.sendSyncPath();
     }, // end sendPeriodicSync
