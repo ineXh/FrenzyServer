@@ -133,7 +133,7 @@ function onChat(msg){
 //game.teams[0].characters[0][0].pos.x -= 200
 function onSyncPeriod(msg){
 	//console.log('onSyncPeriod ' + Server_Sync_Period_Estimate);
-	//console.log(msg)
+	console.log(msg)
 	//console.log(msg.sync_type)
 	/*if(msg.players[0].characters[0][0] != undefined){
 		if(msg.players[0].characters[0][0].vx > 0) debugger;
@@ -152,7 +152,7 @@ function onSyncPeriod(msg){
 		// Loop Player CharacterTypes
 		for(var j = 0; j < msg.players[i].characters.length; j++){
 			if(msg.players[i].characters[j] == undefined) continue;
-			for(var k = msg.players[i].characters[j].length -1; k > 0; k--){
+			for(var k = msg.players[i].characters[j].length -1; k >= 0; k--){
 			//for(var k = 0; k < msg.players[i].characters[j].length; k++){
 				if(game.teams[i].characters[j][k] == undefined) debugger;
 
@@ -164,9 +164,10 @@ function onSyncPeriod(msg){
                     debugger;
                 }
 				if(m.Dead){
+					c.Dead = true;
 					characters.clean(c);
-					msg.teams[i].characters[j].splice(k,1);
-					game.getTeam(i).characters[m.type].splice(k,1);
+					msg.players[i].characters[j].splice(k,1);
+					game.teams[i].characters[j].splice(k,1);
 					debugger;
 					continue;
 				}

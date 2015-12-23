@@ -28,6 +28,8 @@ GameInfo.prototype = {
     },
     leave: function(player){
         var team = player.playerinfo.team;
+        console.log('gameinfo leave ' + player.name + ' ' + player.gameinfo.team);
+        console.log(this.players)
         this.players[team].playerinfo = null;
     },
     onPath : function(player, msg){
@@ -90,7 +92,7 @@ GameInfo.prototype = {
             for(var j = 0; j < this.players[i].characters.length; j++){
                 if(this.players[i].characters[j] == undefined) continue;
                 for(var k = this.players[i].characters[j].length -1;
-                     k > 0; k--){
+                     k >= 0; k--){
                     var c = this.players[i].characters[j][k];
                     if(c.Dead){
                         this.players[i].characters[j].splice(k, 1);

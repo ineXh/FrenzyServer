@@ -14,7 +14,7 @@ var max_unit_count = 1;
 var period_unit_spawn = 1000;
 // Server to Client Periodic Sync
 var period_server_sync = 1000;
-var period_request_sync = 5000;
+var period_request_sync = 3000;
 
 function Game(io, server, name){
     this.io = io;
@@ -93,7 +93,7 @@ Game.prototype = {
             this.teams.push(player.playerinfo.team);
             player.playerinfo.team = enums.Observer;
         }
-        this.gameinfo.join(player);
+        this.gameinfo.leave(player);
         player.color = player.globachatcolor;
         player.socket.leave(this.name);
         player.socket.join('Global Chat')
