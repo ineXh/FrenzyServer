@@ -135,7 +135,7 @@ Path.prototype = {
     // arrow head
     this.getEndLine().children[1].x = this.getEndLine().children[0].width;
     this.getEndLine().rotation = Math.atan2(y-p0.y, x-p0.x);
-    this.changeLastPoint(x,y);
+    //this.changeLastPoint(x,y);
   },
   endPath : function(x,y){
     if(!this.path_started) return;

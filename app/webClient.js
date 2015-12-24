@@ -28,7 +28,7 @@ function webClient(io, gameserver){
         socket.on('spawn', onSpawn);
         socket.on('sync dead character', onSyncDeadCharacter)
         socket.on('periodic client sync', onSyncPeriodClient);
-        socket.on('force client sync', onSyncForceClient);
+        //socket.on('force client sync', onSyncForceClient);
         socket.on('disconnect', onDisconnect);
 
         function onConnect(socket, server){
@@ -84,7 +84,7 @@ function webClient(io, gameserver){
             //console.log(msg);
             client.game.gameinfo.onPath(client, msg);
             client.game.path(client, msg);
-            client.game.periodicSync();
+            //client.game.periodicSync();
         }
         function onSpawn(msg){
             //msg.x = msg.x / client.stage_width;

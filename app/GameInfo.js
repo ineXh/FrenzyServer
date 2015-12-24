@@ -28,8 +28,8 @@ GameInfo.prototype = {
     },
     leave: function(player){
         var team = player.playerinfo.team;
-        console.log('gameinfo leave ' + player.name + ' ' + player.playerinfo.team);
-        console.log(this.players)
+        //console.log('gameinfo leave ' + player.name + ' ' + player.playerinfo.team);
+        //console.log(this.players)
         this.players[team].playerinfo = null;
     },
     onPath : function(player, msg){
@@ -69,6 +69,12 @@ GameInfo.prototype = {
                         c.vx = m.vx;
                         c.vy = m.vy;
                         c.hp = m.hp;
+                        if(c.hp <= 0){
+                            c.Dead = true;
+                            console.log(c.id + ' has died while checking myteam');
+                            this.units_have_died = true;
+                            this.requireUpdate = true;
+                        }
                     }else{
                         if(c.hp > 0 && m.dmg > c.hp){
                             player.playerinfo.coins += 1;

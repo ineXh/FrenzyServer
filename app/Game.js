@@ -12,9 +12,16 @@ var max_unit_count = 1;
 
 // Character Spawn Period
 var period_unit_spawn = 1000;
+// To Make Sure Clients know unit removal and new coins
 // Server to Client Periodic Sync
 var period_server_sync = 1000;
+// To Make Sure Server and Client Positions are in Sync
 var period_request_sync = 3000;
+
+var request_sync_count = 0;
+var request_sync_time = 5;
+
+var period_update = 1000;
 
 function Game(io, server, name){
     this.io = io;
@@ -91,9 +98,9 @@ Game.prototype = {
     leave: function(player){
         if(player.playerinfo.team != undefined && player.playerinfo.team != enums.Observer){
             this.teams.push(player.playerinfo.team);
+            this.gameinfo.leave(player);
             player.playerinfo.team = enums.Observer;
         }
-        this.gameinfo.leave(player);
         player.color = player.globachatcolor;
         player.socket.leave(this.name);
         player.socket.join('Global Chat')
@@ -141,10 +148,12 @@ Game.prototype = {
             }*/
             //p.socket.emit('start game', msg);
         //});
-        this.periodicSpawnTimeoout = setTimeout(this.periodicSpawn.bind(this), period_unit_spawn);
-        this.periodicSyncTimeout = setTimeout(this.periodicSync.bind(this), period_server_sync);
+        //this.periodicSpawnTimeout = setTimeout(this.periodicSpawn.bind(this), period_unit_spawn);
+        //this.periodicSyncTimeout = setTimeout(this.periodicSync.bind(this), period_server_sync);
 
-        this.periodicRequestSyncTimeout = setTimeout(this.requestSync.bind(this), period_request_sync);
+        //this.periodicRequestSyncTimeout = setTimeout(this.requestSync.bind(this), period_request_sync);
+
+        this.periodicUpdateTimeout = setTimeout(this.periodicUpdate.bind(this), period_update);
 
         //this.gameStarted = true;
         this.state = enums.InGame;
@@ -260,7 +269,7 @@ Game.prototype = {
             });*/
         //}
 
-        this.periodicSpawnTimeoout = setTimeout(this.periodicSpawn.bind(this), period_unit_spawn);
+        //this.periodicSpawnTimeout = setTimeout(this.periodicSpawn.bind(this), period_unit_spawn);
     },
     DeadCharacter: function(player, msg){
         /*
@@ -285,9 +294,18 @@ Game.prototype = {
             }
         });
     },
+    periodicUpdate:function(){
+        //console.log('periodicUpdate')
+        this.periodicSpawn();
+        this.requestSync();
+        //console.log('in periodicUpdate ' + this.gameinfo.requireUpdate)
+        if(this.gameinfo.requireUpdate) this.forceSync();
+        //console.log('end periodicUpdate')
+        this.periodicUpdateTimeout = setTimeout(this.periodicUpdate.bind(this), period_update);
+    },
     periodicSync: function(){
         if(this.state != enums.InGame) return;
-        this.periodicSyncTimeout = setTimeout(this.periodicSync.bind(this), period_server_sync);
+        //this.periodicSyncTimeout = setTimeout(this.periodicSync.bind(this), period_server_sync);
         if(!this.gameinfo.requireUpdate){
           return;
         }
@@ -312,8 +330,14 @@ Game.prototype = {
 
         //this.periodicSyncTimeout = setTimeout(this.periodicSync.bind(this), period_server_sync);
     }, // end periodicSync
+
     requestSync:function(){
         if(this.state != enums.InGame) return;
+        request_sync_count++;
+        //console.log('request_sync_count ' + request_sync_count);
+        if(request_sync_count < request_sync_time) return;
+        request_sync_count = 0;
+        //console.log('requestSync')
         this.io.in(this.name).emit('request server sync');
 
         for(var i = 0; i < this.players.length; i++){
@@ -323,21 +347,27 @@ Game.prototype = {
         }
         this.requested = true;
 
-        this.periodicRequestSyncTimeout = setTimeout(this.requestSync.bind(this), period_request_sync);
+        //this.periodicRequestSyncTimeout = setTimeout(this.requestSync.bind(this), period_request_sync);
     }, // end requestSync
     checkGotPlayerSync:function(){
         if(!this.requested) return;
+        // If Any Player has not yet replied, return.
         for(var i = 0; i < this.players.length; i++){
             var player = this.players[i];
             if(player.playerinfo.team == enums.Observer) continue;
             if(player.playerinfo.requested) return;
         }
+        this.requested = false;
+        //console.log('in checkGotPlayerSync')
         this.forceSync();
         //console.log('GotPlayerSync')
     },
     forceSync: function(){
         if(this.state != enums.InGame) return;
-        console.log('forceSync')
+        //console.log('forceSync')
+        //console.log('in forcesync ' + this.gameinfo.requireUpdate)
+        if(this.gameinfo.requireUpdate) this.gameinfo.requireUpdate = false;
+
         var msg = { sync_type: 'force',
                     players: [{},{},{},{}]};
 
@@ -347,10 +377,15 @@ Game.prototype = {
             var team = player.playerinfo.team;
             msg.players[team].gameCount = player.playerinfo.gameCount;
             msg.players[team].characters = this.gameinfo.players[team].characters;
+            msg.players[team].coins = player.playerinfo.coins;
         }
         this.io.in(this.name).emit('periodic server sync', msg);
-        clearTimeout(this.periodicSyncTimeout);
-        this.periodicSyncTimeout = setTimeout(this.periodicSync.bind(this), period_server_sync);
+
+        if(this.gameinfo.units_have_died){
+            this.gameinfo.clean_dead_units();
+        }
+        //clearTimeout(this.periodicSyncTimeout);
+        //this.periodicSyncTimeout = setTimeout(this.periodicSync.bind(this), period_server_sync);
     }, // end forceSync
     // Obsolete sync
     sync: function(player, msg){

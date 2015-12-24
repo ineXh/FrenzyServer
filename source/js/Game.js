@@ -28,7 +28,7 @@ Game.prototype = {
             for(var j = 0; j < this.teams[i].characters.length; j++){
                 for(var k = 0; k < this.teams[i].characters[j].length; k++){
                     var c = this.teams[i].characters[j][k];
-                    if(!c.sprite.visible) continue;
+                    //if(!c.sprite.visible) continue;
                     //if(!c.sprite.visible && i != myteam) continue;
                     if(c.collision_count >= 2) continue;
 
@@ -43,7 +43,7 @@ Game.prototype = {
                 for(var k = 0; k < this.teams[i].characters[j].length; k++){
                     var c2 = this.teams[i].characters[j][k];
                     //if(arrayContains(c2.status, StatusType.Inanimate)) continue;
-                    if(!c.sprite.visible) continue;
+                    //if(!c.sprite.visible) continue;
                     //if(!c2.sprite.visible && i != myteam) continue;
                     if(c2.collision_count >= 2) continue;
                     c.collide(c2);
@@ -377,7 +377,7 @@ Team.prototype = {
         }
         this.spawnSinglePlayer();
         this.sendPeriodicSync();
-        this.sendForceSync();
+        //this.sendForceSync();
     }, // end update
     check_dead:function(c){
         if(c.isDead()){
@@ -400,7 +400,8 @@ Team.prototype = {
         if(gamestate != GameState.InPlay) return;
         if(this.team != myteam) return;
         this.sync_count++;
-        if(this.sync_count < this.sync_time) return;
+        if(this.sync_count < this.sync_time && !this.sync_force) return;
+        if(this.sync_force) this.sync_force = false;
         this.sync_count = 0;
         //console.log('sendSync')
         var msg = {gameCount    : gameCount,
@@ -594,5 +595,7 @@ var getCoin = function(team, opponent){
                       container: stage},//particles.container
                      ParticleType.COIN);
     }
-    game.teams[team].coins++;
+    if(gamemode == GameMode.SinglePlayer) game.teams[team].coins++;
+    else game.teams[team].sync_force = true;
+
 }

@@ -154,21 +154,23 @@ function onSyncPeriod(msg){
 			if(msg.players[i].characters[j] == undefined) continue;
 			for(var k = msg.players[i].characters[j].length -1; k >= 0; k--){
 			//for(var k = 0; k < msg.players[i].characters[j].length; k++){
-				if(game.teams[i].characters[j][k] == undefined) debugger;
+				//if(game.teams[i].characters[j][k] == undefined) debugger;
 
 				var m = msg.players[i].characters[j][k];
 				var c = game.teams[i].characters[j][k];
+				if(m == undefined) continue;
+				if(c == undefined) continue;
 				if(c.id != m.id){
                     console.log('c.id: ' + c.id);
                     console.log('m.id: ' + m.id);
-                    debugger;
+                    //debugger;
                 }
 				if(m.Dead){
 					c.Dead = true;
 					characters.clean(c);
 					msg.players[i].characters[j].splice(k,1);
 					game.teams[i].characters[j].splice(k,1);
-					debugger;
+					//debugger;
 					continue;
 				}
 
@@ -193,7 +195,7 @@ function onSyncPeriod(msg){
 				game.teams[i].characters[j][k].s_pos.y = predict.y;
 				//if(game.teams[i].characters[j][k].vel.x > 0.1) debugger;
 */
-				//game.teams[i].characters[j][k].hp = msg.players[i].characters[j][k].hp;
+				game.teams[i].characters[j][k].hp = msg.players[i].characters[j][k].hp;
 				if(msg.sync_type == 'force'){
 					if(i == myteam) continue;
 					game.teams[i].characters[j][k].pos.x = msg.players[i].characters[j][k].x*stage_width;
@@ -215,6 +217,7 @@ function onSyncPeriod(msg){
 	Server_Sync_Period_Estimate = Math.ceil(sum / (Server_Sync_gameCounts.length - 1));
 } // end onSyncPeriod
 function onRequestedSync(msg){
+	game.teams[myteam].sync_force = true;
 	game.teams[myteam].sendPeriodicSync();
 }
 function onSpawnPeriod(msg){
