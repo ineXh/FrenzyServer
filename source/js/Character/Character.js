@@ -225,7 +225,7 @@ Cow.prototype.create = function(){
     this.attacking = false;
     this.Dead = false;
     this.border = true;
-    this.maxhp = 10;
+    this.maxhp = cow_max_hp;
     this.hp = this.maxhp;
     this.healthbar = new HealthBar(this);
     // Damage Taken by this character on this client

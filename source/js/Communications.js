@@ -224,8 +224,12 @@ function onSpawnPeriod(msg){
 	//console.log('onSpawnPeriod')
 	console.log(msg)
 	//debugger;
-	for(var i = 0; i < msg.teams.length; i++){
+	/*for(var i = 0; i < msg.teams.length; i++){
 		game.getTeam(i).spawn(msg.character_ids[i]);
+	}*/
+	for(var i = 0; i < msg.players.length; i++){
+		var m = msg.players[i];
+		if(m.id != undefined) game.getTeam(i).spawn(m.id);
 	}
 }
 function onSpawn(msg){

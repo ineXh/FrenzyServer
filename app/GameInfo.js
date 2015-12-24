@@ -68,13 +68,13 @@ GameInfo.prototype = {
                         c.y = m.y;
                         c.vx = m.vx;
                         c.vy = m.vy;
-                        c.hp = m.hp;
-                        if(c.hp <= 0){
+                        //c.hp = m.hp; // dont want to get double dmged
+                        /*if(c.hp <= 0){
                             c.Dead = true;
                             console.log(c.id + ' has died while checking myteam');
                             this.units_have_died = true;
                             this.requireUpdate = true;
-                        }
+                        }*/
                     }else{
                         if(c.hp > 0 && m.dmg > c.hp){
                             player.playerinfo.coins += 1;
@@ -84,6 +84,7 @@ GameInfo.prototype = {
                             this.requireUpdate = true;
                         }
                         c.hp -= m.dmg;
+                        console.log('' + c.id + ' on team ' + i + ' has suffered ' + m.dmg + 'dmg, new hp:' + c.hp + ' from team ' + team);
                     }
                 }
             }

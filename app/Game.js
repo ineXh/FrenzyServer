@@ -7,8 +7,10 @@ function htmlEntities(str) {
     return String(str).replace(/&/g, '&amp;').replace(/</g, '&lt;')
                       .replace(/>/g, '&gt;').replace(/"/g, '&quot;');
 }
-
+// Important
 var max_unit_count = 1;
+var cow_max_hp = 10;
+var hut_max_hp = 25;
 
 // Character Spawn Period
 var period_unit_spawn = 1000;
@@ -18,6 +20,8 @@ var period_server_sync = 1000;
 // To Make Sure Server and Client Positions are in Sync
 var period_request_sync = 3000;
 
+var spawn_count = 0;
+var spawn_time = 5;
 var request_sync_count = 0;
 var request_sync_time = 5;
 
@@ -43,7 +47,7 @@ Game.prototype = {
 
         this.character_ids = [];
         for(var i = 0; i < 10000; i++) this.character_ids.push(i);
-        this.spawncounter = new SpawnCounter();
+        //this.spawncounter = new SpawnCounter();
         this.state = enums.GameRoom;
         this.requested = false;
         //this.gameStarted = false;
@@ -134,10 +138,11 @@ Game.prototype = {
                 this.gameinfo.players[team].characters[enums.Hut].push({
                     x: null, y:null,
                     vx:0, vy:0,
+                    hp: hut_max_hp,
                     Dead: false,
                     type: enums.Hut, id: id});
 
-                game.spawncounter.add(player.playerinfo.team, 4);
+                //game.spawncounter.add(player.playerinfo.team, 4);
             }
             this.io.in(this.name).emit('start game', msg);
 
@@ -237,8 +242,37 @@ Game.prototype = {
         //this.spawn_count++;
         //var msg = {teams: []};
         if(this.state != enums.InGame) return;
-        var msg = this.spawncounter.update();
-        if(msg != null){
+
+        spawn_count++;
+        if(spawn_count < spawn_time) return;
+        spawn_count = 0;
+
+        var msg = {players: [{},{},{},{}]};
+        var send = false;
+        for(var i = 0; i < this.players.length; i++){
+            var player = this.players[i];
+            var team = player.playerinfo.team;
+            if(team == enums.Observer) continue;
+            if(player == null || player == undefined) continue;
+            if(this.gameinfo.players[team].characters[enums.Cow].length
+                >= max_unit_count)  continue;
+            if(this.gameinfo.players[team].characters[enums.Hut].length
+                <= 0)  continue;
+            send = true;
+            var id = this.character_ids.shift();
+            msg.players[team].id = id;
+            this.gameinfo.players[team].characters[enums.Cow].push({
+                    x: null, y:null,
+                    vx:0, vy:0,
+                    hp: cow_max_hp,
+                    Dead: false,
+                    //state:'new',
+                    type: enums.Cow, id: id});
+
+        }
+        if(send) this.io.in(this.name).emit('spawn period', msg);
+        //var msg = this.spawncounter.update();
+        /*if(msg != null){
             msg.character_ids = [];
             for(var i = 0; i < msg.teams.length; i++){
                 //console.log('i ' + i)
@@ -247,9 +281,9 @@ Game.prototype = {
                 var player = this.getPlayer(team);//this.players[msg.teams[i]];
 
                 if(player == null) continue;
-                var id = this.character_ids.shift();
                 if(this.gameinfo.players[team].characters[enums.Cow].length >= max_unit_count)
                     continue;
+                var id = this.character_ids.shift();
                 msg.character_ids.push(id);
                 this.gameinfo.players[team].characters[enums.Cow].push({
                     x: null, y:null,
@@ -258,9 +292,9 @@ Game.prototype = {
                     //state:'new',
                     type: enums.Cow, id: id});
             }
-            if(msg.character_ids.length >= 1)
+            //if(msg.character_ids.length >= 1)
                this.io.in(this.name).emit('spawn period', msg);
-        }
+        }*/
         //console.log(msg)
         //if(msg != null){
 
@@ -296,10 +330,11 @@ Game.prototype = {
     },
     periodicUpdate:function(){
         //console.log('periodicUpdate')
+        if(this.gameinfo.requireUpdate) this.forceSync('force');
         this.periodicSpawn();
         this.requestSync();
         //console.log('in periodicUpdate ' + this.gameinfo.requireUpdate)
-        if(this.gameinfo.requireUpdate) this.forceSync('force');
+
         //console.log('end periodicUpdate')
         this.periodicUpdateTimeout = setTimeout(this.periodicUpdate.bind(this), period_update);
     },
@@ -337,14 +372,14 @@ Game.prototype = {
         //console.log('request_sync_count ' + request_sync_count);
         if(request_sync_count < request_sync_time) return;
         request_sync_count = 0;
-        console.log('requestSync')
+        //console.log('requestSync')
         this.io.in(this.name).emit('request server sync');
 
         for(var i = 0; i < this.players.length; i++){
             var player = this.players[i];
             if(player.playerinfo.team == enums.Observer) continue;
-            this.gameinfo.requested = true;
-            console.log('team ' + player.playerinfo.team + ' current count' + player.playerinfo.gameCount);
+            player.playerinfo.requested = true;
+            //console.log('team ' + player.playerinfo.team + ' current count' + player.playerinfo.gameCount);
         }
         this.requested = true;
 
@@ -362,7 +397,7 @@ Game.prototype = {
         //console.log('in checkGotPlayerSync')
         for(var i = 0; i < this.players.length; i++){
             var player = this.players[i];
-            console.log('team ' + player.playerinfo.team + ' got count' + player.playerinfo.gameCount);
+            //console.log('team ' + player.playerinfo.team + ' got count' + player.playerinfo.gameCount);
         }
         this.forceSync('periodic');
         //console.log('GotPlayerSync')

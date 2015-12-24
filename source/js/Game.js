@@ -422,7 +422,7 @@ Team.prototype = {
                              y: c.pos.y / stage_height,
                             vx: c.vel.x / stage_width,
                             vy: c.vel.y / stage_height,
-                            hp: c.hp,
+                            //hp: c.hp,
                             type: c.type,
                             id: c.id})
                     }else{
