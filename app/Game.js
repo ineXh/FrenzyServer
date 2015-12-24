@@ -299,7 +299,7 @@ Game.prototype = {
         this.periodicSpawn();
         this.requestSync();
         //console.log('in periodicUpdate ' + this.gameinfo.requireUpdate)
-        if(this.gameinfo.requireUpdate) this.forceSync();
+        if(this.gameinfo.requireUpdate) this.forceSync('force');
         //console.log('end periodicUpdate')
         this.periodicUpdateTimeout = setTimeout(this.periodicUpdate.bind(this), period_update);
     },
@@ -337,13 +337,14 @@ Game.prototype = {
         //console.log('request_sync_count ' + request_sync_count);
         if(request_sync_count < request_sync_time) return;
         request_sync_count = 0;
-        //console.log('requestSync')
+        console.log('requestSync')
         this.io.in(this.name).emit('request server sync');
 
         for(var i = 0; i < this.players.length; i++){
             var player = this.players[i];
             if(player.playerinfo.team == enums.Observer) continue;
             this.gameinfo.requested = true;
+            console.log('team ' + player.playerinfo.team + ' current count' + player.playerinfo.gameCount);
         }
         this.requested = true;
 
@@ -359,16 +360,20 @@ Game.prototype = {
         }
         this.requested = false;
         //console.log('in checkGotPlayerSync')
-        this.forceSync();
+        for(var i = 0; i < this.players.length; i++){
+            var player = this.players[i];
+            console.log('team ' + player.playerinfo.team + ' got count' + player.playerinfo.gameCount);
+        }
+        this.forceSync('periodic');
         //console.log('GotPlayerSync')
     },
-    forceSync: function(){
+    forceSync: function(type){
         if(this.state != enums.InGame) return;
         //console.log('forceSync')
         //console.log('in forcesync ' + this.gameinfo.requireUpdate)
         if(this.gameinfo.requireUpdate) this.gameinfo.requireUpdate = false;
 
-        var msg = { sync_type: 'force',
+        var msg = { sync_type: type,
                     players: [{},{},{},{}]};
 
         for(var i = 0; i < this.players.length; i++){

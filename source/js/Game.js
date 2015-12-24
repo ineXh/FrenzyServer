@@ -403,6 +403,7 @@ Team.prototype = {
         if(this.sync_count < this.sync_time && !this.sync_force) return;
         if(this.sync_force) this.sync_force = false;
         this.sync_count = 0;
+        sentPeriodicUpdateGameCount = gameCount;
         //console.log('sendSync')
         var msg = {gameCount    : gameCount,
             players: [{characters: []}, {characters: []}, {characters: []}, {characters: []}]};

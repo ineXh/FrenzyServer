@@ -88,6 +88,7 @@ var username = "";
 var Client_to_Server_Sync_Period = 200;
 var Client_Sync_Tolerance = 0.02;
 
+var sentPeriodicUpdateGameCount = 0;
 
 var Server_Sync_gameCounts = [0];
 var Server_Sync_Period_Estimate = 0;

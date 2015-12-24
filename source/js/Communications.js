@@ -196,7 +196,7 @@ function onSyncPeriod(msg){
 				//if(game.teams[i].characters[j][k].vel.x > 0.1) debugger;
 */
 				game.teams[i].characters[j][k].hp = msg.players[i].characters[j][k].hp;
-				if(msg.sync_type == 'force'){
+				if(msg.sync_type == 'periodic'){
 					if(i == myteam) continue;
 					game.teams[i].characters[j][k].pos.x = msg.players[i].characters[j][k].x*stage_width;
 					game.teams[i].characters[j][k].pos.y = msg.players[i].characters[j][k].y*stage_height;
