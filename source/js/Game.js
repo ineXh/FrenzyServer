@@ -126,7 +126,7 @@ Game.prototype = {
         stage.x = 0;
         stage.y = 0;
         myteam = 0;
-        myteamcolor = this.getTeam(myteam.color);
+        myteamcolor = this.getTeam(myteam).color;
 
         this.teams.forEach(function(t){
             t.startsingle();
@@ -146,7 +146,7 @@ Game.prototype = {
         })
         //stage.width = width;
         //stage.height = height;
-        myteamcolor = this.getTeam(myteam.color);
+        myteamcolor = this.getTeam(myteam).color;
         gamestartCount = 0;
         gameCount = 0;
 

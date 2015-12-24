@@ -273,7 +273,7 @@ Cow.prototype.animationdisplay = function(){
 					if(this.opponent.hp <= dmg && this.opponent.hp > 0) getCoin(this.team, this.opponent);
 					this.opponent.hp -= dmg;
 					if(this.team == myteam) this.opponent.dmg += dmg;
-					this.opponent.healthbar.set(this.opponent.hp);
+					//this.opponent.healthbar.set(this.opponent.hp);
 				}
 			}
 		//console.log(this.sprite.currentFrame)
@@ -294,7 +294,7 @@ Cow.prototype.animationdisplay = function(){
 					if(this.opponent.hp < dmg && this.opponent.hp > 0) getCoin(this.team, this.opponent);
 					this.opponent.hp -= dmg;
 					if(this.team == myteam) this.opponent.dmg += dmg;
-					this.opponent.healthbar.set(this.opponent.hp);
+					//this.opponent.healthbar.set(this.opponent.hp);
 				}
 			}
 		break;
@@ -450,7 +450,9 @@ HealthBar.prototype = {
 		this.bar.outer = this.outbar;
 	},
 	set : function(hp){
+		//this.hp = hp;
 		var ratio = hp/this.maxhp;
+
 		//console.log(ratio)
 		/*var length = hp/this.maxhp *this.r*0.6;
 		this.innerbar.beginFill(0x000000);
@@ -463,6 +465,10 @@ HealthBar.prototype = {
 		this.outbar.scale.x = ratio;
 	},
 	update:function(){
+		if(this.hp != this.character.hp){
+			this.hp = this.character.hp;
+			this.set(this.hp);
+		}
 		this.bar.x = this.pos.x - this.r/4;
 		this.bar.y = this.pos.y - this.r*3/8;
 	}
