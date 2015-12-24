@@ -73,6 +73,7 @@ function Character(){
 	this.s_pos = new PVector(0,0);
 	this.maxspeed = big_dim/200;
 	this.Dead = false;
+	this.dmg = 0;
 }
 Character.prototype = Object.create(Ball.prototype);
 Character.prototype.constructor = Ball;
@@ -319,6 +320,8 @@ Cow.prototype.attack = function(){
 	}
 }
 Cow.prototype.update = function(path){
+	this.animationdisplay();
+
 	if(path != null && !this.attacking){
 		applyForce.call(this, path.follow(this));
 		if(this.accel.mag() > big_dim/10){
@@ -334,22 +337,23 @@ Cow.prototype.update = function(path){
 	if(this.opponent != null && this.accel.mag() < big_dim/1000
 		&& !this.attacking){
 		this.seekOpponent_count++;
-        if(this.seekOpponent_count < this.seekOpponent_time) return;
-        this.seekOpponent_count = 0;
-        this.opponent_dist = findDist(this.pos, this.opponent.pos);
+        if(this.seekOpponent_count >= this.seekOpponent_time){
+	        this.seekOpponent_count = 0;
+	        this.opponent_dist = findDist(this.pos, this.opponent.pos);
 
-		if(this.opponent_dist >= (this.r*3/4 + this.opponent.r*3/4)){
-			if(this.opponent != null)
-			applyForce.call(this, this.seek(this.opponent.pos));
-			this.animationtype = AnimationType.Walk_Front;
-			//if(this.accel.y >= 0) this.animationtype = AnimationType.Walk_Front;
-			//else this.animationtype = AnimationType.Walk_Back;
-		}else{
-			this.attack();
-		}
-		if(this.opponent_dist >= dim/2 || this.opponent.isDead()){
-			this.opponent = null;
-			this.opponent_dist == undefined
+			if(this.opponent_dist >= (this.r*3/4 + this.opponent.r*3/4)){
+				if(this.opponent != null)
+				applyForce.call(this, this.seek(this.opponent.pos));
+				this.animationtype = AnimationType.Walk_Front;
+				//if(this.accel.y >= 0) this.animationtype = AnimationType.Walk_Front;
+				//else this.animationtype = AnimationType.Walk_Back;
+			}else{
+				this.attack();
+			}
+			if(this.opponent_dist >= dim/2 || this.opponent.isDead()){
+				this.opponent = null;
+				this.opponent_dist == undefined
+			}
 		}
 	}
 	//if(this.animationtype == AnimationType.Attack_Front){
@@ -403,7 +407,7 @@ Cow.prototype.update = function(path){
 	this.sprite.position.x = this.pos.x;
 	this.sprite.position.y = this.pos.y;
 	this.healthbar.update();
-	this.animationdisplay();
+
 	this.collision_count = 0;
 	if(this.hp <= 0) this.Dead = true;
 }

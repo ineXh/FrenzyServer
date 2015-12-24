@@ -76,7 +76,8 @@ GameInfo.prototype = {
                             this.requireUpdate = true;
                         }*/
                     }else{
-                        if(c.hp > 0 && m.dmg > c.hp){
+                        if(isNaN(m.dmg)) continue;
+                        if(c.hp > 0 && m.dmg >= c.hp){
                             player.playerinfo.coins += 1;
                             c.Dead = true;
                             console.log(c.id + ' has died');
