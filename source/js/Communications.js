@@ -200,10 +200,21 @@ function onSyncPeriod(msg){
 				//if(game.teams[i].characters[j][k].hp < msg.players[i].characters[j][k].hp)
 				//if(i != myteam)
 				 //game.teams[i].characters[j][k].hp = msg.players[i].characters[j][k].hp;
+
+
 				if(msg.sync_type == 'periodic'){
+					// Do not sync hp if 'force'
+					game.teams[i].characters[j][k].hp = msg.players[i].characters[j][k].hp;
 					if(i == myteam) continue;
-					game.teams[i].characters[j][k].pos.x = msg.players[i].characters[j][k].x*stage_width;
-					game.teams[i].characters[j][k].pos.y = msg.players[i].characters[j][k].y*stage_height;
+
+					var x = msg.players[i].characters[j][k].x*stage_width;
+					var y = msg.players[i].characters[j][k].y*stage_height;
+					var teleport_dist = findDist(game.teams[i].characters[j][k].pos,
+						new PVector(x , y));
+					if(teleport_dist > dim/10) debugger;
+
+					game.teams[i].characters[j][k].pos.x = x;
+					game.teams[i].characters[j][k].pos.y = y;
 					game.teams[i].characters[j][k].vel.x = msg.players[i].characters[j][k].vx*stage_width;
 					game.teams[i].characters[j][k].vel.y = msg.players[i].characters[j][k].vy*stage_height;
 				}

@@ -98,7 +98,7 @@ function webClient(io, gameserver){
             client.game.spawn(client, msg);
         }
         function onSyncDeadCharacter(msg){
-            console.log('onSyncDeadCharacter')
+            //console.log('onSyncDeadCharacter')
             msg.team = client.team;
 
             client.game.DeadCharacter(client, msg);

@@ -340,7 +340,7 @@ Cow.prototype.update = function(path){
         if(this.seekOpponent_count >= this.seekOpponent_time){
 	        this.seekOpponent_count = 0;
 	        this.opponent_dist = findDist(this.pos, this.opponent.pos);
-
+		}
 			if(this.opponent_dist >= dim/2 || this.opponent.isDead()){
 				this.opponent = null;
 				this.opponent_dist == undefined
@@ -354,7 +354,7 @@ Cow.prototype.update = function(path){
 				//if(this.opponent.type == CharacterType.Hut) debugger;
 				this.attack();
 			}
-		}
+
 	}
 	//if(this.animationtype == AnimationType.Attack_Front){
 	//}else{

@@ -1,5 +1,6 @@
 12/28/2015
-Bug: Units locally have 0 hp, but does not disappear and keep fighting until the official Dead confirmation from server
+Bug: Units locally have 0 hp, but does not disappear and keep fighting until the official Dead confirmation from server, 
+Note: this unit is actually not 0 hp on the server
 
 12/28/2015
 Bug: Unit observed to increase in hp after killing an opponent

@@ -12,7 +12,7 @@ Game.prototype = {
         this.minimap = new MiniMap();
         this.ui = new GameUI(this);
         this.collision_count = 0;
-        this.collision_time = 2;
+        this.collision_time = 0;
         this.updateOpponent_count = 0;
         this.updateOpponent_time = 20;
     },
@@ -380,6 +380,7 @@ Team.prototype = {
         //this.sendForceSync();
     }, // end update
     check_dead:function(c){
+        if(gamemode == GameMode.MultiPlayer) return;
         if(c.isDead()){
             var index = this.characters[c.type].indexOf(c);
             if(index > -1){
