@@ -203,15 +203,15 @@ function onSyncPeriod(msg){
 
 
 				if(msg.sync_type == 'periodic'){
+					if(i == myteam) continue;
 					// Do not sync hp if 'force'
 					game.teams[i].characters[j][k].hp = msg.players[i].characters[j][k].hp;
-					if(i == myteam) continue;
 
 					var x = msg.players[i].characters[j][k].x*stage_width;
 					var y = msg.players[i].characters[j][k].y*stage_height;
 					var teleport_dist = findDist(game.teams[i].characters[j][k].pos,
 						new PVector(x , y));
-					if(teleport_dist > dim/10){
+					if(teleport_dist >= dim/40){
 						c.override = true;
 						c.predict.x = (m.x +
 							Server_Sync_Period_Estimate*m.vx)*stage_width;

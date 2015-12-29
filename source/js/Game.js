@@ -28,6 +28,8 @@ Game.prototype = {
             for(var j = 0; j < this.teams[i].characters.length; j++){
                 for(var k = 0; k < this.teams[i].characters[j].length; k++){
                     var c = this.teams[i].characters[j][k];
+                    // No Collision for units that are trying to sync (maybe)
+                    if(c.override) continue;
                     //if(!c.sprite.visible) continue;
                     //if(!c.sprite.visible && i != myteam) continue;
                     if(c.collision_count >= 2) continue;
@@ -42,6 +44,8 @@ Game.prototype = {
             for(var j = 0; j < this.teams[i].characters.length; j++){
                 for(var k = 0; k < this.teams[i].characters[j].length; k++){
                     var c2 = this.teams[i].characters[j][k];
+                    // No Collision for units that are trying to sync
+                    if(c2.override) continue;
                     //if(arrayContains(c2.status, StatusType.Inanimate)) continue;
                     //if(!c.sprite.visible) continue;
                     //if(!c2.sprite.visible && i != myteam) continue;
