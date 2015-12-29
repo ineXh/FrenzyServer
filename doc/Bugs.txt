@@ -7,3 +7,4 @@ This is due to:
 4. Server sends a force update to Client A and B which will list Client B unit as Dead and Client A unit to be before Client A's unit has suffered dmg from Client B's unit, which recovers Client A unit's health on both clients
 5. Client B will send msg on damaging Client A unit
 6. Server receives dmg dealt to Client A unit from Client B
+7. Server sends periodic update to Clients, and Client A unit will reflect its true hp

@@ -272,7 +272,8 @@ Cow.prototype.animationdisplay = function(){
 					var dmg = this.attack_stat - this.opponent.defense_stat;
 					if(dmg <= 0) dmg = 1;
 					if(this.opponent.hp <= dmg && this.opponent.hp > 0) getCoin(this.team, this.opponent);
-					this.opponent.hp -= dmg;
+					if(gamemode == GameMode.SinglePlayer)
+						this.opponent.hp -= dmg;
 					if(this.team == myteam) this.opponent.dmg += dmg;
 					//this.opponent.healthbar.set(this.opponent.hp);
 				}
@@ -293,7 +294,8 @@ Cow.prototype.animationdisplay = function(){
 					var dmg = this.attack_stat - this.opponent.defense_stat;
 					if(dmg <= 0) dmg = 1;
 					if(this.opponent.hp < dmg && this.opponent.hp > 0) getCoin(this.team, this.opponent);
-					this.opponent.hp -= dmg;
+					if(gamemode == GameMode.SinglePlayer)
+						this.opponent.hp -= dmg;
 					if(this.team == myteam) this.opponent.dmg += dmg;
 					//this.opponent.healthbar.set(this.opponent.hp);
 				}

@@ -1,0 +1,348 @@
+> node index.js
+
+listening on *:80
+A webClient has connected.
+total players on server 1
+join game 0
+a joins Game 1 in team 0
+A webClient has connected.
+total players on server 2
+join game 0
+b joins Game 1 in team 1
+Team 0 sync @ 181
+3 on team 1 has suffered 0dmg, new hp:10,  dmg dealt from team 0
+Team 1 sync @ 180
+2 on team 0 has suffered 0dmg, new hp:10,  dmg dealt from team 1
+Team 0 sync @ 359
+3 on team 1 has suffered 0dmg, new hp:10,  dmg dealt from team 0
+Team 1 sync @ 358
+2 on team 0 has suffered 0dmg, new hp:10,  dmg dealt from team 1
+Team 0 sync @ 541
+3 on team 1 has suffered 3dmg, new hp:7,  dmg dealt from team 0
+Team 1 sync @ 541
+2 on team 0 has suffered 3dmg, new hp:7,  dmg dealt from team 1
+Team 1 sync @ 724
+2 on team 0 has suffered 5dmg, new hp:2,  dmg dealt from team 1
+Team 0 sync @ 724
+3 on team 1 has suffered 5dmg, new hp:2,  dmg dealt from team 0
+Team 1 sync @ 783
+2 has died
+2 on team 0 has suffered 2dmg, new hp:0,  dmg dealt from team 1
+Team 0 sync @ 784
+3 has died
+3 on team 1 has suffered 2dmg, new hp:0,  dmg dealt from team 0
+Team 0 sync @ 908
+5 on team 1 has suffered 0dmg, new hp:10,  dmg dealt from team 0
+Team 1 sync @ 908
+4 on team 0 has suffered 0dmg, new hp:10,  dmg dealt from team 1
+Team 1 sync @ 1081
+4 on team 0 has suffered 0dmg, new hp:10,  dmg dealt from team 1
+Team 0 sync @ 1081
+5 on team 1 has suffered 0dmg, new hp:10,  dmg dealt from team 0
+Team 0 sync @ 1264
+5 on team 1 has suffered 3dmg, new hp:7,  dmg dealt from team 0
+Team 1 sync @ 1263
+4 on team 0 has suffered 3dmg, new hp:7,  dmg dealt from team 1
+Team 0 sync @ 1442
+5 on team 1 has suffered 6dmg, new hp:1,  dmg dealt from team 0
+Team 1 sync @ 1442
+4 on team 0 has suffered 6dmg, new hp:1,  dmg dealt from team 1
+Team 1 sync @ 1473
+4 has died
+4 on team 0 has suffered 1dmg, new hp:0,  dmg dealt from team 1
+Team 0 sync @ 1474
+5 has died
+5 on team 1 has suffered 1dmg, new hp:0,  dmg dealt from team 0
+Team 1 sync @ 1622
+6 on team 0 has suffered 0dmg, new hp:10,  dmg dealt from team 1
+Team 0 sync @ 1622
+7 on team 1 has suffered 0dmg, new hp:10,  dmg dealt from team 0
+Team 0 sync @ 1801
+7 on team 1 has suffered 0dmg, new hp:10,  dmg dealt from team 0
+Team 1 sync @ 1801
+6 on team 0 has suffered 0dmg, new hp:10,  dmg dealt from team 1
+Team 0 sync @ 1982
+7 on team 1 has suffered 2dmg, new hp:8,  dmg dealt from team 0
+Team 1 sync @ 1982
+6 on team 0 has suffered 0dmg, new hp:10,  dmg dealt from team 1
+Team 0 sync @ 2162
+7 on team 1 has suffered 0dmg, new hp:8,  dmg dealt from team 0
+Team 1 sync @ 2162
+6 on team 0 has suffered 0dmg, new hp:10,  dmg dealt from team 1
+Team 0 sync @ 2340
+7 on team 1 has suffered 4dmg, new hp:4,  dmg dealt from team 0
+Team 1 sync @ 2340
+6 on team 0 has suffered 4dmg, new hp:6,  dmg dealt from team 1
+Team 0 sync @ 2469
+7 has died
+7 on team 1 has suffered 4dmg, new hp:0,  dmg dealt from team 0
+Team 1 sync @ 2520
+6 on team 0 has suffered 4dmg, new hp:2,  dmg dealt from team 1
+Team 0 sync @ 2521
+8 on team 1 has suffered 0dmg, new hp:10,  dmg dealt from team 0
+Team 0 sync @ 2702
+8 on team 1 has suffered 1dmg, new hp:9,  dmg dealt from team 0
+Team 1 sync @ 2701
+6 on team 0 has suffered 0dmg, new hp:2,  dmg dealt from team 1
+Team 1 sync @ 2838
+6 has died
+6 on team 0 has suffered 2dmg, new hp:0,  dmg dealt from team 1
+Team 0 sync @ 2883
+8 on team 1 has suffered 2dmg, new hp:7,  dmg dealt from team 0
+Team 1 sync @ 2882
+9 on team 0 has suffered 0dmg, new hp:10,  dmg dealt from team 1
+Team 1 sync @ 3063
+9 on team 0 has suffered 0dmg, new hp:10,  dmg dealt from team 1
+Team 0 sync @ 3063
+8 on team 1 has suffered 0dmg, new hp:7,  dmg dealt from team 0
+Team 0 sync @ 3245
+8 on team 1 has suffered 0dmg, new hp:7,  dmg dealt from team 0
+Team 1 sync @ 3244
+9 on team 0 has suffered 0dmg, new hp:10,  dmg dealt from team 1
+Team 0 sync @ 3422
+8 on team 1 has suffered 0dmg, new hp:7,  dmg dealt from team 0
+Team 1 sync @ 3422
+9 on team 0 has suffered 0dmg, new hp:10,  dmg dealt from team 1
+Team 1 sync @ 3602
+9 on team 0 has suffered 1dmg, new hp:9,  dmg dealt from team 1
+Team 0 sync @ 3602
+8 on team 1 has suffered 0dmg, new hp:7,  dmg dealt from team 0
+Team 0 sync @ 3783
+8 on team 1 has suffered 2dmg, new hp:5,  dmg dealt from team 0
+Team 1 sync @ 3782
+9 on team 0 has suffered 2dmg, new hp:7,  dmg dealt from team 1
+Team 0 sync @ 3956
+8 has died
+8 on team 1 has suffered 5dmg, new hp:0,  dmg dealt from team 0
+Team 0 sync @ 3962
+10 on team 1 has suffered 0dmg, new hp:10,  dmg dealt from team 0
+Team 1 sync @ 3962
+9 on team 0 has suffered 5dmg, new hp:2,  dmg dealt from team 1
+Team 0 sync @ 4148
+10 on team 1 has suffered 1dmg, new hp:9,  dmg dealt from team 0
+Team 1 sync @ 4147
+9 on team 0 has suffered 0dmg, new hp:2,  dmg dealt from team 1
+Team 1 sync @ 4200
+9 has died
+9 on team 0 has suffered 2dmg, new hp:0,  dmg dealt from team 1
+Team 0 sync @ 4328
+10 on team 1 has suffered 2dmg, new hp:7,  dmg dealt from team 0
+Team 1 sync @ 4328
+11 on team 0 has suffered 0dmg, new hp:10,  dmg dealt from team 1
+Team 0 sync @ 4439
+10 on team 1 has suffered 0dmg, new hp:7,  dmg dealt from team 0
+Team 1 sync @ 4526
+11 on team 0 has suffered 0dmg, new hp:10,  dmg dealt from team 1
+Team 1 sync @ 4726
+11 on team 0 has suffered 2dmg, new hp:8,  dmg dealt from team 1
+Team 1 sync @ 4748
+11 on team 0 has suffered 0dmg, new hp:8,  dmg dealt from team 1
+Team 0 sync @ 4491
+10 on team 1 has suffered 0dmg, new hp:7,  dmg dealt from team 0
+Team 1 sync @ 4948
+11 on team 0 has suffered 3dmg, new hp:5,  dmg dealt from team 1
+Team 1 sync @ 4975
+11 on team 0 has suffered 1dmg, new hp:4,  dmg dealt from team 1
+Team 0 sync @ 4491
+10 on team 1 has suffered 0dmg, new hp:7,  dmg dealt from team 0
+Team 0 sync @ 4527
+10 on team 1 has suffered 0dmg, new hp:7,  dmg dealt from team 0
+Team 1 sync @ 5153
+11 on team 0 has suffered 3dmg, new hp:1,  dmg dealt from team 1
+Team 1 sync @ 5157
+11 has died
+11 on team 0 has suffered 1dmg, new hp:0,  dmg dealt from team 1
+Team 1 sync @ 5357
+Team 0 sync @ 4543
+10 on team 1 has suffered 0dmg, new hp:7,  dmg dealt from team 0
+Team 1 sync @ 5396
+12 on team 0 has suffered 0dmg, new hp:10,  dmg dealt from team 1
+Team 1 sync @ 5596
+12 on team 0 has suffered 1dmg, new hp:9,  dmg dealt from team 1
+Team 1 sync @ 5657
+12 on team 0 has suffered 0dmg, new hp:9,  dmg dealt from team 1
+Team 0 sync @ 4543
+10 on team 1 has suffered 0dmg, new hp:7,  dmg dealt from team 0
+Team 1 sync @ 5857
+12 on team 0 has suffered 1dmg, new hp:8,  dmg dealt from team 1
+Team 1 sync @ 5927
+12 on team 0 has suffered 0dmg, new hp:8,  dmg dealt from team 1
+Team 0 sync @ 4543
+10 on team 1 has suffered 0dmg, new hp:7,  dmg dealt from team 0
+Team 1 sync @ 6127
+12 on team 0 has suffered 1dmg, new hp:7,  dmg dealt from team 1
+Team 1 sync @ 6206
+12 on team 0 has suffered 0dmg, new hp:7,  dmg dealt from team 1
+Team 0 sync @ 4543
+10 on team 1 has suffered 0dmg, new hp:7,  dmg dealt from team 0
+Team 1 sync @ 6406
+12 on team 0 has suffered 1dmg, new hp:6,  dmg dealt from team 1
+Team 0 sync @ 4543
+10 on team 1 has suffered 0dmg, new hp:7,  dmg dealt from team 0
+Team 1 sync @ 6464
+12 on team 0 has suffered 0dmg, new hp:6,  dmg dealt from team 1
+Team 1 sync @ 6664
+12 on team 0 has suffered 2dmg, new hp:4,  dmg dealt from team 1
+Team 0 sync @ 4543
+10 on team 1 has suffered 0dmg, new hp:7,  dmg dealt from team 0
+Team 1 sync @ 6748
+12 on team 0 has suffered 0dmg, new hp:4,  dmg dealt from team 1
+Team 1 sync @ 6948
+12 on team 0 has suffered 2dmg, new hp:2,  dmg dealt from team 1
+Team 1 sync @ 7039
+12 on team 0 has suffered 0dmg, new hp:2,  dmg dealt from team 1
+Team 0 sync @ 4543
+10 on team 1 has suffered 0dmg, new hp:7,  dmg dealt from team 0
+Team 1 sync @ 7239
+12 on team 0 has suffered 1dmg, new hp:1,  dmg dealt from team 1
+Team 1 sync @ 7331
+12 on team 0 has suffered 0dmg, new hp:1,  dmg dealt from team 1
+Team 0 sync @ 4543
+10 on team 1 has suffered 0dmg, new hp:7,  dmg dealt from team 0
+Team 1 sync @ 7341
+12 has died
+12 on team 0 has suffered 1dmg, new hp:0,  dmg dealt from team 1
+Team 1 sync @ 7541
+Team 0 sync @ 4543
+10 on team 1 has suffered 0dmg, new hp:7,  dmg dealt from team 0
+Team 1 sync @ 7626
+13 on team 0 has suffered 0dmg, new hp:10,  dmg dealt from team 1
+Team 1 sync @ 7826
+13 on team 0 has suffered 1dmg, new hp:9,  dmg dealt from team 1
+Team 1 sync @ 7921
+13 on team 0 has suffered 0dmg, new hp:9,  dmg dealt from team 1
+Team 0 sync @ 4543
+10 on team 1 has suffered 0dmg, new hp:7,  dmg dealt from team 0
+Team 1 sync @ 8121
+13 on team 0 has suffered 1dmg, new hp:8,  dmg dealt from team 1
+Team 1 sync @ 8216
+13 on team 0 has suffered 0dmg, new hp:8,  dmg dealt from team 1
+Team 0 sync @ 4543
+10 on team 1 has suffered 0dmg, new hp:7,  dmg dealt from team 0
+Team 1 sync @ 8416
+13 on team 0 has suffered 2dmg, new hp:6,  dmg dealt from team 1
+Team 1 sync @ 8511
+13 on team 0 has suffered 0dmg, new hp:6,  dmg dealt from team 1
+Team 0 sync @ 4543
+10 on team 1 has suffered 0dmg, new hp:7,  dmg dealt from team 0
+Team 1 sync @ 8711
+13 on team 0 has suffered 3dmg, new hp:3,  dmg dealt from team 1
+Team 0 sync @ 4543
+10 on team 1 has suffered 0dmg, new hp:7,  dmg dealt from team 0
+Team 1 sync @ 8806
+13 on team 0 has suffered 0dmg, new hp:3,  dmg dealt from team 1
+Team 1 sync @ 9000
+13 has died
+13 on team 0 has suffered 3dmg, new hp:0,  dmg dealt from team 1
+Team 1 sync @ 9101
+14 on team 0 has suffered 0dmg, new hp:10,  dmg dealt from team 1
+Team 0 sync @ 4543
+10 on team 1 has suffered 0dmg, new hp:7,  dmg dealt from team 0
+Team 1 sync @ 9301
+14 on team 0 has suffered 2dmg, new hp:8,  dmg dealt from team 1
+Team 0 sync @ 4543
+10 on team 1 has suffered 0dmg, new hp:7,  dmg dealt from team 0
+Team 1 sync @ 9395
+14 on team 0 has suffered 0dmg, new hp:8,  dmg dealt from team 1
+Team 1 sync @ 9595
+14 on team 0 has suffered 1dmg, new hp:7,  dmg dealt from team 1
+Team 1 sync @ 9690
+14 on team 0 has suffered 2dmg, new hp:5,  dmg dealt from team 1
+Team 0 sync @ 4543
+10 on team 1 has suffered 0dmg, new hp:7,  dmg dealt from team 0
+Team 1 sync @ 9890
+14 on team 0 has suffered 2dmg, new hp:3,  dmg dealt from team 1
+Team 1 sync @ 9985
+14 on team 0 has suffered 1dmg, new hp:2,  dmg dealt from team 1
+Team 0 sync @ 4543
+10 on team 1 has suffered 0dmg, new hp:7,  dmg dealt from team 0
+Team 1 sync @ 10133
+14 has died
+14 on team 0 has suffered 2dmg, new hp:0,  dmg dealt from team 1
+Team 1 sync @ 10280
+15 on team 0 has suffered 0dmg, new hp:10,  dmg dealt from team 1
+Team 0 sync @ 4543
+10 on team 1 has suffered 0dmg, new hp:7,  dmg dealt from team 0
+Team 1 sync @ 10480
+15 on team 0 has suffered 1dmg, new hp:9,  dmg dealt from team 1
+Team 1 sync @ 10575
+15 on team 0 has suffered 0dmg, new hp:9,  dmg dealt from team 1
+Team 0 sync @ 4543
+10 on team 1 has suffered 0dmg, new hp:7,  dmg dealt from team 0
+Team 1 sync @ 10775
+15 on team 0 has suffered 3dmg, new hp:6,  dmg dealt from team 1
+Team 1 sync @ 10868
+15 on team 0 has suffered 2dmg, new hp:4,  dmg dealt from team 1
+Team 0 sync @ 4543
+10 on team 1 has suffered 0dmg, new hp:7,  dmg dealt from team 0
+Team 1 sync @ 11068
+15 on team 0 has suffered 1dmg, new hp:3,  dmg dealt from team 1
+Team 0 sync @ 4543
+10 on team 1 has suffered 0dmg, new hp:7,  dmg dealt from team 0
+Team 1 sync @ 11163
+15 on team 0 has suffered 1dmg, new hp:2,  dmg dealt from team 1
+Team 1 sync @ 11303
+15 has died
+15 on team 0 has suffered 2dmg, new hp:0,  dmg dealt from team 1
+Team 1 sync @ 11458
+16 on team 0 has suffered 0dmg, new hp:10,  dmg dealt from team 1
+Team 0 sync @ 4543
+10 on team 1 has suffered 0dmg, new hp:7,  dmg dealt from team 0
+Team 1 sync @ 11658
+16 on team 0 has suffered 0dmg, new hp:10,  dmg dealt from team 1
+Team 1 sync @ 11752
+16 on team 0 has suffered 0dmg, new hp:10,  dmg dealt from team 1
+Team 0 sync @ 4543
+10 on team 1 has suffered 0dmg, new hp:7,  dmg dealt from team 0
+Team 1 sync @ 11952
+16 on team 0 has suffered 0dmg, new hp:10,  dmg dealt from team 1
+Team 1 sync @ 12046
+16 on team 0 has suffered 0dmg, new hp:10,  dmg dealt from team 1
+Team 0 sync @ 4543
+10 on team 1 has suffered 0dmg, new hp:7,  dmg dealt from team 0
+Team 0 sync @ 4543
+10 on team 1 has suffered 0dmg, new hp:7,  dmg dealt from team 0
+Team 0 sync @ 4543
+10 on team 1 has suffered 0dmg, new hp:7,  dmg dealt from team 0
+Team 0 sync @ 4543
+10 on team 1 has suffered 0dmg, new hp:7,  dmg dealt from team 0
+Team 0 sync @ 4543
+10 on team 1 has suffered 0dmg, new hp:7,  dmg dealt from team 0
+Team 0 sync @ 4543
+10 on team 1 has suffered 0dmg, new hp:7,  dmg dealt from team 0
+Team 0 sync @ 4543
+10 on team 1 has suffered 0dmg, new hp:7,  dmg dealt from team 0
+Team 0 sync @ 4543
+10 on team 1 has suffered 0dmg, new hp:7,  dmg dealt from team 0
+Team 0 sync @ 4543
+10 on team 1 has suffered 0dmg, new hp:7,  dmg dealt from team 0
+Team 0 sync @ 4543
+10 on team 1 has suffered 0dmg, new hp:7,  dmg dealt from team 0
+Team 0 sync @ 4543
+10 on team 1 has suffered 0dmg, new hp:7,  dmg dealt from team 0
+Team 0 sync @ 4543
+10 on team 1 has suffered 0dmg, new hp:7,  dmg dealt from team 0
+Team 0 sync @ 4543
+10 on team 1 has suffered 0dmg, new hp:7,  dmg dealt from team 0
+Team 0 sync @ 4543
+10 on team 1 has suffered 0dmg, new hp:7,  dmg dealt from team 0
+Team 0 sync @ 4543
+10 on team 1 has suffered 0dmg, new hp:7,  dmg dealt from team 0
+Team 0 sync @ 4543
+10 on team 1 has suffered 0dmg, new hp:7,  dmg dealt from team 0
+Team 0 sync @ 4543
+10 on team 1 has suffered 0dmg, new hp:7,  dmg dealt from team 0
+A webClient has disconnected.
+total players 1
+Team 0 sync @ 4543
+10 on team 1 has suffered 0dmg, new hp:7,  dmg dealt from team 0
+Team 0 sync @ 4543
+10 on team 1 has suffered 0dmg, new hp:7,  dmg dealt from team 0
+Team 0 sync @ 4543
+10 on team 1 has suffered 0dmg, new hp:7,  dmg dealt from team 0
+Team 0 sync @ 4543
+10 on team 1 has suffered 0dmg, new hp:7,  dmg dealt from team 0
+Team 0 sync @ 4543
+10 on team 1 has suffered 0dmg, new hp:7,  dmg dealt from team 0
+Team 0 sync @ 4543
+10 on team 1 has suffered 0dmg, new hp:7,  dmg dealt from team 0
