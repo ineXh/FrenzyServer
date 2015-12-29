@@ -18,6 +18,12 @@ Hut.prototype.create = function(){
     this.sprite.anchor.x = 0.5;
     this.sprite.anchor.y = 0.5;
     this.maxspeed = 2*big_dim/1000;
+
+    // used to sync with the client this unit belongs to
+    this.override = false;
+    this.predict = new PVector(0, 0);
+
+
     this.type = CharacterType.Hut;
     this.seekOpponent_count = 0;
     this.seekOpponent_time = 0;

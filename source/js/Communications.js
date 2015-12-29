@@ -211,12 +211,21 @@ function onSyncPeriod(msg){
 					var y = msg.players[i].characters[j][k].y*stage_height;
 					var teleport_dist = findDist(game.teams[i].characters[j][k].pos,
 						new PVector(x , y));
-					if(teleport_dist > dim/10) debugger;
+					if(teleport_dist > dim/10){
+						c.override = true;
+						c.predict.x = (m.x +
+							Server_Sync_Period_Estimate*m.vx)*stage_width;
+						c.predict.y = (m.y +
+							Server_Sync_Period_Estimate*m.vy)*stage_height;
+						//debugger;
+					}else{
+						c.override = false;
+					}
 
-					game.teams[i].characters[j][k].pos.x = x;
+					/*game.teams[i].characters[j][k].pos.x = x;
 					game.teams[i].characters[j][k].pos.y = y;
 					game.teams[i].characters[j][k].vel.x = msg.players[i].characters[j][k].vx*stage_width;
-					game.teams[i].characters[j][k].vel.y = msg.players[i].characters[j][k].vy*stage_height;
+					game.teams[i].characters[j][k].vel.y = msg.players[i].characters[j][k].vy*stage_height;*/
 				}
 
 			}

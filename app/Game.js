@@ -21,11 +21,11 @@ var period_server_sync = 1000;
 var period_request_sync = 3000;
 
 var spawn_count = 0;
-var spawn_time = 3;
+var spawn_time = 20;
 var request_sync_count = 0;
-var request_sync_time = 5;
+var request_sync_time = 10;
 
-var period_update = 1000;
+var period_update = 200;
 
 function Game(io, server, name){
     this.io = io;

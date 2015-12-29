@@ -72,6 +72,11 @@ function Character(){
 	this.s_vel = new PVector(0,0);
 	this.s_pos = new PVector(0,0);
 	this.maxspeed = big_dim/200;
+
+	// used to sync with the client this unit belongs to
+	this.override = false;
+	this.predict = new PVector(0, 0);
+
 	this.Dead = false;
 	this.dmg = 0;
 }
@@ -238,6 +243,11 @@ Cow.prototype.create = function(){
     this.defense_stat = this.defense_base;
     this.speed_base = 3*big_dim/1000
     this.maxspeed = this.speed_base;
+
+    // used to sync with the client this unit belongs to
+	this.override = false;
+	this.predict = new PVector(0, 0);
+
     this.status = [];
 }
 Cow.prototype.init = function(input){
@@ -322,7 +332,7 @@ Cow.prototype.attack = function(){
 Cow.prototype.update = function(path){
 	this.animationdisplay();
 
-	if(path != null && !this.attacking){
+	if(path != null && !this.attacking && !this.override){
 		applyForce.call(this, path.follow(this));
 		if(this.accel.mag() > big_dim/10){
 			//console.log('this.accel.y ' + this.accel.y)
@@ -366,6 +376,13 @@ Cow.prototype.update = function(path){
 			//this.vel.y = this.accel.y;
 			//this.multisync_seek();
 			this.vel = this.accel;
+	    	if(gamemode == GameMode.MultiPlayer && this.team != myteam
+	    		&& this.override ){
+	    		this.vel.x = (this.predict.x - this.pos.x) / Server_Sync_Period_Estimate;
+	    		this.vel.y = (this.predict.y - this.pos.y) / Server_Sync_Period_Estimate;
+	    		//debugger;
+	    	}
+
 	    	this.vel.limit(this.maxspeed);
 	    	this.pos.add(this.vel);
 		/*}else if(gamemode == GameMode.MultiPlayer){
