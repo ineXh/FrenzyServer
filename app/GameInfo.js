@@ -50,6 +50,7 @@ GameInfo.prototype = {
     onSyncUpdateClient : function(player, msg){
         var team = player.playerinfo.team;
         player.playerinfo.gameCount = msg.gameCount;
+        console.log('Team ' + team + ' sync @ ' + msg.gameCount);
         if(player.playerinfo.requested) player.playerinfo.requested = false;
         //console.log('gameCount ' + this.gameCount);
         for(var i = 0; i < this.players.length; i++){
@@ -85,7 +86,8 @@ GameInfo.prototype = {
                             this.requireUpdate = true;
                         }
                         c.hp -= m.dmg;
-                        console.log('' + c.id + ' on team ' + i + ' has suffered ' + m.dmg + 'dmg, new hp:' + c.hp + ' from team ' + team);
+                        if(c.type == enums.Cow)
+                        console.log('' + c.id + ' on team ' + i + ' has suffered ' + m.dmg + 'dmg, new hp:' + c.hp + ',  dmg dealt from team ' + team);
                     }
                 }
             }

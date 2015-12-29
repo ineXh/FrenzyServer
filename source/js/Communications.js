@@ -195,6 +195,7 @@ function onSyncPeriod(msg){
 				game.teams[i].characters[j][k].s_pos.y = predict.y;
 				//if(game.teams[i].characters[j][k].vel.x > 0.1) debugger;
 */
+				//if(game.teams[i].characters[j][k].hp < msg.players[i].characters[j][k].hp) debugger;
 				game.teams[i].characters[j][k].hp = msg.players[i].characters[j][k].hp;
 				if(msg.sync_type == 'periodic'){
 					if(i == myteam) continue;

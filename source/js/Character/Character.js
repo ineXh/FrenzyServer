@@ -220,7 +220,7 @@ Cow.prototype.create = function(){
 
 	this.type = CharacterType.Cow;
 	this.seekOpponent_count = 0;
-    this.seekOpponent_time = 0;
+    this.seekOpponent_time = 5;
     this.attack_count = 0;
     this.attack_time = 10;
     this.attacking = false;
@@ -341,18 +341,18 @@ Cow.prototype.update = function(path){
 	        this.seekOpponent_count = 0;
 	        this.opponent_dist = findDist(this.pos, this.opponent.pos);
 
-			if(this.opponent_dist >= (this.r*3/4 + this.opponent.r*3/4)){
+			if(this.opponent_dist >= dim/2 || this.opponent.isDead()){
+				this.opponent = null;
+				this.opponent_dist == undefined
+			}else if(this.opponent_dist >= (this.r*3/4 + this.opponent.r*3/4)){
 				if(this.opponent != null)
 				applyForce.call(this, this.seek(this.opponent.pos));
 				this.animationtype = AnimationType.Walk_Front;
 				//if(this.accel.y >= 0) this.animationtype = AnimationType.Walk_Front;
 				//else this.animationtype = AnimationType.Walk_Back;
 			}else{
+				if(this.opponent.type == CharacterType.Hut) debugger;
 				this.attack();
-			}
-			if(this.opponent_dist >= dim/2 || this.opponent.isDead()){
-				this.opponent = null;
-				this.opponent_dist == undefined
 			}
 		}
 	}

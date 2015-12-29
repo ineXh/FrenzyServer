@@ -1,0 +1,9 @@
+12/28/2015
+Bug: Unit observed to increase in hp after killing an opponent
+This is due to:
+1. Client A unit kills Client B Unit
+2. in Game.js, getCoin function, Client A will set sync_force to be true
+3. Server receives dmg that kills Client B Unit and set requireUpdate to be true
+4. Server sends a force update to Client A and B which will list Client B unit as Dead and Client A unit to be before Client A's unit has suffered dmg from Client B's unit, which recovers Client A unit's health on both clients
+5. Client B will send msg on damaging Client A unit
+6. Server receives dmg dealt to Client A unit from Client B
