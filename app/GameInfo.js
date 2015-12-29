@@ -50,7 +50,7 @@ GameInfo.prototype = {
     onSyncUpdateClient : function(player, msg){
         var team = player.playerinfo.team;
         player.playerinfo.gameCount = msg.gameCount;
-        console.log('Team ' + team + ' sync @ ' + msg.gameCount);
+        //console.log('Team ' + team + ' sync @ ' + msg.gameCount);
         if(player.playerinfo.requested) player.playerinfo.requested = false;
         //console.log('gameCount ' + this.gameCount);
         for(var i = 0; i < this.players.length; i++){
@@ -61,8 +61,8 @@ GameInfo.prototype = {
                     var m = msg.players[i].characters[j][k];
                     if(c == null || m == null) continue;
                     if(c.id != m.id){
-                        console.log('c.id: ' + c.id);
-                        console.log('m.id: ' + m.id);
+                        //console.log('c.id: ' + c.id);
+                        //console.log('m.id: ' + m.id);
                     }
                     if(i == team){
                         c.x = m.x;
@@ -81,13 +81,13 @@ GameInfo.prototype = {
                         if(c.hp > 0 && m.dmg >= c.hp){
                             player.playerinfo.coins += 1;
                             c.Dead = true;
-                            console.log(c.id + ' has died');
+                            //console.log(c.id + ' has died');
                             this.units_have_died = true;
                             this.requireUpdate = true;
                         }
                         c.hp -= m.dmg;
-                        if(c.type == enums.Cow)
-                        console.log('' + c.id + ' on team ' + i + ' has suffered ' + m.dmg + 'dmg, new hp:' + c.hp + ',  dmg dealt from team ' + team);
+                        //if(c.type == enums.Cow)
+                        //console.log('' + c.id + ' on team ' + i + ' has suffered ' + m.dmg + 'dmg, new hp:' + c.hp + ',  dmg dealt from team ' + team);
                     }
                 }
             }

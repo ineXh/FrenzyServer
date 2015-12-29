@@ -133,7 +133,7 @@ function onChat(msg){
 //game.teams[0].characters[0][0].pos.x -= 200
 function onSyncPeriod(msg){
 	//console.log('onSyncPeriod ' + Server_Sync_Period_Estimate);
-	console.log(msg)
+	//console.log(msg)
 	//console.log(msg.sync_type)
 	/*if(msg.players[0].characters[0][0] != undefined){
 		if(msg.players[0].characters[0][0].vx > 0) debugger;
@@ -196,7 +196,10 @@ function onSyncPeriod(msg){
 				//if(game.teams[i].characters[j][k].vel.x > 0.1) debugger;
 */
 				//if(game.teams[i].characters[j][k].hp < msg.players[i].characters[j][k].hp) debugger;
-				game.teams[i].characters[j][k].hp = msg.players[i].characters[j][k].hp;
+				//game.teams[i].characters[j][k].hp = msg.players[i].characters[j][k].hp - game.teams[i].characters[j][k].dmg;
+				//if(game.teams[i].characters[j][k].hp < msg.players[i].characters[j][k].hp)
+				//if(i != myteam)
+				 //game.teams[i].characters[j][k].hp = msg.players[i].characters[j][k].hp;
 				if(msg.sync_type == 'periodic'){
 					if(i == myteam) continue;
 					game.teams[i].characters[j][k].pos.x = msg.players[i].characters[j][k].x*stage_width;
@@ -223,7 +226,7 @@ function onRequestedSync(msg){
 }
 function onSpawnPeriod(msg){
 	//console.log('onSpawnPeriod')
-	console.log(msg)
+	//console.log(msg)
 	//debugger;
 	/*for(var i = 0; i < msg.teams.length; i++){
 		game.getTeam(i).spawn(msg.character_ids[i]);

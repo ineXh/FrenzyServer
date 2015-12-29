@@ -8,7 +8,7 @@ function htmlEntities(str) {
                       .replace(/>/g, '&gt;').replace(/"/g, '&quot;');
 }
 // Important
-var max_unit_count = 1;
+var max_unit_count = 10;
 var cow_max_hp = 10;
 var hut_max_hp = 25;
 
@@ -21,7 +21,7 @@ var period_server_sync = 1000;
 var period_request_sync = 3000;
 
 var spawn_count = 0;
-var spawn_time = 5;
+var spawn_time = 3;
 var request_sync_count = 0;
 var request_sync_time = 5;
 

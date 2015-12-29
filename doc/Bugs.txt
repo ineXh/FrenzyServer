@@ -1,4 +1,7 @@
 12/28/2015
+Bug: Units locally have 0 hp, but does not disappear and keep fighting until the official Dead confirmation from server
+
+12/28/2015
 Bug: Unit observed to increase in hp after killing an opponent
 This is due to:
 1. Client A unit kills Client B Unit

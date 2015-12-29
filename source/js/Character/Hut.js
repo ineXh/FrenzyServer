@@ -29,6 +29,7 @@ Hut.prototype.create = function(){
     this.maxhp = hut_max_hp;
     this.hp = this.maxhp;
     this.healthbar = new HealthBar(this);
+    this.dmg = 0;
     this.defense_stat = 5;
     this.status = [StatusType.NotMovable];
 
