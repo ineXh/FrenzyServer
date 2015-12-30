@@ -47,6 +47,8 @@
 .windowobject{
   opacity: 0.9;
   background: #2C3E50;
+  border-radius: 20px;
+  font-weight: 700;
   /*background: #000;*/
 }
 #chatwindow {
@@ -55,45 +57,42 @@
     left: 15%; top: 70%;
     box-shadow: rgba(0,0,0,0.6) 0px 0px 8px;
     border: 2px solid #6898DD;
-    padding-right: 5px;
-    padding-left: 5px;
+    overflow: hidden;
+    /*padding-right: 5px;
+    padding-left: 5px;*/
+
 }
 #chatmonitor {
-    padding:10px;
-    position:relative;
-
-    width:98%;
-    height: 80%;
+    padding: 5px;
+    height: 50%;
     background:#ddd;
-    margin-left:5px;
-    margin-right:5px;
-    margin-top:10px;
-    margin-bottom:10px;
-    border-radius:5px; overflow-y: scroll;
-    /*user-select: auto;*/
-    border:1px solid #CCC; /*margin-bottom:10px;*/
+
+    border-radius:5%; overflow-y: scroll;
+
+    border:1px solid #CCC;
     background: #2C3E50;
     font-size: 150%;
-    /*font-family: "Telefon Black", Sans-Serif;*/
-
-    color: #000;
-    /*font-size: 6rem;*/
     font-weight: bold;
-}
-#chatinput{
-    margin-left:10px;
-    width:95%;
+    color: #000;
+
+    margin: 1.25%;
+    width: 97.5%;
+
+    /*margin-left:5px;
+    margin-right:5px;
+    margin-top:5px;
+    margin-bottom:5px;*/
+    /*position:relative;*/
+    /*font-family: "Telefon Black", Sans-Serif;*/
+    /*margin-bottom:10px;*/
+    /*user-select: auto;*/
+    /*font-size: 6rem;*/
+
 }
 #chatsendbutton{
 margin-left:10px;
 }
-.chat{
-    /*float: left;*/
-    font-weight: 700;
-    /*overflow: hidden;*/
-    padding-right: 15px;
-    /*text-align: right;*/
-}
+
 .msg{
     position: absolute;
     left: 20%;
@@ -106,15 +105,17 @@ margin-left:10px;
 /* Input */
 
 .inputchat {
-  border: 10px solid #000;
-  /*bottom: 0;*/
-  height: 60px;
-  left: 0;
+  border: 5px solid #000;
+  bottom: 1%;
+  height: 20%;
   outline: none;
-  padding-left: 10px;
-  /*position: absolute;*/
-  right: 0;
-  width: 100%;
+  position: absolute;
+  border-radius:5%;
+
+  margin: 1.25%;
+  width: 97.5%;
+  /*padding-left: 5px;
+  /*position:relative;*/
 }
 .panel-heading{
   background: #C73C3C;
@@ -149,7 +150,47 @@ button{
   text-align: center;
   border-radius: 2px;
   display: inline-block;
-  font-family: "Source Sans Pro","Helvetica Neue",Helvetica,Arial,sans-serif;
+  border-radius: 10px;
+  font-family: 'Pacifico', cursive;
+  /*font-family: "Source Sans Pro","Helvetica Neue",Helvetica,Arial,sans-serif;*/
+
+}
+.animate
+{
+  transition: all 0.1s;
+  -webkit-transition: all 0.1s;
+}
+
+.action-button
+{
+  position: relative;
+  padding: 10px 40px;
+  margin: 0px 10px 10px 0px;
+  float: left;
+  border-radius: 10px;
+  font-family: 'Pacifico', cursive;
+  font-size: 25px;
+  color: #FFF;
+  text-decoration: none;
+}
+.blue
+{
+  background-color: #3498DB;
+  border-bottom: 5px solid #2980B9;
+  text-shadow: 0px -2px #2980B9;
+}
+.yellow
+{
+  background-color: #F2CF66;
+  border-bottom: 5px solid #D1B358;
+  text-shadow: 0px -2px #D1B358;
+}
+
+.action-button:active
+{
+  transform: translate(0px,5px);
+  -webkit-transform: translate(0px,5px);
+  border-bottom: 1px solid;
 }
 .ui-selected { background: #F39814; color: white; }
 /*ol .ui-widget-content {

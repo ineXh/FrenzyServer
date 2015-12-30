@@ -161,8 +161,8 @@ function onSyncPeriod(msg){
 				if(m == undefined) continue;
 				if(c == undefined) continue;
 				if(c.id != m.id){
-                    console.log('c.id: ' + c.id);
-                    console.log('m.id: ' + m.id);
+                    //console.log('c.id: ' + c.id);
+                    //console.log('m.id: ' + m.id);
                     //debugger;
                 }
 				if(m.Dead){

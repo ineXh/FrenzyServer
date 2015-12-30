@@ -42,8 +42,8 @@ window.ChatMonitor = React.createClass({
         $( "#chatwindow" ).resizable({
           maxHeight: 850,
           maxWidth: 850,
-          minHeight: 150,
-          minWidth: 200});//{ cancel: "#chatmonitor" }
+          minHeight: 150,//150,
+          minWidth: 200});//200});//{ cancel: "#chatmonitor" }*/
         $( "#chatmonitor" )[0].addEventListener("touchstart", function(event) {scrollStartPos=this.scrollTop+event.touches[0].pageY*1.5;
             event.preventDefault();
         },false);
@@ -96,6 +96,23 @@ window.ChatMonitor = React.createClass({
           return (
             <div id="chatwindow" className="windowobject chat ui-draggable">
                 <div className="panel-heading"> Global Chat
+                <button onClick={this.handleSubmit}>Join Game</button>
+                </div>
+                  <div id="chatmonitor" className="non-draggable">
+                  </div>
+
+                  <form className="chatForm non-draggable" onSubmit={this.handleSubmit}>
+                      <input id="chatinput" className="inputchat" type="text" ref="chatmsg"
+                              placeholder="Type here..."/>
+                  </form>
+            </div>
+        );
+
+    }
+});
+/*<div id="chatwindow" className="windowobject chat ui-draggable">
+                <div className="panel-heading"> Global Chat
+                <button onClick={this.handleSubmit}>Join Game</button>
                 </div>
                 <div id="chatmonitor" className="non-draggable">
                 </div>
@@ -105,11 +122,7 @@ window.ChatMonitor = React.createClass({
                     <input id="chatinput" className="inputchat" type="text" ref="chatmsg"
                             placeholder="Type here..."/>
                 </form>
-            </div>
-        );
-
-    }
-});
+            </div>*/
 //<ChatList chats={this.state.chats}/>
 
 window.myChatMonitor = React.createFactory(ChatMonitor);

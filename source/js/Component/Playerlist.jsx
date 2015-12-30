@@ -58,6 +58,9 @@ window.GamePlayerList = React.createClass({
     //console.log(event.target.value)
     this.socket.emit('GameRoom Change Team', event.target.value);
   },
+  handleAddComputer: function(e){
+
+  },
   render: function() {
 
     var playerNodes = this.state.players.map(function(player, index){
@@ -79,6 +82,9 @@ window.GamePlayerList = React.createClass({
               <option value="4">Observer</option>
             </select>
           </li>
+
+          <button id="addComputerbutton"  onClick={this.handleAddComputer}>Add Computer</button>
+
           {playerNodes}
         </ol>
       </div>
