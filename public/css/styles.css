@@ -71,7 +71,7 @@
 
     border:1px solid #CCC;
     background: #2C3E50;
-    font-size: 150%;
+    font-size: 120%;
     font-weight: bold;
     color: #000;
 
@@ -105,7 +105,7 @@ margin-left:10px;
 /* Input */
 
 .inputchat {
-  border: 5px solid #000;
+  border: 5px solid #6084B0;
   bottom: 1%;
   height: 20%;
   outline: none;
@@ -154,6 +154,13 @@ button{
   font-family: 'Pacifico', cursive;
   /*font-family: "Source Sans Pro","Helvetica Neue",Helvetica,Arial,sans-serif;*/
 
+}
+#minimizebutton{
+  float: right;
+
+  /*background:url(../assets/minimize_lo.png) no-repeat;
+  /*width: 24px;
+  height: 24px;*/
 }
 .animate
 {
@@ -207,6 +214,7 @@ button{
     text-transform: uppercase;
     letter-spacing: 1px;
     cursor: pointer;
+    padding-left: 2%;
 }
 /*.ui-selecting { background: #FECA40; }*/
 

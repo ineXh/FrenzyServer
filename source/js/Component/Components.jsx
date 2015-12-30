@@ -1,6 +1,7 @@
 window.ChatMonitor = React.createClass({
     getInitialState: function() {
-        return {value: 'Hello!', count:0, chats: []};
+        return {value: 'Hello!', count:0, chats: [],
+        showMonitor: true, showMinimize: true};
     },
     tick: function() {
       //this.setState({count: this.state.count + 1});
@@ -35,9 +36,12 @@ window.ChatMonitor = React.createClass({
         this.socket.on('chat', this.onChat);
         //this.socket.emit('request chat', '');
 
-        this.interval = setInterval(this.tick, 1000);
+        this.touchprocess();
 
-        var scrollStartPos = 0;
+        if(gamestate != GameState.InPlay) this.setState({showMinimize: false});
+    },
+    touchprocess:function(){
+      var scrollStartPos = 0;
         $( "#chatwindow" ).draggable({ containment: "document", scroll: false, cancel: ".non-draggable" });
         $( "#chatwindow" ).resizable({
           maxHeight: 850,
@@ -89,14 +93,27 @@ window.ChatMonitor = React.createClass({
           this.refs.chatmsg.value = '';
           return;
     },
+    minimize:function(e){
+      e.preventDefault();
+      console.log('minimize')
+      this.setState({showMonitor: false});
+    },
     render: function() {
         var value = this.state.value;
         var count = this.state.count;
 
           return (
+            this.state.showMonitor ? (
             <div id="chatwindow" className="windowobject chat ui-draggable">
                 <div className="panel-heading"> Global Chat
-                <button onClick={this.handleSubmit}>Join Game</button>
+
+                {this.state.showMinimize ? (
+                <input id="minimizebutton" onClick={this.minimize} type="image" src="assets/minimize.png" width="24" height="24"></input>
+                ) : null}
+                <input id="minimizebutton" onClick={this.minimize} type="image" src="assets/expand.png" width="24" height="24"></input>
+
+                <input id="minimizebutton" onClick={this.minimize} type="image" src="assets/menu.png" width="24" height="24"></input>
+
                 </div>
                   <div id="chatmonitor" className="non-draggable">
                   </div>
@@ -106,10 +123,14 @@ window.ChatMonitor = React.createClass({
                               placeholder="Type here..."/>
                   </form>
             </div>
+            ) : null
         );
 
     }
 });
+/*<form onSubmit={this.minimize}></form>
+<button onClick={this.handleSubmit}>Join Game</button>
+                <input type="image" src="assets/minimize_lo.png" alt="Submit" width="48" height="48">
 /*<div id="chatwindow" className="windowobject chat ui-draggable">
                 <div className="panel-heading"> Global Chat
                 <button onClick={this.handleSubmit}>Join Game</button>
