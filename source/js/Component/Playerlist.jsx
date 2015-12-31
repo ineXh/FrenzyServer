@@ -60,7 +60,8 @@ window.GamePlayerList = React.createClass({
     this.socket.emit('GameRoom Change Team', event.target.value);
   },
   handleAddComputer: function(e){
-
+    e.preventDefault();
+    this.socket.emit('GameRoom Add Computer', event.target.value);
   },
   render: function() {
 

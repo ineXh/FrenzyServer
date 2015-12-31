@@ -28,7 +28,7 @@ GameObjects.prototype = {
 
 	},
 	onassetsloaded : function(){
-		console.log("onassetsloaded")
+		//console.log("onassetsloaded")
 		cow_texture = PIXI.Texture.fromImage("assets/cow.png");
         hut_texture  = PIXI.Texture.fromFrame("hut_142.png");
         coin_texture = PIXI.Texture.fromFrame("assets/coin.png");

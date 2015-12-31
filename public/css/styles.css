@@ -164,8 +164,8 @@ button{
 }
 #chatbutton{
   position:absolute;
-  top: 40%;
-  left: 10%;
+  top: 22%;
+  left: 2%;
 }
 
 .animate
@@ -220,7 +220,7 @@ button{
     text-transform: uppercase;
     letter-spacing: 1px;
     cursor: pointer;
-    padding-left: 2%;
+    /*padding-left: 2%;*/
 }
 /*.ui-selecting { background: #FECA40; }*/
 

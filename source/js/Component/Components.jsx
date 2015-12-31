@@ -16,33 +16,33 @@ window.ChatMonitor = React.createClass({
       //console.log('get chat')
       //this.state.chats.push(msg);
       //console.log(msg)
-      var monitor = document.getElementById("chatmonitor");
+      var mon = document.getElementById("chatmonitor");
       if(Object.prototype.toString.call( msg ) === '[object Array]'){
         msg.forEach(function(m){
           if(ChatRoom == 'Global') globalChats.push(m);
           else gameChats.push(m);
         })
 
-        /*console.log(monitor)
-        console.log(monitor.scrollTop)
-        console.log(monitor.scrollHeight)
-        monitor.scrollTop = monitor.scrollHeight*2;
-        console.log(monitor.scrollTop)
-        console.log(monitor.scrollHeight)*/
+        /*console.log(mon)
+        console.log(mon.scrollTop)
+        console.log(mon.scrollHeight)
+        mon.scrollTop = mon.scrollHeight*2;
+        console.log(mon.scrollTop)
+        console.log(mon.scrollHeight)*/
       }else{
         if(ChatRoom == 'Global')  globalChats.push(msg);
         else gameChats.push(msg);
-        /*console.log('' + (monitor.scrollTop / monitor.scrollHeight))
+        /*console.log('' + (mon.scrollTop / mon.scrollHeight))
         // Scroll to Bottom
-        if(monitor.scrollTop / monitor.scrollHeight > 0.7){
+        if(mon.scrollTop / mon.scrollHeight > 0.7){
           console.log('scroll')
-          monitor.scrollTop = monitor.scrollHeight;
+          mon.scrollTop = mon.scrollHeight;
         }*/
       }
       if(ChatRoom == 'Global')  this.setState({chats: globalChats});
       else this.setState({chats: gameChats})
       // Scroll to Bottom
-      monitor.scrollTop = monitor.scrollHeight;
+      if(mon != null) mon.scrollTop = mon.scrollHeight;
 
 
 
@@ -66,7 +66,7 @@ window.ChatMonitor = React.createClass({
 
     },
     componentDidMount: function(){
-        console.log('chat monitor did mount')
+        //console.log('chat monitor did mount')
         this.socket = communication.socket;
         this.socket.on('chat', this.onChat);
         //this.socket.emit('request chat', '');
@@ -80,15 +80,20 @@ window.ChatMonitor = React.createClass({
             var mon = document.getElementById("chatmonitor");
             mon.scrollTop = mon.scrollHeight;
           });
+        }else{
+          this.setState({chats: gameChats}, function(){
+            var mon = document.getElementById("chatmonitor");
+            mon.scrollTop = mon.scrollHeight;
+          });
         }
     },
     touchprocess:function(){
       var scrollStartPos = 0;
         $( "#chatwindow" ).draggable({ containment: "document", scroll: false, cancel: ".non-draggable" });
         $( "#chatwindow" ).resizable({
-          maxHeight: 850,
-          maxWidth: 850,
-          minHeight: 150,//150,
+          maxHeight: 1000,
+          maxWidth: 1000,
+          minHeight: 250,//150,
           minWidth: 200});//200});//{ cancel: "#chatmonitor" }*/
         $( "#chatmonitor" )[0].addEventListener("touchstart", function(event) {scrollStartPos=this.scrollTop+event.touches[0].pageY*1.5;
             event.preventDefault();
@@ -137,25 +142,35 @@ window.ChatMonitor = React.createClass({
     },
     minimize:function(e){
       e.preventDefault();
-      console.log('minimize')
+      //console.log('minimize')
       this.setState({showMonitor: false});
     },
     restore: function(e){
       e.preventDefault();
-      this.setState({showMonitor: true});
+      this.setState({showMonitor: true}, function(){
+        var cb = document.getElementById("chatinput");
+        cb.focus();
+      });
     },
     expand:function(e){
       e.preventDefault();
-      document.getElementById("chatwindow").style.left = "5%"
-      document.getElementById("chatwindow").style.top = "5%"
-      document.getElementById("chatwindow").style.width = "90%"
-      document.getElementById("chatwindow").style.height = "90%"
+      var win = document.getElementById("chatwindow");
+      win.style.left = "5%"
+      win.style.top = "5%"
+      win.style.width = "90%"
+      win.style.height = "90%"
+      var mon = document.getElementById("chatmonitor");
+      mon.style.height = "80%"
     },
     shrink:function(e){
-      document.getElementById("chatwindow").style.left = "15%"
-      document.getElementById("chatwindow").style.top = "70%"
-      document.getElementById("chatwindow").style.width = "40%"
-      document.getElementById("chatwindow").style.height = "20%"
+      e.preventDefault();
+      var win = document.getElementById("chatwindow");
+      win.style.left = "15%"
+      win.style.top = "70%"
+      win.style.width = "40%"
+      win.style.height = "20%"
+      var mon = document.getElementById("chatmonitor");
+      mon.style.height = "50%"
     },
     drag:function(e){
       e.preventDefault();

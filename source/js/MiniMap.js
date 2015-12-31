@@ -44,7 +44,7 @@ MiniMap.prototype = {
             units.beginFill(t.color, 1);
             t.characters.forEach(function(ct){
                 ct.forEach(function(c){
-                    units.drawRect(c.pos.x, c.pos.y, 100, 100);
+                    units.drawRect(c.pos.x, c.pos.y, big_dim/8, big_dim/8);
                 });
             });
             units.endFill();
