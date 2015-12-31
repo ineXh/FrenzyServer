@@ -162,6 +162,12 @@ button{
   /*width: 24px;
   height: 24px;*/
 }
+#chatbutton{
+  position:absolute;
+  top: 40%;
+  left: 10%;
+}
+
 .animate
 {
   transition: all 0.1s;

@@ -219,6 +219,7 @@ function onSyncPeriod(msg){
 						c.predict.y = (m.y +
 							Server_Sync_Period_Estimate*m.vy)*stage_height;
 						//debugger;
+						if(isNaN(c.predict.x)) debugger;
 					}else{
 						c.override = false;
 					}

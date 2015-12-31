@@ -98,6 +98,27 @@ window.ChatMonitor = React.createClass({
       console.log('minimize')
       this.setState({showMonitor: false});
     },
+    restore: function(e){
+      e.preventDefault();
+      this.setState({showMonitor: true});
+    },
+    expand:function(e){
+      e.preventDefault();
+      document.getElementById("chatwindow").style.left = "5%"
+      document.getElementById("chatwindow").style.top = "5%"
+      document.getElementById("chatwindow").style.width = "90%"
+      document.getElementById("chatwindow").style.height = "90%"
+    },
+    shrink:function(e){
+      document.getElementById("chatwindow").style.left = "15%"
+      document.getElementById("chatwindow").style.top = "70%"
+      document.getElementById("chatwindow").style.width = "40%"
+      document.getElementById("chatwindow").style.height = "20%"
+    },
+    drag:function(e){
+      e.preventDefault();
+      console.log('dragging')
+    },
     render: function() {
         var value = this.state.value;
         var count = this.state.count;
@@ -108,11 +129,12 @@ window.ChatMonitor = React.createClass({
                 <div className="panel-heading"> Global Chat
 
                 {this.state.showMinimize ? (
-                <input id="minimizebutton" onClick={this.minimize} type="image" src="assets/minimize.png" width="24" height="24"></input>
+                [<input id="minimizebutton" key = "1" onClick={this.minimize} type="image" src="assets/minimize.png" width="24" height="24"></input>,
+                <input id="expandbutton" key = "2" onClick={this.expand} type="image" src="assets/expand.png" width="24" height="24"></input>,
+                <input id="expandbutton" key = "3" onClick={this.shrink} type="image" src="assets/expand.png" width="24" height="24"></input>]
                 ) : null}
-                <input id="minimizebutton" onClick={this.minimize} type="image" src="assets/expand.png" width="24" height="24"></input>
 
-                <input id="minimizebutton" onClick={this.minimize} type="image" src="assets/menu.png" width="24" height="24"></input>
+
 
                 </div>
                   <div id="chatmonitor" className="non-draggable">
@@ -123,12 +145,23 @@ window.ChatMonitor = React.createClass({
                               placeholder="Type here..."/>
                   </form>
             </div>
-            ) : null
+            ) : (
+            <div>
+            <input id="chatbutton" onClick={this.restore}
+            onDrag ={this.drag}
+            type="image" src="assets/chat2.png" width="72" height="72"></input>
+            </div>
+            )
+
         );
 
     }
 });
-/*<form onSubmit={this.minimize}></form>
+/*
+<input id="chatbutton" onClick={this.minimize} type="image" src="assets/chat2_lo.png" width="24" height="24"></input>
+
+
+<form onSubmit={this.minimize}></form>
 <button onClick={this.handleSubmit}>Join Game</button>
                 <input type="image" src="assets/minimize_lo.png" alt="Submit" width="48" height="48">
 /*<div id="chatwindow" className="windowobject chat ui-draggable">

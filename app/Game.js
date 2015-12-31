@@ -8,7 +8,7 @@ function htmlEntities(str) {
                       .replace(/>/g, '&gt;').replace(/"/g, '&quot;');
 }
 // Important
-var max_unit_count = 10;
+var max_unit_count = 20;
 var cow_max_hp = 10;
 var hut_max_hp = 25;
 

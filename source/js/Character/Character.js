@@ -423,6 +423,7 @@ Cow.prototype.update = function(path){
 	//this.move(time);
 	this.sprite.position.x = this.pos.x;
 	this.sprite.position.y = this.pos.y;
+	if(isNaN(this.pos.x)) debugger;
 	this.healthbar.update();
 
 	this.collision_count = 0;
