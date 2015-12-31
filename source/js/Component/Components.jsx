@@ -10,18 +10,23 @@ window.ChatMonitor = React.createClass({
 
     },
     onChat:function(msg){
-      //console.log('get chat')
+
+
+      console.log('get chat')
       //this.state.chats.push(msg);
-      //console.log(msg)
+      console.log(msg)
+      gChats.push(msg);
+      this.setState({chats: gChats});
+      //this.setState({chats: msg.games});
       //Object.prototype.toString.call( a ) === '[object Array]'
       //if(msg.length > 1){
-      if(Object.prototype.toString.call( msg ) === '[object Array]'){
+      /*if(Object.prototype.toString.call( msg ) === '[object Array]'){
         msg.forEach(function(m){
           placechat(m)
         })
       }else{
         placechat(msg)
-      }
+      }*/
       //msg.forEach(function(m){
 
       //})
@@ -123,6 +128,18 @@ window.ChatMonitor = React.createClass({
         var value = this.state.value;
         var count = this.state.count;
 
+        var chatNodes = this.state.chats.map(function(chat, index){
+        return (
+            <ChatListItem
+              time  = {chat.time}
+              msg   = {chat.msg}
+              author= {chat.author}
+              color = {chat.color}
+              key   = {index}>
+            </ChatListItem>
+          );
+        });
+
           return (
             this.state.showMonitor ? (
             <div id="chatwindow" className="windowobject chat ui-draggable">
@@ -138,6 +155,7 @@ window.ChatMonitor = React.createClass({
 
                 </div>
                   <div id="chatmonitor" className="non-draggable">
+                  {chatNodes}
                   </div>
 
                   <form className="chatForm non-draggable" onSubmit={this.handleSubmit}>
@@ -157,6 +175,23 @@ window.ChatMonitor = React.createClass({
 
     }
 });
+
+var ChatListItem = React.createClass({
+  rawMarkup: function() {
+    var rawMarkup = marked(this.props.children.toString(), {sanitize: true});
+    return { __html: rawMarkup };
+  },
+
+  render: function() {
+    //var state = getGameState(this.props.state);//'GameRoom';
+    return (
+      <p>{this.props.author}</p>
+    );
+  }
+});
+/**/
+/*<p><span style="color:#' + (msg.color).toString(16) + '">' + msg.author + '</span> @ ' + convertTime(new Date(msg.time)) + ': ' + '<span style="color:#' + (msg.color).toString(16) + '">' + msg.msg + '</span></p>'*/
+
 /*
 <input id="chatbutton" onClick={this.minimize} type="image" src="assets/chat2_lo.png" width="24" height="24"></input>
 
@@ -183,7 +218,7 @@ window.myChatMonitor = React.createFactory(ChatMonitor);
 window.render_myChatMonitor = function() {
   ReactDOM.render(myChatMonitor({ foo: 'bar' }), document.getElementById('content'));
 }
-window.ChatList = React.createClass({
+/*window.ChatList = React.createClass({
   render: function () {
     var Chats = (<div>Loading chats...</div>);
     //console.log(this.props)
@@ -209,12 +244,7 @@ window.Chat = React.createClass({
     getStyles:function(){
       //console.log( {this.props.chat.color})
       return {color:'Red'};
-      /*return Object.assign(
-        {},
-        item.props.complete && styles.complete,
-        item.props.due && styles.due,
-        item.props.due && this.props.dueStyles
-      );*/
+
     },
     render: function() {
       //var color = {this.props.chat.color};

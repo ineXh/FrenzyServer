@@ -94,6 +94,7 @@ var sentPeriodicUpdateGameCount = 0;
 var Server_Sync_gameCounts = [0];
 var Server_Sync_Period_Estimate = 0;
 
+var gChats = [];
 
 // SinglePlayer
 var SinglePlayer_Spawn_Period = 50;
