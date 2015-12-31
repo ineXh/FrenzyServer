@@ -6,6 +6,7 @@ function PlayerInfo(){
 } // end PlayerInfo
 PlayerInfo.prototype = {
     init: function(){
+        this.type = enums.Player;
         this.ingame = false;
         this.requested = false;
         this.width = 0;

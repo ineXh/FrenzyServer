@@ -47,6 +47,15 @@ Game.prototype = {
 
         this.character_ids = [];
         for(var i = 0; i < 10000; i++) this.character_ids.push(i);
+
+        var Computer = require('./Computer.js');
+        this.computers = [];
+        for(var i = 0; i < 4; i++){
+            var computer = new Computer('Comp ' + (i+1));
+            this.computers.push(computer);
+        }
+
+
         //this.spawncounter = new SpawnCounter();
         this.state = enums.GameRoom;
         this.requested = false;
@@ -185,6 +194,9 @@ Game.prototype = {
         player.color = getColor(player.playerinfo.team);
         //console.log('player.color ' + player.color)
         this.updateplayerlist();
+    },
+    addComputer : function(){
+
     },
     updateplayerlist : function(){
         //console.log('updateplayerlist')
