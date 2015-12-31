@@ -290,6 +290,20 @@ function getTeam(team){
     }
     return '';
 }
+function getTeamColor(team){
+    switch(team){
+        case Team0:
+            return Red;
+        case Team1:
+            return Blue;
+        case Team2:
+            return Teal;
+        case Team3:
+            return Purple;
+        case Observer:
+            return Black;
+    }
+}
 
 Team.prototype = {
     init: function(){

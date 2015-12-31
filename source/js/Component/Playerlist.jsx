@@ -5,12 +5,18 @@ var GamePlayerListItem = React.createClass({
   },
 
   render: function() {
-    var team = getTeam(parseInt(this.props.team));
+    //var team = //getTeam(parseInt(this.props.team));
     //console.log(this.props)
+    //if(this.props.team == undefined) return ();
     //console.log(this.props.team)
     //console.log(team)
+    //console.log(getTeamColor(this.props.team))
+    var color = '#' + getTeamColor(this.props.team).toString(16);//'#FF0000';
+    var divStyle = {
+      color: color
+    };
     return (
-      <li><h2>{this.props.name} - {team}</h2></li>
+      <li><h2>Team <span style={divStyle}>{this.props.team}</span> - {this.props.name}</h2></li>
     );
   }
 });
@@ -61,13 +67,17 @@ window.GamePlayerList = React.createClass({
   },
   handleAddComputer: function(e){
     e.preventDefault();
-    this.socket.emit('GameRoom Add Computer', event.target.value);
+    this.socket.emit('GameRoom Add Computer');
+  },
+  handleRemoveComputer: function(e){
+    e.preventDefault();
+    this.socket.emit('GameRoom Remove Computer');
   },
   render: function() {
 
     var playerNodes = this.state.players.map(function(player, index){
     return (
-        <GamePlayerListItem name={player.name} team={player.team} key={index}>
+        <GamePlayerListItem name={player.name} team={index} key={index}>
         </GamePlayerListItem>
       );
     });
@@ -85,7 +95,9 @@ window.GamePlayerList = React.createClass({
             </select>
           </li>
 
+          <button id="addComputerbutton"  onClick={this.handleRemoveComputer}>Remove Computer</button>
           <button id="addComputerbutton"  onClick={this.handleAddComputer}>Add Computer</button>
+
 
           {playerNodes}
         </ol>
@@ -93,3 +105,4 @@ window.GamePlayerList = React.createClass({
       );
   }
 }); // end GamePlayerList
+// player.team

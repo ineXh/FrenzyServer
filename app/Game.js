@@ -39,7 +39,7 @@ Game.prototype = {
         var GameInfo = require('./GameInfo.js');
         this.gameinfo = new GameInfo();
 
-        this.players = [];
+        this.players = [];//[{},{},{},{}]//[];
         this.teams = [enums.Team0, enums.Team1, enums.Team2, enums.Team3];
         this.locations = [enums.NW, enums.NE,enums.SW, enums.SE];
         this.colors = [enums.Red, enums.Blue, enums.Teal, enums.Purple];
@@ -49,11 +49,12 @@ Game.prototype = {
         for(var i = 0; i < 10000; i++) this.character_ids.push(i);
 
         var Computer = require('./Computer.js');
-        this.computers = [];
+        this.computer_pool = [];
         for(var i = 0; i < 4; i++){
             var computer = new Computer('Comp ' + (i+1));
-            this.computers.push(computer);
+            this.computer_pool.push(computer);
         }
+        this.computers = [];
 
 
         //this.spawncounter = new SpawnCounter();
@@ -182,8 +183,11 @@ Game.prototype = {
         // Found Team in Pool
         if(index > -1){
             this.teams.splice(index,1);
-            this.teams.push(player.playerinfo.team);
-            this.gameinfo.players[player.playerinfo.team].playerinfo = null;
+            if(player.playerinfo.team != enums.Observer){
+                // Return Team to Pool
+                this.teams.push(player.playerinfo.team);
+                this.gameinfo.players[player.playerinfo.team].playerinfo = null;
+            }
             player.playerinfo.team = team;
             this.gameinfo.players[team].playerinfo = player.info;
         }else if(team == enums.Observer){
@@ -196,17 +200,36 @@ Game.prototype = {
         this.updateplayerlist();
     },
     addComputer : function(){
+        console.log(this.name + ' addComputer.')
+        var computer = this.computer_pool.shift();
+
 
     },
     updateplayerlist : function(){
-        //console.log('updateplayerlist')
-        var msg = {players: []};
+        console.log('updateplayerlist')
+        var msg = {players: [{},{},{},{}], observers: []};
+        //var msg = {players: []};
         for(var i = 0; i < this.players.length; i++){
+            var player = this.players[i];
+            var team = player.playerinfo.team;
+            console.log('team ' + team)
             //console.log(this.players[i].gameinfo.team)
+            if(team != enums.Observer){
+                msg.players[team].name = player.name;
+                msg.players[team].team = team;
+                msg.players[team].id = player.id;
+            }else{
+                msg.observers.push(
+                {name: player.name,
+                 team: team,
+                 id: player.id});
+            }
+
+            /*
             msg.players.push(
                 {name: this.players[i].name,
                  team: this.players[i].playerinfo.team,
-                 id: this.players[i].id});
+                 id: this.players[i].id});*/
         }
         /*this.players.forEach(function(p){
             p.socket.emit('game player list', msg);

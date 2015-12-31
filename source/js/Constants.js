@@ -14,6 +14,7 @@ var Blue = 0x9999ff;
 var Green = 0x99ff99;
 var Teal = 0x99f9f9;
 var Purple = 0xf999f9;
+var Black = 0x000000;
 
 var TitleYellow = 0xffd422;
 var SkyColor = RGBColor(51, 153, 255);
