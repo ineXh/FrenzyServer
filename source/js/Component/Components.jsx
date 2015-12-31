@@ -15,8 +15,18 @@ window.ChatMonitor = React.createClass({
       console.log('get chat')
       //this.state.chats.push(msg);
       console.log(msg)
-      gChats.push(msg);
+      if(Object.prototype.toString.call( msg ) === '[object Array]'){
+        msg.forEach(function(m){
+          gChats.push(m);
+        })
+      }else{
+        gChats.push(msg);
+      }
+
       this.setState({chats: gChats});
+
+      // Scroll to Bottom
+      $( "#chatmonitor" )[0].scrollTop = $( "#chatmonitor" )[0].scrollHeight;
       //this.setState({chats: msg.games});
       //Object.prototype.toString.call( a ) === '[object Array]'
       //if(msg.length > 1){
@@ -184,8 +194,14 @@ var ChatListItem = React.createClass({
 
   render: function() {
     //var state = getGameState(this.props.state);//'GameRoom';
+    //console.log(this.props)
+    var color = '#' + this.props.color.toString(16);
+    var time = convertTime(new Date(this.props.time));
+    var divStyle = {
+    color: color
+    };
     return (
-      <p>{this.props.author}</p>
+      <p><span style={divStyle}>{this.props.author}</span> @ {time}: <span style={divStyle}>{this.props.msg}</span></p>
     );
   }
 });
