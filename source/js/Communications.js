@@ -78,11 +78,13 @@ function onjoinGameSuccess(msg){
 	console.log('onjoinGameSuccess')
 	console.log(msg)
 	myteam = msg.team;
+	ChatRoom = msg.room;
 	//myteamcolor = msg.color;
 	menu.multiplayermenu.init_gameroom();
 }
 function leaveGame(){
 	communication.socket.emit('leave game');
+	ChatRoom = 'Global';
 	menu.multiplayermenu.init_main();
 }
 function startGame(){

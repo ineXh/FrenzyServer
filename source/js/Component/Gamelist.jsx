@@ -55,6 +55,10 @@ window.GameList = React.createClass({
           }
         });
       },
+      componentWillUnmount: function(){
+      //console.log('GameList will unmount')
+      this.socket.removeListener('game list', this.onGameList);
+    },
   getIndex: function(){
     //console.log('selectable stop')
      var list = this;

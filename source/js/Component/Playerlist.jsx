@@ -52,6 +52,7 @@ window.GamePlayerList = React.createClass({
   },
   componentWillUnmount: function(){
     game.players = this.state.players.slice();
+    this.socket.removeListener('game player list', this.onGamePlayerList);
   },
   handleChange:function(event){
     this.setState({team: event.target.value});

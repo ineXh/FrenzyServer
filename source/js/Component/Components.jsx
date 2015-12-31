@@ -1,7 +1,8 @@
 window.ChatMonitor = React.createClass({
     getInitialState: function() {
         return {value: 'Hello!', count:0, chats: [],
-        showMonitor: true, showMinimize: true};
+        showMonitor: true, showMinimize: true,
+        ChatRoom: ''};
     },
     tick: function() {
       //this.setState({count: this.state.count + 1});
@@ -12,21 +13,37 @@ window.ChatMonitor = React.createClass({
     onChat:function(msg){
 
 
-      console.log('get chat')
+      //console.log('get chat')
       //this.state.chats.push(msg);
-      console.log(msg)
+      //console.log(msg)
+      var monitor = document.getElementById("chatmonitor");
       if(Object.prototype.toString.call( msg ) === '[object Array]'){
         msg.forEach(function(m){
-          gChats.push(m);
+          globalChats.push(m);
         })
+
+        /*console.log(monitor)
+        console.log(monitor.scrollTop)
+        console.log(monitor.scrollHeight)
+        monitor.scrollTop = monitor.scrollHeight*2;
+        console.log(monitor.scrollTop)
+        console.log(monitor.scrollHeight)*/
       }else{
-        gChats.push(msg);
+        globalChats.push(msg);
+        /*console.log('' + (monitor.scrollTop / monitor.scrollHeight))
+        // Scroll to Bottom
+        if(monitor.scrollTop / monitor.scrollHeight > 0.7){
+          console.log('scroll')
+          monitor.scrollTop = monitor.scrollHeight;
+        }*/
       }
-
-      this.setState({chats: gChats});
-
+      this.setState({chats: globalChats});
       // Scroll to Bottom
-      $( "#chatmonitor" )[0].scrollTop = $( "#chatmonitor" )[0].scrollHeight;
+      monitor.scrollTop = monitor.scrollHeight;
+
+
+
+
       //this.setState({chats: msg.games});
       //Object.prototype.toString.call( a ) === '[object Array]'
       //if(msg.length > 1){
@@ -46,12 +63,13 @@ window.ChatMonitor = React.createClass({
 
     },
     componentDidMount: function(){
-        //console.log('chat monitor did mount')
+        console.log('chat monitor did mount')
         this.socket = communication.socket;
         this.socket.on('chat', this.onChat);
         //this.socket.emit('request chat', '');
 
         this.touchprocess();
+        this.setState({ChatRoom: ChatRoom + ' Chat Room'});
 
         if(gamestate != GameState.InPlay) this.setState({showMinimize: false});
     },
@@ -153,7 +171,7 @@ window.ChatMonitor = React.createClass({
           return (
             this.state.showMonitor ? (
             <div id="chatwindow" className="windowobject chat ui-draggable">
-                <div className="panel-heading"> Global Chat
+                <div className="panel-heading"> {this.state.ChatRoom}
 
                 {this.state.showMinimize ? (
                 [<input id="minimizebutton" key = "1" onClick={this.minimize} type="image" src="assets/minimize.png" width="24" height="24"></input>,
