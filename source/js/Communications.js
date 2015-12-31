@@ -85,6 +85,7 @@ function onjoinGameSuccess(msg){
 function leaveGame(){
 	communication.socket.emit('leave game');
 	ChatRoom = 'Global';
+	gameChats = [];
 	menu.multiplayermenu.init_main();
 }
 function startGame(){

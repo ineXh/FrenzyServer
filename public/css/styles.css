@@ -67,7 +67,7 @@
     height: 50%;
     background:#ddd;
 
-    border-radius:5%; overflow-y: scroll;
+    border-radius:5%; overflow-y: auto;
 
     border:1px solid #CCC;
     background: #2C3E50;

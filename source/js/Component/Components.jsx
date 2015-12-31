@@ -19,7 +19,8 @@ window.ChatMonitor = React.createClass({
       var monitor = document.getElementById("chatmonitor");
       if(Object.prototype.toString.call( msg ) === '[object Array]'){
         msg.forEach(function(m){
-          globalChats.push(m);
+          if(ChatRoom == 'Global') globalChats.push(m);
+          else gameChats.push(m);
         })
 
         /*console.log(monitor)
@@ -29,7 +30,8 @@ window.ChatMonitor = React.createClass({
         console.log(monitor.scrollTop)
         console.log(monitor.scrollHeight)*/
       }else{
-        globalChats.push(msg);
+        if(ChatRoom == 'Global')  globalChats.push(msg);
+        else gameChats.push(msg);
         /*console.log('' + (monitor.scrollTop / monitor.scrollHeight))
         // Scroll to Bottom
         if(monitor.scrollTop / monitor.scrollHeight > 0.7){
@@ -37,7 +39,8 @@ window.ChatMonitor = React.createClass({
           monitor.scrollTop = monitor.scrollHeight;
         }*/
       }
-      this.setState({chats: globalChats});
+      if(ChatRoom == 'Global')  this.setState({chats: globalChats});
+      else this.setState({chats: gameChats})
       // Scroll to Bottom
       monitor.scrollTop = monitor.scrollHeight;
 
@@ -72,6 +75,12 @@ window.ChatMonitor = React.createClass({
         this.setState({ChatRoom: ChatRoom + ' Chat Room'});
 
         if(gamestate != GameState.InPlay) this.setState({showMinimize: false});
+        if(ChatRoom == 'Global'){
+          this.setState({chats: globalChats}, function(){
+            var mon = document.getElementById("chatmonitor");
+            mon.scrollTop = mon.scrollHeight;
+          });
+        }
     },
     touchprocess:function(){
       var scrollStartPos = 0;
