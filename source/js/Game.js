@@ -303,6 +303,7 @@ function getTeamColor(team){
         case Observer:
             return Black;
     }
+    return Black;
 }
 
 Team.prototype = {

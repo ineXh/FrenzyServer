@@ -11,19 +11,25 @@ var GamePlayerListItem = React.createClass({
     //console.log(this.props.team)
     //console.log(team)
     //console.log(getTeamColor(this.props.team))
+
     var color = '#' + getTeamColor(this.props.team).toString(16);//'#FF0000';
     var divStyle = {
       color: color
     };
+    var teamtype = (this.props.team != Observer) ? 'Team ' : null;
+    var team = (this.props.team != Observer) ? this.props.team : null;
+    var dash = (this.props.team != Observer) ? ' - ' : null;
     return (
-      <li><h2>Team <span style={divStyle}>{this.props.team}</span> - {this.props.name}</h2></li>
+
+      <li><h3>{teamtype}<span style={divStyle}>{team}</span>{dash}{this.props.name}</h3></li>
     );
   }
 });
 
 window.GamePlayerList = React.createClass({
   getInitialState: function() {
-        return {players: [], team: myteam,
+        return {players: [], observers: [],
+                team: myteam,
                 showteam0: true, showteam1: true,
                 showteam2: true, showteam3: true};
     },
@@ -42,7 +48,7 @@ window.GamePlayerList = React.createClass({
       if(p.team == Team2 && p.id != playerid) showteam2 = false;
       if(p.team == Team3 && p.id != playerid) showteam3 = false;
     });
-    this.setState({players: msg.players,
+    this.setState({players: msg.players, observers: msg.observers,
                   showteam0: showteam0, showteam1: showteam1,
                   showteam2: showteam2, showteam3: showteam3});
 
@@ -81,6 +87,12 @@ window.GamePlayerList = React.createClass({
         </GamePlayerListItem>
       );
     });
+    var observerNodes = this.state.observers.map(function(observer, index){
+    return (
+        <GamePlayerListItem name={observer.name} team={Observer} key={index}>
+        </GamePlayerListItem>
+      );
+    });
     return (
       <div id="gameplayerlist" className="windowobject">
         <ol id="gameroomplayerlist" className="tabBodyOptions selectable">
@@ -100,6 +112,8 @@ window.GamePlayerList = React.createClass({
 
 
           {playerNodes}
+          <h2>Observers:</h2>
+          {observerNodes}
         </ol>
       </div>
       );
