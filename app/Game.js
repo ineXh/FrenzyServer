@@ -52,6 +52,7 @@ Game.prototype = {
         this.computer_pool = [];
         for(var i = 0; i < 4; i++){
             var computer = new Computer('Comp ' + (i+1));
+            computer.id = i;
             this.computer_pool.push(computer);
         }
         this.computers = [];
@@ -65,6 +66,10 @@ Game.prototype = {
     clean: function(){
         console.log('Clean ' + this.name);
         this.state = enums.GameRoom;
+
+        for(var i = this.computers.length-1; i >= 0; i--){
+            this.removeComputer();
+        }
     },
     getName:function(){
         return this.name;
@@ -76,13 +81,14 @@ Game.prototype = {
         return this.state;
     },
     join : function(player){
+        this.teams.sort();
         player.playerinfo.team = this.teams.shift();
         if(player.playerinfo.team == undefined) player.playerinfo.team = enums.Observer;
 
         console.log(player.name + ' joins ' + this.name + ' in team ' + player.playerinfo.team);
 
         this.players.push(player);
-        this.gameinfo.join(player);
+        if(player.playerinfo.team != enums.Observer) this.gameinfo.join(player);
 
         player.color = getColor(player.playerinfo.team);
         //console.log('player.color ' + player.color)
@@ -121,7 +127,7 @@ Game.prototype = {
         player.room = 'Global Chat';
         var index = this.players.indexOf(player);
         if(index > -1) this.players.splice(index, 1);
-        if(this.players.length < 1){
+        if(this.players.length <= this.computers.length){
             this.clean();
             return;
         }
@@ -202,8 +208,41 @@ Game.prototype = {
     addComputer : function(){
         console.log(this.name + ' addComputer.')
         var computer = this.computer_pool.shift();
+        if(computer == undefined) return;
+        this.teams.sort();
+        computer.playerinfo.team = this.teams.shift();
+        // No more available teams
+        if(computer.playerinfo.team == undefined){
+            this.computer_pool.push(computer);
+            return;
+        }
+        this.computers.push(computer);
+        this.players.push(computer);
+        this.gameinfo.join(computer);
+        computer.color = getColor(computer.playerinfo.team);
 
+        this.updateplayerlist();
+    },
+    removeComputer : function(){
+        console.log(this.name + ' removeComputer.')
+        var computer = this.computers[this.computers.length-1];
+        if(computer == undefined) return;
+        if(computer.playerinfo.team != undefined){
+            this.teams.push(computer.playerinfo.team);
+            this.gameinfo.leave(computer);
+            computer.playerinfo.team = enums.Observer;
+        }
+        this.computer_pool.push(computer);
 
+        var index = this.players.indexOf(computer);
+        if(index > -1) this.players.splice(index, 1);
+        index = this.computers.indexOf(computer);
+        if(index > -1) this.computers.splice(index, 1);
+        //console.log(this.computer_pool)
+        utils.sortByKeySmall(this.computer_pool, 'id');
+        //console.log(this.computer_pool)
+
+        this.updateplayerlist();
     },
     updateplayerlist : function(){
         console.log('updateplayerlist')
@@ -357,7 +396,7 @@ Game.prototype = {
         //console.log('path')
         var msg = {team: player.playerinfo.team, points: input};
         this.players.forEach(function(p){
-            if(p != player){
+            if(p != player && p.socket != undefined){
                 //console.log('player ' + p.team + ' to path.')
                 p.socket.emit('path', msg)
             }

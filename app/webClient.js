@@ -24,6 +24,7 @@ function webClient(io, gameserver){
         socket.on('leave game', onLeaveGame)
         socket.on('GameRoom Change Team', onChangeTeam)
         socket.on('GameRoom Add Computer', onAddComputer)
+        socket.on('GameRoom Remove Computer', onRemoveComputer)
         socket.on('start game', onStartGame)
         socket.on('path', onPath);
         socket.on('spawn', onSpawn);
@@ -80,6 +81,9 @@ function webClient(io, gameserver){
         }
         function onAddComputer(msg){
             client.game.addComputer();
+        }
+        function onRemoveComputer(msg){
+            client.game.removeComputer();
         }
         function onStartGame(){
             client.game.startGame();

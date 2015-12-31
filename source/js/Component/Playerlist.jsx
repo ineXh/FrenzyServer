@@ -21,7 +21,7 @@ var GamePlayerListItem = React.createClass({
     var dash = (this.props.team != Observer) ? ' - ' : null;
     return (
 
-      <li><h3>{teamtype}<span style={divStyle}>{team}</span>{dash}{this.props.name}</h3></li>
+      <li><h3>{teamtype}<span style={divStyle}>{team}</span>{dash}<span style={divStyle}>{this.props.name}</span></h3></li>
     );
   }
 });

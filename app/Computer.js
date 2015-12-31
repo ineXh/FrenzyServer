@@ -9,6 +9,7 @@ Computer.prototype = {
         this.name = name;
         var PlayerInfo = require('./PlayerInfo.js');
         this.playerinfo = new PlayerInfo();
+        this.playerinfo.type = enums.Computer;
         //var client = {playerinfo: this.playerinfo};
     }
 }
