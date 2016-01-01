@@ -1,0 +1,12 @@
+when multitouch, it calls ontouch twice
+
+a multitouch Log:
+
+startpath
+Path.js:105 cancelPath
+Utils.js:103 TouchList {0: Touch, 1: Touch, length: 2, item: function}
+...
+Utils.js:103 TouchList {0: Touch, 1: Touch, length: 2, item: function}
+Utils.js:112 util touchend
+Path.js:151 endPath
+Utils.js:112 util touchend

@@ -204,8 +204,9 @@ Game.prototype = {
             game.getTeam(myteam).path.startPath(MousePos.stage_x, MousePos.stage_y);
         }
     },
-    onTouchMove:function(){
+    onTouchMove:function(event){
         if(gamestate == GameState.InPlay){
+            if(event.changedTouches.length > 1) MousePos.multitouched = true;
             //pan();
             //center.x += MousePos.px - MousePos.x;
             if(this.minimaptouched
@@ -215,6 +216,7 @@ Game.prototype = {
                 return;
             }
             pan();
+            if(!MousePos.multitouched)
             game.getTeam(myteam).path.updatePath(MousePos.stage_x, MousePos.stage_y);
         }
     },
@@ -227,6 +229,7 @@ Game.prototype = {
             }
             this.minimaptouched = false;
             //console.log('minimap not touched')
+            if(!MousePos.multitouched)
             game.getTeam(myteam).path.endPath(MousePos.stage_x, MousePos.stage_y);
             if(gamemode == GameMode.MultiPlayer) communication.socket.emit('path', game.getTeam(myteam).path.getLastTwoPoints());
         }

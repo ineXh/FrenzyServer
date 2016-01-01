@@ -77,7 +77,7 @@ Path.prototype = {
     return this.points[this.points.length-1 - n];
   },
   getEndLine : function(){
-    //return this.path.children[this.path.children.length-1];
+    //return this.path.children[this.path.children.length-1];    
     return this.lines[this.lines.length-1];
   },
   getLastTwoPoints: function(){
@@ -101,10 +101,28 @@ Path.prototype = {
     this.line_pool.push(this.lines.shift());
     this.num_lines--;
   },
+  returnlastline : function(){
+    this.points.splice(this.points.length-2, 2);
+    this.num_lines--;
+    var line = this.getEndLine();
+    this.path.removeChild(line);
+    this.line_pool.push(line); //this.lines.splice(this.lines.length-1,1)
+    console.log('return last line')
+    console.log(this.lines)
+    console.log(this.line_pool)
+  },
+  cancelPath: function(){
+    console.log('cancelPath');
+    this.path_started = false;
+         
+    // return last line
+    this.returnlastline();  
+  },
   startPath:function(x,y){
-    //console.log('startpath')
+    console.log('startpath')
     if(this.path_started){
-      this.endPath(x,y);
+      //this.endPath(x,y);
+      this.cancelPath();
       return;
     }
     this.path_started = true;
@@ -115,31 +133,29 @@ Path.prototype = {
         line.x = x;
         line.y = y;
         line.children[0].width = 0;
-    /*this.lastline = new PIXI.Graphics();
-    this.lastline.lineStyle(30, 0xAA, 0.8);
-    this.lastline.moveTo(x, y);*/
-    //this.lastline.lineTo(x+50, y+50);
-    //this.lastline.lineTo(x, y+100);
+    
     this.lines.push(line);
     line.children[0].tint = game.getTeam(this.team).color;
     line.children[1].tint = game.getTeam(this.team).color;
     //if(this.team == myteam)
-      this.path.addChild(line);
+    this.path.addChild(line);
 
   }, // end startPath
   updatePath : function(x,y){
     if(!this.path_started) return;
     p0 = this.getEnd(1);
     // line
-    this.getEndLine().children[0].width = findDist(p0, new PVector(x,y));
+    var line = this.getEndLine();
+    if(line == undefined || line == null) return;
+    line.children[0].width = findDist(p0, new PVector(x,y));
     // arrow head
-    this.getEndLine().children[1].x = this.getEndLine().children[0].width;
-    this.getEndLine().rotation = Math.atan2(y-p0.y, x-p0.x);
+    line.children[1].x = this.getEndLine().children[0].width;
+    line.rotation = Math.atan2(y-p0.y, x-p0.x);
     //this.changeLastPoint(x,y);
   },
   endPath : function(x,y){
     if(!this.path_started) return;
-    //console.log('endPath')
+    console.log('endPath')
     this.updatePath(x,y);
 
     this.changeLastPoint(x,y);

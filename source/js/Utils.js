@@ -1,5 +1,5 @@
 var MousePos = {x: 0, y:0, x_pct: 0, y_pct: 0, px: 0, py: 0, sx: 0, sy: 0,
-				stage_x: 0, stage_y: 0, stage_x_pct:0, stage_y_pct:0, clicked: false, touched: false};
+				stage_x: 0, stage_y: 0, stage_x_pct:0, stage_y_pct:0, clicked: false, touched: false, multitouched: false};
 function getMouse(event, touchobj){
 	//console.log(touchobj)
 	MousePos.px = MousePos.x;
@@ -71,6 +71,7 @@ function onTouchStart(event){
     //$( "#draggable" ).position()
 	//console.log(event.changedTouches[0]);
     event.preventDefault();
+
 	getMouse(event, event.changedTouches[0]);
 	MousePos.sx = MousePos.x;
 	MousePos.sy = MousePos.y;
@@ -98,15 +99,18 @@ function onTouchMove(event){
     event.preventDefault();
     if(!MousePos.touched) return;
     //console.log('onTouchMove ' + MousePos.touched)
+    //console.log(event.changedTouches)
+    console.log(event.changedTouches)
 	getMouse(event, event.changedTouches[0]);
     //stage.x -= MousePos.px - MousePos.x;
     //stage.y -= MousePos.py - MousePos.y;
 
-    if(game != undefined) game.onTouchMove();
+    if(game != undefined) game.onTouchMove(event);
 } // end onTouchMove
 function onTouchEnd(event){
   if(spritetouched) spritetouched = false;
-  //console.log('util touchend')
+  console.log('util touchend')
+  console.log(event.changedTouches)
     event.preventDefault();
     if(!MousePos.touched) return;
 	//console.log('onTouchEnd')
@@ -114,7 +118,9 @@ function onTouchEnd(event){
 	getMouse(event, event.changedTouches[0]);
 	MousePos.touched = false;
 
+
     if(game != undefined) game.onTouchEnd();
+    if(MousePos.multitouched && event.changedTouches.length <= 1) MousePos.multitouched = false;
 	//path.addPoint(MousePos.x, MousePos.y);
 	//path.drawPath();
 }
