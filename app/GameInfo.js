@@ -1,7 +1,7 @@
 var enums = require("./enums.js");
 module.exports = exports = GameInfo;
 
-var maxline = 3;
+var maxline = 4;
 
 function GameInfo(){
     this.init();

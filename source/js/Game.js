@@ -613,8 +613,8 @@ var getCoin = function(team, opponent){
                      lifespan_d: 10,
                      ax: getRandomArbitrary(-1, 1)*-width*0.001,
                      ay: getRandomArbitrary(0.5, 1)*-height*0.001,
-                     rs: dim*0.025,
-                     re: dim*0.025,
+                     rs: dim*0.04,
+                     re: dim*0.04,
                       container: stage},//particles.container
                      ParticleType.COIN);
     }

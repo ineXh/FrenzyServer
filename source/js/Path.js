@@ -7,12 +7,15 @@ function Path(team){
   this.radius = 5;
   this.outer_radius = big_dim / 6;
   //this.gap = 50;
-  this.maxline = 3;
+  this.maxline = maxpath;
   this.num_lines = 0;
   this.path_started = false;
 
   this.init();
-
+  this.temp_0x = 0;
+  this.temp_0y = 0;
+  this.temp_1x = 0;
+  this.temp_1y = 0;
 }
 Path.prototype = {
   init: function(){
@@ -96,6 +99,10 @@ Path.prototype = {
 
   },
   returnfirstline : function(){
+    this.temp_0x = this.points[0].x;
+    this.temp_0y = this.points[0].y;
+    this.temp_1x = this.points[1].x;
+    this.temp_1y = this.points[1].y;
     this.points.splice(0,2);
     //this.line_pool.push(this.path.children.shift());
     this.line_pool.push(this.lines.shift());
@@ -106,7 +113,8 @@ Path.prototype = {
     this.num_lines--;
     var line = this.getEndLine();
     this.path.removeChild(line);
-    this.line_pool.push(line); //this.lines.splice(this.lines.length-1,1)
+    this.line_pool.push(line);
+    this.lines.splice(this.lines.length-1,1);
     //console.log('return last line')
     //console.log(this.lines)
     //console.log(this.line_pool)
@@ -116,7 +124,25 @@ Path.prototype = {
     this.path_started = false;
          
     // return last line
-    this.returnlastline();  
+    this.returnlastline();
+    this.returnLastDeletedPath();  
+  },
+  returnLastDeletedPath : function(){
+    /*this.addPoint(this.temp_0x, this.temp_0y);
+    this.addPoint(this.temp_1x, this.temp_1y);
+    this.num_lines++;
+    var line = this.borrowline();
+        line.x = this.temp_0x;
+        line.y = this.temp_0y;
+      this.lines.push(line);
+      this.path.addChild(line);*/
+      console.log('returnLastDeletedPath')
+      this.startPath(this.temp_0x, this.temp_0y);
+      this.endPath(this.temp_1x, this.temp_1y);      
+      // need to shuffle last line back to first line
+      this.points.unshift(this.points.pop());
+      this.points.unshift(this.points.pop());
+      this.lines.unshift(this.lines.pop());
   },
   startPath:function(x,y){
     //console.log('startpath')
@@ -133,8 +159,9 @@ Path.prototype = {
         line.x = x;
         line.y = y;
         line.children[0].width = 0;
-    
+        
     this.lines.push(line);
+
     line.children[0].tint = game.getTeam(this.team).color;
     line.children[1].tint = game.getTeam(this.team).color;
     //if(this.team == myteam)

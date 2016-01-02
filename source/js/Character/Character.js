@@ -258,6 +258,8 @@ Cow.prototype.init = function(input){
 	this.upgrade_update();
 	this.pos.x = input.x;
 	this.pos.y = input.y;
+	this.sprite.position.x = this.pos.x;
+	this.sprite.position.y = this.pos.y;
 	this.vel.x = 0;
 	this.vel.y = 0;
 	this.s_pos.x = input.x;

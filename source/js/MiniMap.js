@@ -7,7 +7,7 @@ MiniMap.prototype = {
 
 
         this.border_box = new PIXI.Graphics();
-        this.border_box.lineStyle(dim/50, 0x00, 1);
+        this.border_box.lineStyle(dim/30, 0x00, 1);
         this.border_box.beginFill(0x000000, 0.5);
         this.border_box.drawRect(0, 0, stage_width, stage_height);
         this.map.addChild(this.border_box);
@@ -21,19 +21,19 @@ MiniMap.prototype = {
 
 
         this.updateMap_count = 0;
-        this.updateMap_time = 20;
+        this.updateMap_time = 10;
 
         this.r = big_dim/5;
         this.scale = this.r / stage_width;
         this.map.scale.set(this.scale)
         //console.log(this.map.width)
-        this.border_box = new PIXI.Graphics();
-        this.border_box.lineStyle(5, 0xFF0000, 1);
-        this.border_box.drawRect(0, 0, stage_width, stage_height);
+        this.stage_border_box = new PIXI.Graphics();
+        this.stage_border_box.lineStyle(5, 0xFF0000, 1);
+        this.stage_border_box.drawRect(0, 0, stage_width, stage_height);
     },
     init: function(){
         stage0.addChild(this.map);
-        stage.addChild(this.border_box);
+        stage.addChild(this.stage_border_box);
     },
     update: function(){
         if(gamestate != GameState.InPlay) return;
@@ -57,7 +57,7 @@ MiniMap.prototype = {
     update_viewbox:function(){
         this.view.clear();
         //this.view.lineStyle(dim/80, 0xFF0000, 1);
-        this.view.lineStyle(dim/80, myteamcolor, 1);
+        this.view.lineStyle(dim/30, myteamcolor, 1);
 
         this.view.drawRect(ScreenPos.left, ScreenPos.top,
                              width, height);

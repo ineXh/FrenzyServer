@@ -98,6 +98,7 @@ var mutlitouch_pan = function(){
     }
     stage.x = pan_sx + (MousePos.x - MousePos.sx);
     stage.y = pan_sy + (MousePos.y - MousePos.sy);
+    stageborder();
     //stage.x -= MousePos.px - MousePos.x;
     //stage.y -= MousePos.py - MousePos.y;
 }
@@ -121,10 +122,10 @@ var singletouch_borderpan = function(){
     stage_front.y = stage.y;
 }
 var stageborder = function(){
-    if(stage.x < -stage_width + width) stage.x = -stage_width + width;
-    if(stage.x > 0) stage.x = 0;
-    if(stage.y < -stage_height + height) stage.y = -stage_height + height;
-    if(stage.y > 0) stage.y = 0;
+    if(stage.x < -stage_width + width*0.5) stage.x = -stage_width + width*0.5;
+    if(stage.x > width*0.5) stage.x = width*0.5;
+    if(stage.y < -stage_height + height*0.5) stage.y = -stage_height + height*0.5;
+    if(stage.y > height*0.5) stage.y = height*0.5;
 }
 var panTo = function(x, y){
     stage.x = -x + width/2;
