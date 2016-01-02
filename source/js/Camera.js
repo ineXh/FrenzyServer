@@ -1,10 +1,10 @@
 var ScreenPos = {left: 0, right:0, top:0, bot:0};
 var stage_scale = 1;
 var getScreenPos = function(){
-    ScreenPos.left = -stage.x;
-    ScreenPos.right = -stage.x + width/stage.scale.x;
-    ScreenPos.top = -stage.y;
-    ScreenPos.bot = -stage.y + height/stage.scale.y;
+    ScreenPos.left = -stage.x /stage.scale.x;
+    ScreenPos.right = (-stage.x + width) /stage.scale.x;
+    ScreenPos.top = -stage.y/stage.scale.y;
+    ScreenPos.bot = (-stage.y + height) /stage.scale.y;
 }
 // assume stage is parent
 var onScreen = function(container){
@@ -105,34 +105,37 @@ var mutlitouch_pan = function(){
 }
 var singletouch_borderpan = function(){
     if(MousePos.multitouched) return;
-    if(MousePos.x > width - scope_width){
-        stage.x -= width/100;//MousePos.px - MousePos.x;
-        if(stage.x < -stage_width + width) stage.x = -stage_width + width;
-    }else if(MousePos.x < scope_width){
-        stage.x += width/100;//MousePos.px - MousePos.x;
-        if(stage.x > 0) stage.x = 0;
+    if(MousePos.raw_x > width - scope_width){
+        stage.x -= width/100 / stage_scale;//MousePos.px - MousePos.x;        
+    }else if(MousePos.raw_x < scope_width){
+        stage.x += width/100 / stage_scale;//MousePos.px - MousePos.x;
     }
-    if(MousePos.y > height - scope_height){
+    if(MousePos.raw_y > height - scope_height){
         stage.y -= height/100;//MousePos.px - MousePos.x;
-        if(stage.y < -stage_height + height) stage.y = -stage_height + height;
-    }else if(MousePos.y < scope_height){
+    }else if(MousePos.raw_y < scope_height){
         stage.y += height/100;//MousePos.px - MousePos.x;
-        if(stage.y > 0) stage.y = 0;
     }
+    stageborder();
     stage_front.x = stage.x;
     stage_front.y = stage.y;
 }
 var stageborder = function(){
-    if(stage.x < -stage_width + width*0.5) stage.x = -stage_width + width*0.5;
+    if(stage.x < -stage.width + width*0.5) stage.x = -stage.width + width*0.5;
     if(stage.x > width*0.5) stage.x = width*0.5;
-    if(stage.y < -stage_height + height*0.5) stage.y = -stage_height + height*0.5;
+    if(stage.y < -stage.height + height*0.5) stage.y = -stage.height + height*0.5;
     if(stage.y > height*0.5) stage.y = height*0.5;
 }
-var panTo = function(x, y){
-    stage.x = -x + width/2;
-    stage.y = -y + height/2;
+var panTo = function(x, y){ // in game position
+    //console.log('panto ' + x + ' , ' + y)
+    stage.x = -(x - width/2 / stage.scale.x) * stage.scale.x;
+    stage.y = -(y - height/2 / stage.scale.y) * stage.scale.y;
     stageborder();
     stage_front.x = stage.x;
     stage_front.y = stage.y;
     visiblecount = visibletime-5;
+}
+var setscale = function(scale){
+    stage_scale = scale;
+    stage.scale.set(stage_scale);
+    stage_front.scale.set(stage_scale);
 }

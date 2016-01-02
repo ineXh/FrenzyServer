@@ -6,8 +6,8 @@ var Engine = (function(global) {
 
 	dim = (width < height) ? width : height;
 	big_dim = (width < height) ? height : width;
-    stage_width = big_dim*2;
-    stage_height = big_dim*2;
+    stage_width = big_dim*1;
+    stage_height = big_dim*1;
 	scope_width = width*0.15;
 	scope_height = height*0.15;
 
@@ -43,7 +43,7 @@ var Engine = (function(global) {
             container.x = j*stage_width/x_count;
             container.y = i*stage_height/y_count;
             grid.drawRect(0, 0, stage_width/x_count, stage_height/y_count);
-            var text = new PIXI.Text(i + ", " + j, {font: '32px Arial', fill: 'black'})
+            var text = new PIXI.Text(j + ", " + i, {font: '32px Arial', fill: 'black'})
             text.x = 0;
             text.y = 0;
             container.addChild(text);
@@ -54,8 +54,7 @@ var Engine = (function(global) {
 
     gameobjects = new GameObjects();
 
-    stage_scale = 1;
-    stage.scale.set(stage_scale);
+    
 
 	animate();
 })(this);

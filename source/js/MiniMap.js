@@ -9,7 +9,7 @@ MiniMap.prototype = {
         this.border_box = new PIXI.Graphics();
         this.border_box.lineStyle(dim/30, 0x00, 1);
         this.border_box.beginFill(0x000000, 0.5);
-        this.border_box.drawRect(0, 0, stage_width, stage_height);
+        this.border_box.drawRect(0, 0, stage.width, stage.height);
         this.map.addChild(this.border_box);
 
         this.units = new PIXI.Graphics();
@@ -23,13 +23,13 @@ MiniMap.prototype = {
         this.updateMap_count = 0;
         this.updateMap_time = 10;
 
-        this.r = big_dim/5;
-        this.scale = this.r / stage_width;
+        this.map_width = big_dim/5;
+        this.scale = this.map_width / stage.width;
         this.map.scale.set(this.scale)
         //console.log(this.map.width)
         this.stage_border_box = new PIXI.Graphics();
         this.stage_border_box.lineStyle(5, 0xFF0000, 1);
-        this.stage_border_box.drawRect(0, 0, stage_width, stage_height);
+        this.stage_border_box.drawRect(0, 0, stage.width, stage.height);
     },
     init: function(){
         stage0.addChild(this.map);
@@ -59,8 +59,8 @@ MiniMap.prototype = {
         //this.view.lineStyle(dim/80, 0xFF0000, 1);
         this.view.lineStyle(dim/30, myteamcolor, 1);
 
-        this.view.drawRect(ScreenPos.left, ScreenPos.top,
-                             width, height);
+        this.view.drawRect(ScreenPos.left / 1, ScreenPos.top / 1,
+                             width / stage_scale, height / stage_scale);
 
     },
     onTouchStart: function(event){
@@ -69,13 +69,14 @@ MiniMap.prototype = {
         //getMouse(event, event.changedTouches[0]);MousePos.x, MousePos.y
         //this.updateMap_count = this.updateMap_time;
         this.update_viewbox();
-        var x = MousePos.raw_x / this.map.width * stage_width; // event.data.global.x
-        var y = MousePos.raw_y / this.map.height * stage_height; // event.data.global.y
+        //console.log(MousePos)
+        var x = MousePos.raw_x / this.map_width * stage_width; // event.data.global.x
+        var y = MousePos.raw_y / this.map_width * stage_height; // event.data.global.y
         panTo(x, y);
     },
     onTouchMove: function(){
-        var x = MousePos.raw_x / this.map.width * stage_width; // event.data.global.x
-        var y = MousePos.raw_y / this.map.height * stage_height; // event.data.global.y
+        var x = MousePos.raw_x / this.map_width * stage_width; // event.data.global.x
+        var y = MousePos.raw_y / this.map_width * stage_height; // event.data.global.y
         panTo(x, y);
     },
     onTouchEnd: function(){

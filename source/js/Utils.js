@@ -24,10 +24,10 @@ function getMouse(event, touchobj){
   MousePos.y = MousePos.y / stage_scale;
 	MousePos.x_pct = MousePos.x / width;
 	MousePos.y_pct = MousePos.y / height;
-	MousePos.stage_x = MousePos.x - stage.x;
-	MousePos.stage_y = MousePos.y - stage.y;
-	MousePos.stage_x_pct = MousePos.stage_x / stage_width;
-	MousePos.stage_y_pct = MousePos.stage_y / stage_height;
+	MousePos.stage_x = MousePos.x - stage.x / stage.scale.x;
+	MousePos.stage_y = MousePos.y - stage.y / stage.scale.y;
+	MousePos.stage_x_pct = MousePos.stage_x / stage.width;
+	MousePos.stage_y_pct = MousePos.stage_y / stage.height;
 
 }
 
@@ -85,23 +85,23 @@ function onTouchStart(event){
 	MousePos.sy = MousePos.y;
   MousePos.px = MousePos.x;
   MousePos.py = MousePos.y;
-	//console.log(MousePos);
+	console.log(MousePos);
 	/*if(drag(MousePos.x, MousePos.y)){
         return;
     }*/
     MousePos.touched = true;
-    console.log(MousePos)
+    //console.log(MousePos)
     //console.log('touched')
     if(game != undefined) game.onTouchStart();
 
-    /*var input = {   x: MousePos.stage_x_pct*stage_width,
-                    y: MousePos.stage_y_pct*stage_height,
+    /*var input = {   x: MousePos.stage_x_pct*stage.width,
+                    y: MousePos.stage_y_pct*stage.height,
                     type: CharacterType.Hut, team: this.team, color: this.color};
 	var character = characters.spawn(input);
 	if(character != null) characters.characters[input.type].push(character);*/
 
-    //characters.spawn({x: MousePos.stage_x_pct*stage_width, y:MousePos.stage_y_pct*stage_height}, CharacterType.Hut);
-	/*characters.spawn({x: MousePos.stage_x_pct*stage_width, y:MousePos.stage_y_pct*stage_height}, CharacterType.Cow);
+    //characters.spawn({x: MousePos.stage_x_pct*stage.width, y:MousePos.stage_y_pct*stage.height}, CharacterType.Hut);
+	/*characters.spawn({x: MousePos.stage_x_pct*stage.width, y:MousePos.stage_y_pct*stage.height}, CharacterType.Cow);
 	communication.socket.emit('spawn', {x: MousePos.stage_x_pct, y:MousePos.stage_y_pct});*/
 } // end onTouchStart
 function onMultiTouchStart(event){
@@ -179,11 +179,11 @@ function backButtonTap(){
 
 function stayinBorder(pos){
 	temp = pos.clone();
-	temp.sub(new PVector(stage_width/2, stage_height/2));
-	if(temp.mag() > stage_width/2){
+	temp.sub(new PVector(stage.width/2, stage.height/2));
+	if(temp.mag() > stage.width/2){
 		var ang = Math.atan2(temp.y, temp.x);
-		pos.x = stage_width/2 + stage_width/2*Math.cos(ang);
-		pos.y = stage_height/2 + stage_height/2*Math.sin(ang);
+		pos.x = stage.width/2 + stage.width/2*Math.cos(ang);
+		pos.y = stage.height/2 + stage.height/2*Math.sin(ang);
 	}
 }
 function findDist(a, b) {
@@ -277,19 +277,19 @@ function map(x, x_min, x_max, x_min_new, x_max_new){
 	return (pct * (x_max_new-x_min_new) + x_min_new);
 }
 function getRandomTop(){
-	var pos = new PVector(getRandomArbitrary(-stage_width*0.1, stage_width*1.1), -stage_height*0.1)
+	var pos = new PVector(getRandomArbitrary(-stage.width*0.1, stage.width*1.1), -stage.height*0.1)
 	return pos;
 }
 function getRandomLeft(){
-	var pos = new PVector(-stage_width*0.1, getRandomArbitrary(-stage_height*0.1, stage_height*1.1))
+	var pos = new PVector(-stage.width*0.1, getRandomArbitrary(-stage.height*0.1, stage.height*1.1))
 	return pos;
 }
 function getRandomRight(){
-	var pos = new PVector(stage_width*1.1, getRandomArbitrary(-stage_height*0.1, stage_height*1.1))
+	var pos = new PVector(stage.width*1.1, getRandomArbitrary(-stage.height*0.1, stage.height*1.1))
 	return pos;
 }
 function getRandomBot(){
-	var pos = new PVector(getRandomArbitrary(-stage_width*0.1, stage_width*1.1), stage_height*1.1)
+	var pos = new PVector(getRandomArbitrary(-stage.width*0.1, stage.width*1.1), stage.height*1.1)
 	return pos;
 }
 function getRandomBorder(){

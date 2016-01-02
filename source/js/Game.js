@@ -185,6 +185,8 @@ Game.prototype = {
     this.minimap.init();
     this.ui.init();
 
+    
+
     },
     spawnBase:function(msg){
         /*console.log('Spawn Base')
@@ -247,8 +249,8 @@ function spawnUnitMsg(x, y, msg, type){
     //var character = characters.spawn(input);
     //game.getTeam(myteam).characters[input.type].push(character);
     //console.log(input)
-    msg.characters.push({  x: input.x/stage_width, y: input.y/stage_height, type: type});
-    //communication.socket.emit('spawn', {  x: input.x/stage_width, y: input.y/stage_height, type: CharacterType.Cow});
+    msg.characters.push({  x: input.x/stage.width, y: input.y/stage.height, type: type});
+    //communication.socket.emit('spawn', {  x: input.x/stage.width, y: input.y/stage.height, type: CharacterType.Cow});
 }
 
 function Team(team){
@@ -440,10 +442,10 @@ Team.prototype = {
                     // Player Team
                     if(i == myteam){
                         msg.players[i].characters[j].push({
-                            x: c.pos.x / stage_width,
-                             y: c.pos.y / stage_height,
-                            vx: c.vel.x / stage_width,
-                            vy: c.vel.y / stage_height,
+                            x: c.pos.x / stage.width,
+                             y: c.pos.y / stage.height,
+                            vx: c.vel.x / stage.width,
+                            vy: c.vel.y / stage.height,
                             //hp: c.hp,
                             type: c.type,
                             id: c.id})
@@ -470,10 +472,10 @@ Team.prototype = {
                 c.s_pos.x = c.pos.x;
                 c.s_pos.y = c.pos.y;
                 msg.players[myteam].characters[i].push({
-                            x: c.pos.x / stage_width,
-                             y: c.pos.y / stage_height,
-                            vx: c.vel.x / stage_width,
-                            vy: c.vel.y / stage_height,
+                            x: c.pos.x / stage.width,
+                             y: c.pos.y / stage.height,
+                            vx: c.vel.x / stage.width,
+                            vy: c.vel.y / stage.height,
                             hp: c.hp,
                             type: c.type,
                             id: c.id})
@@ -509,14 +511,14 @@ Team.prototype = {
                 c.s_vel.x = (predict.x - c.s_pos.x) / Server_Sync_Period_Estimate;
                 c.s_vel.y = (predict.y - c.s_pos.y) / Server_Sync_Period_Estimate;*/
                 msg.characters[i].push({
-                            //x: c.s_pos.x / stage_width,
-                            //y: c.s_pos.y / stage_height,
-                            //vx: c.s_vel.x / stage_width,
-                            //vy: c.s_vel.y / stage_height,
-                             x: c.pos.x / stage_width,
-                             y: c.pos.y / stage_height,
-                            vx: c.vel.x / stage_width,
-                            vy: c.vel.y / stage_height,
+                            //x: c.s_pos.x / stage.width,
+                            //y: c.s_pos.y / stage.height,
+                            //vx: c.s_vel.x / stage.width,
+                            //vy: c.s_vel.y / stage.height,
+                             x: c.pos.x / stage.width,
+                             y: c.pos.y / stage.height,
+                            vx: c.vel.x / stage.width,
+                            vy: c.vel.y / stage.height,
                             hp: c.hp,
                             type: c.type,
                             id: c.id})
@@ -592,22 +594,22 @@ var getstartlocation = function(startlocation){
             loc.y = 0;
             break;
         case StartLocation.NE:
-            loc.x = stage_width - width;
+            loc.x = stage.width - width;
             loc.y = 0;
             break;
         case StartLocation.SW:
             loc.x = 0;
-            loc.y = stage_height - height;
+            loc.y = stage.height - height;
             break;
         case StartLocation.SE:
-            loc.x = stage_width - width;
-            loc.y = stage_height - height;
+            loc.x = stage.width - width;
+            loc.y = stage.height - height;
             break;
     }
     return loc;
 } // end getstartlocation
 var getCoin = function(team, opponent){
-    //particles.spawn({x: MousePos.stage_x_pct*stage_width, y:MousePos.stage_y_pct*stage_height,
+    //particles.spawn({x: MousePos.stage_x_pct*stage.width, y:MousePos.stage_y_pct*stage.height,
     if(team == myteam){
         particles.spawn({x: opponent.pos.x, y: opponent.pos.y,
                      lifespan_d: 10,
