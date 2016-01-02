@@ -205,8 +205,7 @@ Game.prototype = {
         }
     },
     onTouchMove:function(event){
-        if(gamestate == GameState.InPlay){
-            if(event.changedTouches.length > 1) MousePos.multitouched = true;
+        if(gamestate == GameState.InPlay){            
             //pan();
             //center.x += MousePos.px - MousePos.x;
             if(this.minimaptouched

@@ -8,8 +8,6 @@ function getMouse(event, touchobj){
 		MousePos.x = touchobj.clientX;
 		MousePos.y = touchobj.clientY;
 		//console.log(touchobj)
-
-
 	}else if(event.clientX != undefined) {
 		//console.log(event)
 		MousePos.x = event.clientX;//data.global.x;
@@ -28,6 +26,7 @@ function getMouse(event, touchobj){
 	MousePos.stage_y_pct = MousePos.stage_y / stage_height;
 
 }
+
 function onMouseStart(event){
   if(spritetouched) return;
 	//console.log("mouse start")
@@ -71,10 +70,17 @@ function onTouchStart(event){
     //$( "#draggable" ).position()
 	//console.log(event.changedTouches[0]);
     event.preventDefault();
-
+    
+    // onTouchStart for 2nd + finger
+    if(MousePos.touched){
+      onMultiTouchStart(event)
+      return;
+    }
 	getMouse(event, event.changedTouches[0]);
 	MousePos.sx = MousePos.x;
 	MousePos.sy = MousePos.y;
+  MousePos.px = MousePos.x;
+  MousePos.py = MousePos.y;
 	//console.log(MousePos);
 	/*if(drag(MousePos.x, MousePos.y)){
         return;
@@ -92,25 +98,31 @@ function onTouchStart(event){
     //characters.spawn({x: MousePos.stage_x_pct*stage_width, y:MousePos.stage_y_pct*stage_height}, CharacterType.Hut);
 	/*characters.spawn({x: MousePos.stage_x_pct*stage_width, y:MousePos.stage_y_pct*stage_height}, CharacterType.Cow);
 	communication.socket.emit('spawn', {x: MousePos.stage_x_pct, y:MousePos.stage_y_pct});*/
-
-
 } // end onTouchStart
+function onMultiTouchStart(event){
+  if(MousePos.touched) MousePos.multitouched = true;
+  if(game != undefined) game.onTouchStart();
+}
 function onTouchMove(event){
     event.preventDefault();
     if(!MousePos.touched) return;
     //console.log('onTouchMove ' + MousePos.touched)
     //console.log(event.changedTouches)
-    console.log(event.changedTouches)
+    //console.log(event.changedTouches)
 	getMouse(event, event.changedTouches[0]);
     //stage.x -= MousePos.px - MousePos.x;
     //stage.y -= MousePos.py - MousePos.y;
 
     if(game != undefined) game.onTouchMove(event);
 } // end onTouchMove
+function onMultiTouchMove(event){
+  if(!MousePos.multitouched) return;
+}
+
 function onTouchEnd(event){
   if(spritetouched) spritetouched = false;
-  console.log('util touchend')
-  console.log(event.changedTouches)
+  //console.log('util touchend')
+  //console.log(event.changedTouches)
     event.preventDefault();
     if(!MousePos.touched) return;
 	//console.log('onTouchEnd')
@@ -120,7 +132,10 @@ function onTouchEnd(event){
 
 
     if(game != undefined) game.onTouchEnd();
-    if(MousePos.multitouched && event.changedTouches.length <= 1) MousePos.multitouched = false;
+    if(MousePos.multitouched && event.changedTouches.length <= 1){
+      pan_end();
+      MousePos.multitouched = false;
+    } 
 	//path.addPoint(MousePos.x, MousePos.y);
 	//path.drawPath();
 }

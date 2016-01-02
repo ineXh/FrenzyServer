@@ -27,9 +27,13 @@ MiniMap.prototype = {
         this.scale = this.r / stage_width;
         this.map.scale.set(this.scale)
         //console.log(this.map.width)
+        this.border_box = new PIXI.Graphics();
+        this.border_box.lineStyle(5, 0xFF0000, 1);
+        this.border_box.drawRect(0, 0, stage_width, stage_height);
     },
     init: function(){
         stage0.addChild(this.map);
+        stage.addChild(this.border_box);
     },
     update: function(){
         if(gamestate != GameState.InPlay) return;

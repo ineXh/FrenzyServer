@@ -1,5 +1,5 @@
 var Engine = (function(global) {
-
+    window.scrollTo(0,1);
 	startTime = Date.now();
 	width 	= window.innerWidth;
 	height 	= window.innerHeight;
@@ -14,7 +14,7 @@ var Engine = (function(global) {
     //console.log('width ' + width + ' height ' + height + ' stage_width ' + stage_width + ' stage_height ' + stage_height)
 
 
-	renderer = PIXI.autoDetectRenderer(width, height*1.0 ,{backgroundColor : LightCyan});//LightCyan});//'Black'});
+	renderer = PIXI.autoDetectRenderer(width, height*1.0 ,{backgroundColor : GrassColor});//LightCyan});//'Black'});
 	// view is canvas
 	document.body.appendChild(renderer.view);
 
@@ -30,10 +30,8 @@ var Engine = (function(global) {
 	//stage0.addChild(stage)
     //stage00.addChild(stage)
 
-    var border_box = new PIXI.Graphics();
-    border_box.lineStyle(5, 0xFF0000, 1);
-    border_box.drawRect(0, 0, stage_width, stage_height);
-    stage.addChild(border_box);
+    
+    
 
     /*var x_count = 10;
     var y_count = 10;

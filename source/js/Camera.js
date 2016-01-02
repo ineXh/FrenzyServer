@@ -76,9 +76,33 @@ var panCenter = function(){
       //  pan();
     //}
 } // end panCenter
+var panning = false;
+var pan_sx = 0;
+var pan_sy = 0;
 var pan = function(){
     if(!MousePos.touched) return;
-    //console.log('touched')
+    //console.log('pan ' + MousePos.multitouched)
+    singletouch_borderpan();
+    mutlitouch_pan();
+}
+var pan_end = function(){
+    panning = false;
+}
+var mutlitouch_pan = function(){
+    if(!MousePos.multitouched) return;
+    //console.log('mutlitouch_pan')
+    if(!panning){
+        pan_sx = stage.x;
+        pan_sy = stage.y;
+        panning = true;    
+    }
+    stage.x = pan_sx + (MousePos.x - MousePos.sx);
+    stage.y = pan_sy + (MousePos.y - MousePos.sy);
+    //stage.x -= MousePos.px - MousePos.x;
+    //stage.y -= MousePos.py - MousePos.y;
+}
+var singletouch_borderpan = function(){
+    if(MousePos.multitouched) return;
     if(MousePos.x > width - scope_width){
         stage.x -= width/100;//MousePos.px - MousePos.x;
         if(stage.x < -stage_width + width) stage.x = -stage_width + width;

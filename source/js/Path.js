@@ -107,19 +107,19 @@ Path.prototype = {
     var line = this.getEndLine();
     this.path.removeChild(line);
     this.line_pool.push(line); //this.lines.splice(this.lines.length-1,1)
-    console.log('return last line')
-    console.log(this.lines)
-    console.log(this.line_pool)
+    //console.log('return last line')
+    //console.log(this.lines)
+    //console.log(this.line_pool)
   },
   cancelPath: function(){
-    console.log('cancelPath');
+    //console.log('cancelPath');
     this.path_started = false;
          
     // return last line
     this.returnlastline();  
   },
   startPath:function(x,y){
-    console.log('startpath')
+    //console.log('startpath')
     if(this.path_started){
       //this.endPath(x,y);
       this.cancelPath();
@@ -155,7 +155,7 @@ Path.prototype = {
   },
   endPath : function(x,y){
     if(!this.path_started) return;
-    console.log('endPath')
+    //console.log('endPath')
     this.updatePath(x,y);
 
     this.changeLastPoint(x,y);
