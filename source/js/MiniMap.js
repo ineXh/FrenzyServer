@@ -69,13 +69,13 @@ MiniMap.prototype = {
         //getMouse(event, event.changedTouches[0]);MousePos.x, MousePos.y
         //this.updateMap_count = this.updateMap_time;
         this.update_viewbox();
-        var x = MousePos.x / this.map.width * stage_width; // event.data.global.x
-        var y = MousePos.y / this.map.height * stage_height; // event.data.global.y
+        var x = MousePos.raw_x / this.map.width * stage_width; // event.data.global.x
+        var y = MousePos.raw_y / this.map.height * stage_height; // event.data.global.y
         panTo(x, y);
     },
     onTouchMove: function(){
-        var x = MousePos.x / this.map.width * stage_width; // event.data.global.x
-        var y = MousePos.y / this.map.height * stage_height; // event.data.global.y
+        var x = MousePos.raw_x / this.map.width * stage_width; // event.data.global.x
+        var y = MousePos.raw_y / this.map.height * stage_height; // event.data.global.y
         panTo(x, y);
     },
     onTouchEnd: function(){

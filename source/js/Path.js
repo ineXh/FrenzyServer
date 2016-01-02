@@ -136,7 +136,7 @@ Path.prototype = {
         line.y = this.temp_0y;
       this.lines.push(line);
       this.path.addChild(line);*/
-      console.log('returnLastDeletedPath')
+      //console.log('returnLastDeletedPath')
       this.startPath(this.temp_0x, this.temp_0y);
       this.endPath(this.temp_1x, this.temp_1y);      
       // need to shuffle last line back to first line

@@ -16,7 +16,7 @@ Stage_Layout.prototype = {
     return this.load_s1();
   },
   place_stage : function(){
-    stage.addChild(this.container);
+    //stage.addChild(this.container);
     this.container.cacheAsBitmap = true
   },
   load_s1: function(){

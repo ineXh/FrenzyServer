@@ -1,4 +1,4 @@
-var MousePos = {x: 0, y:0, x_pct: 0, y_pct: 0, px: 0, py: 0, sx: 0, sy: 0,
+var MousePos = {x: 0, y:0, x_pct: 0, y_pct: 0, px: 0, py: 0, sx: 0, sy: 0, raw_x: 0, raw_y: 0,
 				stage_x: 0, stage_y: 0, stage_x_pct:0, stage_y_pct:0, clicked: false, touched: false, multitouched: false};
 function getMouse(event, touchobj){
 	//console.log(touchobj)
@@ -18,6 +18,10 @@ function getMouse(event, touchobj){
 		MousePos.x = event.data.global.x;
 		MousePos.y = event.data.global.y;
 	}
+  MousePos.raw_x = MousePos.x;
+  MousePos.raw_y = MousePos.y;
+  MousePos.x = MousePos.x / stage_scale;
+  MousePos.y = MousePos.y / stage_scale;
 	MousePos.x_pct = MousePos.x / width;
 	MousePos.y_pct = MousePos.y / height;
 	MousePos.stage_x = MousePos.x - stage.x;
@@ -86,6 +90,7 @@ function onTouchStart(event){
         return;
     }*/
     MousePos.touched = true;
+    console.log(MousePos)
     //console.log('touched')
     if(game != undefined) game.onTouchStart();
 

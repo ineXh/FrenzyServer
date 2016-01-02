@@ -1,4 +1,5 @@
 var ScreenPos = {left: 0, right:0, top:0, bot:0};
+var stage_scale = 1;
 var getScreenPos = function(){
     ScreenPos.left = -stage.x;
     ScreenPos.right = -stage.x + width/stage.scale.x;

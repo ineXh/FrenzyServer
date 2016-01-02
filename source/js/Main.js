@@ -33,7 +33,7 @@ var Engine = (function(global) {
     
     
 
-    /*var x_count = 10;
+    var x_count = 10;
     var y_count = 10;
     for(var i = 0; i < y_count; i++){
         for(var j = 0; j < x_count; j++){
@@ -50,9 +50,12 @@ var Engine = (function(global) {
             container.addChild(grid);
             stage.addChild(container);
         }
-    }*/
+    }
 
     gameobjects = new GameObjects();
+
+    stage_scale = 1;
+    stage.scale.set(stage_scale);
 
 	animate();
 })(this);
