@@ -128,7 +128,7 @@ function onMultiTouchMove(event){
 
 function onTouchEnd(event){
   if(spritetouched) spritetouched = false;
-  console.log('util touchend')
+  //console.log('util touchend')
   //console.log(event.changedTouches)
     event.preventDefault();
     if(!MousePos.touched) return;

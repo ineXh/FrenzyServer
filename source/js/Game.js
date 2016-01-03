@@ -199,7 +199,7 @@ Game.prototype = {
             if(isTouching(MousePos.raw_x, MousePos.raw_y, game.minimap.map)){
                 this.minimap.onTouchStart();
                 this.minimaptouched = true;
-                console.log('minimaptouched')
+                //console.log('minimaptouched')
                 return;
             }
             pan();
