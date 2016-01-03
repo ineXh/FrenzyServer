@@ -51,6 +51,7 @@ var Engine = (function(global) {
             stage.addChild(container);
         }
     }
+    zoom_debug_setup();
 
     gameobjects = new GameObjects();
 

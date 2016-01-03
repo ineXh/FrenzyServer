@@ -216,7 +216,7 @@ Game.prototype = {
                 this.minimap.onTouchMove();
                 return;
             }
-            pan();
+            pan(event);
             zoom(event);
             if(!MousePos.multitouched)
             game.getTeam(myteam).path.updatePath(MousePos.stage_x, MousePos.stage_y);
@@ -236,6 +236,7 @@ Game.prototype = {
             if(gamemode == GameMode.MultiPlayer) communication.socket.emit('path', game.getTeam(myteam).path.getLastTwoPoints());
         }
     },
+    // for single finger hold border pan
     onTouching:function(){
         if(gamestate != GameState.InPlay) return;
         if(!MousePos.touched) return;

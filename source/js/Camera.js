@@ -1,4 +1,4 @@
-var ScreenPos = {left: 0, right:0, top:0, bot:0, cen_x: 0, cen_y: 0};
+var ScreenPos = {left: 0, right:0, top:0, bot:0, cen_x: 0, cen_y: 0, target_x: 0, target_y: 0};
 var stage_scale = 1;
 var getScreenPos = function(){
     ScreenPos.left = -stage.x /stage.scale.x;
@@ -82,25 +82,49 @@ var panCenter = function(){
 var panning = false;
 var pan_sx = 0;
 var pan_sy = 0;
-var pan = function(){
+var pan_target = new PVector(0, 0);
+var pan_pError = new PVector(0,0);
+var pan = function(event){
     if(!MousePos.touched) return;
     //console.log('pan ' + MousePos.multitouched)
     singletouch_borderpan();
-    mutlitouch_pan();
+    mutlitouch_pan(event);
 }
 var pan_end = function(){
     panning = false;
 }
-var mutlitouch_pan = function(){
+var mutlitouch_pan = function(event){
     if(!MousePos.multitouched) return;
+    if(event == undefined) return;
+    //console.log(event.changedTouches)
+    if(event.changedTouches.length < 2) return;
     //console.log('mutlitouch_pan')
     if(!panning){
         pan_sx = stage.x;
         pan_sy = stage.y;
         panning = true;    
     }
-    stage.x = pan_sx + (MousePos.x - MousePos.sx)*stage.scale.x;
-    stage.y = pan_sy + (MousePos.y - MousePos.sy)*stage.scale.y;
+    pan_target.x = pan_sx + (MousePos.x - MousePos.sx)*stage.scale.x;
+    pan_target.y = pan_sy + (MousePos.y - MousePos.sy)*stage.scale.y;
+    var e_x = (pan_target.x - stage.x);
+    //e_x = map(e_x, -width, width, -width/1, width/1)
+    var e_y = (pan_target.y - stage.y);
+    //e_y = map(e_y, -height, height, -height/1, height/1)
+    //if(Math.abs(e_y) > 100) debugger;
+    if(!sameSign(e_x, pan_pError.x) && Math.abs(pan_pError.x > 10)) e_x = 0
+    if(!sameSign(e_y, pan_pError.y) && Math.abs(pan_pError.y > 10)) e_y = 0
+    console.log("error: (" + e_x + ", (" + e_y + ")");
+    //if(Math.abs(e_x) < 50) stage.x += e_x * 1;
+    //if(Math.abs(e_y) < 50) stage.y += e_y * 1; 
+    //if(Math.abs(e_x) < 5) stage.x = pan_target.x;
+    //else stage.x += e_x;
+    //if(Math.abs(e_y) < 5) stage.y = pan_target.y;
+    //else stage.y += e_y;
+    stage.x += e_x;
+    stage.y += e_y;
+    pan_pError.x = e_x;
+    pan_pError.y = e_y;
+
     stageborder();
     stage_front.x = stage.x;
     stage_front.y = stage.y;
@@ -123,36 +147,84 @@ var singletouch_borderpan = function(){
     stage_front.x = stage.x;
     stage_front.y = stage.y;
 }
+var zoom_container;
+var zoom_center_graphics;
+var zoom_center_target_graphics;
+var zoom_debug_setup = function(){
+    zoom_container = new PIXI.Container();
+    zoom_center_graphics = new PIXI.Graphics();
+    zoom_center_graphics.beginFill(0xFF0000);
+    zoom_center_graphics.drawCircle(0, 0, 10);
+    zoom_center_graphics.endFill();
+    zoom_container.addChild(zoom_center_graphics);
+
+    zoom_center_target_graphics = new PIXI.Graphics();
+    zoom_center_target_graphics.beginFill(0x00FF00);
+    zoom_center_target_graphics.drawCircle(0, 0, 8);
+    zoom_center_target_graphics.endFill();
+    zoom_container.addChild(zoom_center_target_graphics);
+
+    stage0.addChild(zoom_container);
+}
 var zooming = false;
 var start_stage_scale = 1;
-var zoom_cen = new PVector(0,0);
-var zoom_start_dist = 0;
+var zoom_cen;// = new PVector(0,0);
+var zoom_cen_target;// = new PVector(0,0);
+var zoom_dist = 0;
+var zoom_dist_target = 0;
 var zoom = function(event){
     if(!MousePos.multitouched) return;
     if(!zooming){
         start_stage_scale = stage_scale;
-        zoom_get_center(event);
+        zoom_cen = zoom_get_center(event);
+        if(zoom_cen != undefined){
+            zoom_center_graphics.x = zoom_cen.x;
+            zoom_center_graphics.y = zoom_cen.y;    
+        }
+        
+        zoom_dist = zoom_get_dist(event);
         zooming = true;
     }
-    console.log(event.changedTouches)
-    if(event.changedTouches.length <= 1) return;
-    var p0 = new PVector(event.changedTouches[0].clientX, event.changedTouches[0].clientY);
-    var p1 = new PVector(event.changedTouches[1].clientX, event.changedTouches[1].clientY);
-    var dist = findDist(p0, p1);
-    console.log('dist ' + dist)
-    setscale((dist / zoom_start_dist) * start_stage_scale)
+    //console.log(event.changedTouches)  
+    zoom_cen_target = zoom_get_center(event);
+    if(zoom_cen_target != undefined){
+        zoom_center_target_graphics.x = zoom_cen_target.x;
+        zoom_center_target_graphics.y = zoom_cen_target.y;    
+    }    
+    zoom_dist_target = zoom_get_dist(event);
+    //setscale(stage_scale * zoom_dist_target / zoom_dist);
+    //zoom_get_new_screen_center();
+    
+    //setscale((dist / zoom_start_dist) * start_stage_scale)
 }
 var zoom_end = function(){
     zooming = false;
+}
+var zoom_get_new_screen_center = function(){
+    // ScreenPos.target_x // ScreenPos.target_y
+    var x = (ScreenPos.cen_x - zoom_cen.x + zoom_cen.x*stage_scale) / stage_scale;
+    var y = (ScreenPos.cen_y - zoom_cen.y + zoom_cen.y*stage_scale) / stage_scale;
+    console.log('new screen center ' + x + ' , ' + y)
+    panTo(x, y);
 }
 var zoom_get_center = function(event){
     if(event.changedTouches.length <= 1) return;
     var p0 = new PVector(event.changedTouches[0].clientX, event.changedTouches[0].clientY);
     var p1 = new PVector(event.changedTouches[1].clientX, event.changedTouches[1].clientY);
-    zoom_cen.x = p0.x + (p1.x - p0.x)/2;
-    zoom_cen.y = p0.y + (p1.y - p0.y)/2;
-    zoom_start_dist = findDist(p0, p1);
-    console.log('zoom_start_dist ' + zoom_start_dist)
+    var center = new PVector(0, 0);
+    center.x = p0.x + (p1.x - p0.x)/2;
+    center.y = p0.y + (p1.y - p0.y)/2;
+    return center;
+    //zoom_start_dist = findDist(p0, p1);
+    //console.log('zoom_start_dist ' + zoom_start_dist)
+}
+var zoom_get_dist = function(event){
+    if(event.changedTouches.length <= 1) return;
+    var p0 = new PVector(event.changedTouches[0].clientX, event.changedTouches[0].clientY);
+    var p1 = new PVector(event.changedTouches[1].clientX, event.changedTouches[1].clientY);
+    var dist = findDist(p0, p1);
+    //console.log('dist ' + dist)
+    return dist;
 }
 var stageborder = function(){
     if(stage.x < -stage.width + width*0.5) stage.x = -stage.width + width*0.5;
@@ -171,8 +243,10 @@ var panTo = function(x, y){ // in game position
 }
 var setscale = function(scale){
     if(isNaN(scale) || scale == Infinity) return;
+    if(scale <= 0.2) scale = 0.2;
+    if(scale >= 4) scale = 4;
     stage_scale = scale;
     stage.scale.set(stage_scale);
     stage_front.scale.set(stage_scale);
-    panTo(ScreenPos.cen_x, ScreenPos.cen_y);
+    //panTo(ScreenPos.cen_x, ScreenPos.cen_y);
 }

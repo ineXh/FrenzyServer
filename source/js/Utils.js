@@ -128,7 +128,7 @@ function onMultiTouchMove(event){
 
 function onTouchEnd(event){
   if(spritetouched) spritetouched = false;
-  //console.log('util touchend')
+  console.log('util touchend')
   //console.log(event.changedTouches)
     event.preventDefault();
     if(!MousePos.touched) return;
@@ -434,3 +434,6 @@ function search_array(array,key,valuetofind) {
     }
     return -1;
 }
+function sameSign(n1,n2){
+  return (n1 * n2) > 0;
+} 
