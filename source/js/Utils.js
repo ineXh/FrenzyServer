@@ -20,8 +20,8 @@ function getMouse(event, touchobj){
 	}
   MousePos.raw_x = MousePos.x;
   MousePos.raw_y = MousePos.y;
-  MousePos.x = MousePos.x / stage_scale;
-  MousePos.y = MousePos.y / stage_scale;
+  MousePos.x = MousePos.x / stage.scale.x;
+  MousePos.y = MousePos.y / stage.scale.y;
 	MousePos.x_pct = MousePos.x / width;
 	MousePos.y_pct = MousePos.y / height;
 	MousePos.stage_x = MousePos.x - stage.x / stage.scale.x;
@@ -85,7 +85,7 @@ function onTouchStart(event){
 	MousePos.sy = MousePos.y;
   MousePos.px = MousePos.x;
   MousePos.py = MousePos.y;
-	console.log(MousePos);
+	//console.log(MousePos);
 	/*if(drag(MousePos.x, MousePos.y)){
         return;
     }*/
@@ -112,16 +112,18 @@ function onTouchMove(event){
     event.preventDefault();
     if(!MousePos.touched) return;
     //console.log('onTouchMove ' + MousePos.touched)
-    //console.log(event.changedTouches)
+    
     //console.log(event.changedTouches)
 	getMouse(event, event.changedTouches[0]);
     //stage.x -= MousePos.px - MousePos.x;
     //stage.y -= MousePos.py - MousePos.y;
-
+    onMultiTouchMove(event);
     if(game != undefined) game.onTouchMove(event);
 } // end onTouchMove
 function onMultiTouchMove(event){
   if(!MousePos.multitouched) return;
+  //console.log('onMultiTouchMove')
+  //console.log(event.changedTouches);
 }
 
 function onTouchEnd(event){
@@ -139,6 +141,7 @@ function onTouchEnd(event){
     if(game != undefined) game.onTouchEnd();
     if(MousePos.multitouched && event.changedTouches.length <= 1){
       pan_end();
+      zoom_end();
       MousePos.multitouched = false;
     } 
 	//path.addPoint(MousePos.x, MousePos.y);

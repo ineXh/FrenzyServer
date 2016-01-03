@@ -1,10 +1,12 @@
-var ScreenPos = {left: 0, right:0, top:0, bot:0};
+var ScreenPos = {left: 0, right:0, top:0, bot:0, cen_x: 0, cen_y: 0};
 var stage_scale = 1;
 var getScreenPos = function(){
     ScreenPos.left = -stage.x /stage.scale.x;
     ScreenPos.right = (-stage.x + width) /stage.scale.x;
     ScreenPos.top = -stage.y/stage.scale.y;
     ScreenPos.bot = (-stage.y + height) /stage.scale.y;
+    ScreenPos.cen_x = (ScreenPos.left + ScreenPos.right) / 2
+    ScreenPos.cen_y = (ScreenPos.top + ScreenPos.bot) / 2
 }
 // assume stage is parent
 var onScreen = function(container){
@@ -97,9 +99,11 @@ var mutlitouch_pan = function(){
         pan_sy = stage.y;
         panning = true;    
     }
-    stage.x = pan_sx + (MousePos.x - MousePos.sx);
-    stage.y = pan_sy + (MousePos.y - MousePos.sy);
+    stage.x = pan_sx + (MousePos.x - MousePos.sx)*stage.scale.x;
+    stage.y = pan_sy + (MousePos.y - MousePos.sy)*stage.scale.y;
     stageborder();
+    stage_front.x = stage.x;
+    stage_front.y = stage.y;
     //stage.x -= MousePos.px - MousePos.x;
     //stage.y -= MousePos.py - MousePos.y;
 }
@@ -119,6 +123,37 @@ var singletouch_borderpan = function(){
     stage_front.x = stage.x;
     stage_front.y = stage.y;
 }
+var zooming = false;
+var start_stage_scale = 1;
+var zoom_cen = new PVector(0,0);
+var zoom_start_dist = 0;
+var zoom = function(event){
+    if(!MousePos.multitouched) return;
+    if(!zooming){
+        start_stage_scale = stage_scale;
+        zoom_get_center(event);
+        zooming = true;
+    }
+    console.log(event.changedTouches)
+    if(event.changedTouches.length <= 1) return;
+    var p0 = new PVector(event.changedTouches[0].clientX, event.changedTouches[0].clientY);
+    var p1 = new PVector(event.changedTouches[1].clientX, event.changedTouches[1].clientY);
+    var dist = findDist(p0, p1);
+    console.log('dist ' + dist)
+    setscale((dist / zoom_start_dist) * start_stage_scale)
+}
+var zoom_end = function(){
+    zooming = false;
+}
+var zoom_get_center = function(event){
+    if(event.changedTouches.length <= 1) return;
+    var p0 = new PVector(event.changedTouches[0].clientX, event.changedTouches[0].clientY);
+    var p1 = new PVector(event.changedTouches[1].clientX, event.changedTouches[1].clientY);
+    zoom_cen.x = p0.x + (p1.x - p0.x)/2;
+    zoom_cen.y = p0.y + (p1.y - p0.y)/2;
+    zoom_start_dist = findDist(p0, p1);
+    console.log('zoom_start_dist ' + zoom_start_dist)
+}
 var stageborder = function(){
     if(stage.x < -stage.width + width*0.5) stage.x = -stage.width + width*0.5;
     if(stage.x > width*0.5) stage.x = width*0.5;
@@ -135,7 +170,9 @@ var panTo = function(x, y){ // in game position
     visiblecount = visibletime-5;
 }
 var setscale = function(scale){
+    if(isNaN(scale) || scale == Infinity) return;
     stage_scale = scale;
     stage.scale.set(stage_scale);
     stage_front.scale.set(stage_scale);
+    panTo(ScreenPos.cen_x, ScreenPos.cen_y);
 }

@@ -185,7 +185,7 @@ Game.prototype = {
     this.minimap.init();
     this.ui.init();
 
-    
+
 
     },
     spawnBase:function(msg){
@@ -217,6 +217,7 @@ Game.prototype = {
                 return;
             }
             pan();
+            zoom(event);
             if(!MousePos.multitouched)
             game.getTeam(myteam).path.updatePath(MousePos.stage_x, MousePos.stage_y);
         }
