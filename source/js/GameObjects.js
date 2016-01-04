@@ -1,3 +1,6 @@
+var balls = [];
+var tree;
+
 function GameObjects(){
 	this.init();
 }
@@ -66,6 +69,8 @@ GameObjects.prototype = {
         menu.mainmenu.playlogo();
         //startChat();
         particles = new Particles();*/
+        var bounds = {x: 0, y: 0, width: width, height: height};//new Rectangle(0,0, quadCanvas.width, quadCanvas.height);
+        tree = new QuadTree(bounds, false, 7);
 
         stage0.addChild(stage);
         for(var i  = 0; i < 10; i++){

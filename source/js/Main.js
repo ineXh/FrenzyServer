@@ -1,4 +1,3 @@
-var balls = [];
 var Engine = (function(global) {
     window.scrollTo(0,1);
 	startTime = Date.now();
