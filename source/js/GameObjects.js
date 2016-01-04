@@ -53,7 +53,7 @@ GameObjects.prototype = {
             cow_front_frames.push(PIXI.Texture.fromImage('assets/cow/ba' + i + '.png'));
         }
 
-        characters = new Characters();
+        /*characters = new Characters();
         //path = new Path();
         game = new Game();
         stagesetup = new Stagesetup();
@@ -65,11 +65,28 @@ GameObjects.prototype = {
 
         menu.mainmenu.playlogo();
         //startChat();
-        particles = new Particles();
+        particles = new Particles();*/
+
+        stage0.addChild(stage);
+        for(var i  = 0; i < 10; i++){
+            var ball = new Ball(getRandomInt(0, width), getRandomInt(0, height),
+                width/20, true, cow_texture);
+            balls.push(ball);
+        }
+
 
 		assetsloaded = true;
 	},
 	update: function(time){
-
+        checkcollisions();
 	},
 }; // end GameObjects
+var checkcollisions = function(){
+    for(var i = 0; i < balls.length; i++){
+        for(var j = i+1; j < balls.length; j++){
+            var b1 = balls[i];
+            var b2 = balls[j];
+            b1.collide(b2);
+        }
+    }
+}

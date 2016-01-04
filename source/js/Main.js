@@ -1,3 +1,4 @@
+var balls = [];
 var Engine = (function(global) {
     window.scrollTo(0,1);
 	startTime = Date.now();
@@ -6,8 +7,8 @@ var Engine = (function(global) {
 
 	dim = (width < height) ? width : height;
 	big_dim = (width < height) ? height : width;
-    stage_width = big_dim*2;
-    stage_height = big_dim*2;
+    stage_width = big_dim*1;
+    stage_height = big_dim*1;
 	scope_width = width*0.15;
 	scope_height = height*0.15;
 
@@ -27,11 +28,13 @@ var Engine = (function(global) {
     //stage.pivot = {x: width/2, y: height/2};
 
 
+
+
 	//stage0.addChild(stage)
     //stage00.addChild(stage)
 
-    
-    
+
+
 
     /*var x_count = 1;
     var y_count = 1;
@@ -55,7 +58,7 @@ var Engine = (function(global) {
 
     gameobjects = new GameObjects();
 
-    
+
 
 	animate();
 })(this);
@@ -74,12 +77,17 @@ function update(){
     visibleCheck();
     if(game != undefined) game.onTouching();
 
+    balls.forEach(function(b){
+        b.update(time);
+    })
+
     if(assetsloaded){
+        if(gameobjects != undefined) gameobjects.update(time);
     	//characters.update();
-        menu.update(time);
-        game.update();
+        if(menu != undefined) menu.update(time);
+        if(game != undefined) game.update();
         if(characters != undefined) characters.update(time);
-        particles.update(time);
+        if(particles != undefined) particles.update(time);
     }
 }
 

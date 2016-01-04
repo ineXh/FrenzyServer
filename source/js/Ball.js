@@ -66,8 +66,8 @@ Ball.prototype = {
       this.vel.y -= ay;
       //if(!arrayContains(o.status, StatusType.NotMovable)){
         o.vel.x += ax;
-        o.vel.y -= ax;  
-      //}       
+        o.vel.y -= ax;
+      //}
       this.collision_count++;
       o.collision_count++;
       return true;
@@ -109,7 +109,7 @@ Ball.prototype = {
   renderSprite: function(){
     this.sprite.x = this.pos.x;
     this.sprite.y = this.pos.y;
-    this.sprite.rotation += 0.01;
+    //this.sprite.rotation += 0.01;
   },
   stayinBorder : function(){
     if (this.pos.x - this.r < 0) {
