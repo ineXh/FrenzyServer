@@ -596,16 +596,16 @@ var getstartlocation = function(startlocation){
             loc.y = 0;
             break;
         case StartLocation.NE:
-            loc.x = stage.width - width;
+            loc.x = stage_width - width;
             loc.y = 0;
             break;
         case StartLocation.SW:
             loc.x = 0;
-            loc.y = stage.height - height;
+            loc.y = stage_height - height;
             break;
         case StartLocation.SE:
-            loc.x = stage.width - width;
-            loc.y = stage.height - height;
+            loc.x = stage_width - width;
+            loc.y = stage_height - height;
             break;
     }
     return loc;

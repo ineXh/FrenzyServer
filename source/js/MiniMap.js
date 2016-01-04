@@ -9,7 +9,7 @@ MiniMap.prototype = {
         this.border_box = new PIXI.Graphics();
         this.border_box.lineStyle(dim/30, 0x00, 1);
         this.border_box.beginFill(0x000000, 0.5);
-        this.border_box.drawRect(0, 0, stage.width, stage.height);
+        this.border_box.drawRect(0, 0, stage_width, stage_height);
         this.map.addChild(this.border_box);
 
         this.units = new PIXI.Graphics();
@@ -24,12 +24,12 @@ MiniMap.prototype = {
         this.updateMap_time = 10;
 
         this.map_width = big_dim/5;
-        this.scale = this.map_width / stage.width;
+        this.scale = this.map_width / stage_width;
         this.map.scale.set(this.scale)
         //console.log(this.map.width)
         this.stage_border_box = new PIXI.Graphics();
         this.stage_border_box.lineStyle(5, 0xFF0000, 1);
-        this.stage_border_box.drawRect(0, 0, stage.width, stage.height);
+        this.stage_border_box.drawRect(0, 0, stage_width, stage_height);
     },
     init: function(){
         stage0.addChild(this.map);
