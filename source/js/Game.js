@@ -12,7 +12,7 @@ Game.prototype = {
         this.minimap = new MiniMap();
         this.ui = new GameUI(this);
         this.collision_count = 0;
-        this.collision_time = 0;
+        this.collision_time = 20;
         this.updateOpponent_count = 0;
         this.updateOpponent_time = 20;
     },
@@ -30,7 +30,7 @@ Game.prototype = {
                     var c = this.teams[i].characters[j][k];
                     // No Collision for units that are trying to sync (maybe)
                     if(c.override) continue;
-                    //if(!c.sprite.visible) continue;
+                    if(!c.sprite.visible) continue;
                     //if(!c.sprite.visible && i != myteam) continue;
                     if(c.collision_count >= 2) continue;
 
@@ -47,7 +47,7 @@ Game.prototype = {
                     // No Collision for units that are trying to sync
                     if(c2.override) continue;
                     //if(arrayContains(c2.status, StatusType.Inanimate)) continue;
-                    //if(!c.sprite.visible) continue;
+                    if(!c2.sprite.visible) continue;
                     //if(!c2.sprite.visible && i != myteam) continue;
                     if(c2.collision_count >= 2) continue;
                     c.collide(c2);
