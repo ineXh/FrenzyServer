@@ -48,10 +48,10 @@ var Engine = (function(global) {
             text.y = 0;
             container.addChild(text);
             container.addChild(grid);
-            stage.addChild(container);
+            //stage.addChild(container);
         }
     }
-    zoom_debug_setup();
+    //zoom_debug_setup();
 
     gameobjects = new GameObjects();
 

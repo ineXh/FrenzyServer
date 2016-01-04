@@ -182,7 +182,7 @@ var zoom = function(event){
     if(!zooming){
         start_stage_scale = stage_scale;
         zoom_cen = zoom_get_center(event);
-        if(zoom_cen != undefined){
+        if(zoom_cen != undefined && zoom_center_graphics != undefined){
             zoom_center_graphics.x = zoom_cen.x;
             zoom_center_graphics.y = zoom_cen.y;    
         }
@@ -192,7 +192,7 @@ var zoom = function(event){
     }
     //console.log(event.changedTouches)  
     zoom_cen_target = zoom_get_center(event);
-    if(zoom_cen_target != undefined){
+    if(zoom_cen_target != undefined && zoom_center_target_graphics != undefined){
         zoom_center_target_graphics.x = zoom_cen_target.x;
         zoom_center_target_graphics.y = zoom_cen_target.y;    
     }    
@@ -215,14 +215,14 @@ var zoom_get_new_screen_center = function(){
     var target_x = -(x - width/2 / stage.scale.x) * stage.scale.x;
     var target_y = -(y - height/2 / stage.scale.y) * stage.scale.y;
 
-    console.log('new screen center ' + x + ' , ' + y)
+    //console.log('new screen center ' + x + ' , ' + y)
     //panTo(x, y);
     var e_x = (target_x - stage.x);
-    var e_y = (target_y - stage.y);
+    var e_y = (target_y - stage.y);    
     if(!sameSign(e_x, pan_pError.x) && Math.abs(pan_pError.x > 10)) e_x = 0
     if(!sameSign(e_y, pan_pError.y) && Math.abs(pan_pError.y > 10)) e_y = 0    
-    stage.x += e_x*0.05;
-    stage.y += e_y*0.05;
+    if(Math.abs(e_x) > width/50) stage.x += e_x*0.05;
+    if(Math.abs(e_y) > height/50) stage.y += e_y*0.05;
 }
 var zoom_get_center = function(event){
     if(event.changedTouches.length <= 1) return;
