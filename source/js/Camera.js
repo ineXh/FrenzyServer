@@ -226,17 +226,17 @@ var zoom_get_new_screen_center = function(){
     var target_x = -(x - width/2 / stage.scale.x) * stage.scale.x;
     var target_y = -(y - height/2 / stage.scale.y) * stage.scale.y;
 
-    console.log('new screen center ' + x + ' , ' + y)
-    panTo(x, y);
-    /*var e_x = (target_x - stage.x);
+    //console.log('new screen center ' + x + ' , ' + y)
+    //panTo(x, y);
+    var e_x = (target_x - stage.x);
     var e_y = (target_y - stage.y);    
     if(!sameSign(e_x, zoom_pan_pError.x) && Math.abs(zoom_pan_pError.x > 10)) e_x = 0
     if(!sameSign(e_y, zoom_pan_pError.y) && Math.abs(zoom_pan_pError.y > 10)) e_y = 0    
-    if(Math.abs(e_x) > width/50) stage.x += e_x*0.05;
-    if(Math.abs(e_y) > height/50) stage.y += e_y*0.05;
-    console.log("error: (" + e_x + ", (" + e_y + ")");
+    if(Math.abs(e_x) > width/50) stage.x += e_x*0.1;
+    if(Math.abs(e_y) > height/50) stage.y += e_y*0.1;
+    //console.log("error: (" + e_x + ", (" + e_y + ")");
     zoom_pan_pError.x = e_x;
-    zoom_pan_pError.y = e_y;*/
+    zoom_pan_pError.y = e_y;
 }
 var zoom_get_center = function(event){
     if(event.changedTouches.length <= 1) return;
@@ -275,15 +275,18 @@ var panTo = function(x, y){ // in game position
 var setscale = function(scale){
     var scaling = false;
     if(isNaN(scale) || scale == Infinity) return;
-    if(scale/stage_scale >= 1.2){
-      scale = 1.2*stage_scale; 
+    if(scale/stage_scale >= 1.1){
+      scale = 1.1*stage_scale; 
       scaling = true;
     } 
-    if(scale/stage_scale <= 0.8){
-      scale = 0.8*stage_scale;
+    if(scale/stage_scale <= 0.9){
+      scale = 0.9*stage_scale;
       scaling = true;  
     } 
-    if(scale <= 0.2) scale = 0.3;
+    if(scale <= 0.2){
+      scale = 0.3;
+      scaling = false;  
+    } 
     if(scale >= 4){
       scale = 4;
       scaling = false;  

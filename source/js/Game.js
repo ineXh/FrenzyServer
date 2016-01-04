@@ -331,8 +331,8 @@ Team.prototype = {
     },
     startsingle:function(){
         this.restartPath();
-        var input = {   x: this.startlocation_pos.x + width/2,
-                                y: this.startlocation_pos.y + height/2,
+        var input = {   x: this.startlocation_pos.x,// + width/2,
+                                y: this.startlocation_pos.y,// + height/2,
                     type: CharacterType.Hut, team: this.team, color: this.color};
         var character = characters.spawn(input);
         this.characters[input.type].push(character);
@@ -377,8 +377,8 @@ Team.prototype = {
           this.spawn_i = -this.spawn_i;
           this.spawn_j++;
         }
-        var input = {   x: this.startlocation_pos.x + width/2 + this.spawn_i++*big_dim/20,
-                        y: this.startlocation_pos.y + height/2 + this.spawn_j*big_dim/20, // + this.characters[CharacterType.Hut][0].r
+        var input = {   x: this.startlocation_pos.x  + this.spawn_i++*big_dim/20, //+ width/2 + height/2
+                        y: this.startlocation_pos.y  + this.spawn_j*big_dim/20, // + this.characters[CharacterType.Hut][0].r
                         id: id,
                     type: CharacterType.Cow, team: this.team, color: this.color};
 
@@ -592,20 +592,20 @@ var getstartlocation = function(startlocation){
     loc = new PVector(0,0);
     switch(startlocation){ //
         case StartLocation.NW:
-            loc.x = 0;
-            loc.y = 0;
+            loc.x = stage_width/8;
+            loc.y = stage_height/8;
             break;
         case StartLocation.NE:
-            loc.x = stage_width - width;
-            loc.y = 0;
+            loc.x = stage_width - stage_width/8;
+            loc.y = stage_height/8;
             break;
         case StartLocation.SW:
-            loc.x = 0;
-            loc.y = stage_height - height;
+            loc.x = stage_width/8;
+            loc.y = stage_height - stage_height/8;
             break;
         case StartLocation.SE:
-            loc.x = stage_width - width;
-            loc.y = stage_height - height;
+            loc.x = stage_width - stage_width/8;
+            loc.y = stage_height - stage_height/8;
             break;
     }
     return loc;

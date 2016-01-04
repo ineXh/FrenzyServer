@@ -33,7 +33,7 @@ var Engine = (function(global) {
     
     
 
-    var x_count = 1;
+    /*var x_count = 1;
     var y_count = 1;
     for(var i = 0; i < y_count; i++){
         for(var j = 0; j < x_count; j++){
@@ -48,9 +48,9 @@ var Engine = (function(global) {
             text.y = 0;
             container.addChild(text);
             container.addChild(grid);
-            //stage.addChild(container);
+            stage.addChild(container);
         }
-    }
+    }*/
     //zoom_debug_setup();
 
     gameobjects = new GameObjects();
