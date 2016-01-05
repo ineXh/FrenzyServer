@@ -76,9 +76,7 @@ function update(){
     visibleCheck();
     if(game != undefined) game.onTouching();
 
-    balls.forEach(function(b){
-        b.update(time);
-    })
+    
 
     if(assetsloaded){
         if(gameobjects != undefined) gameobjects.update(time);
