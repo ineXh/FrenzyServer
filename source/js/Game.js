@@ -12,13 +12,32 @@ Game.prototype = {
         this.minimap = new MiniMap();
         this.ui = new GameUI(this);
         this.collision_count = 0;
-        this.collision_time = 20;
+        this.collision_time = 2;
+
+        var bounds = {pos: new PVector(0,0),
+                    width: stage_width, height: stage_height};
+        this.tree = new QuadTree(bounds);
+        this.treecount = 0;
+        this.treetime = 30;
+
         this.updateOpponent_count = 0;
         this.updateOpponent_time = 20;
     },
     clean: function(){
         this.players.splice(0,this.players.length)
     },
+    updateTree: function(){
+        this.treecount++;
+        if(this.treecount%this.treetime == 0){
+            this.treecount = 0;   
+            this.tree.clear();
+            for(var i = 0; i < this.teams.length; i++){
+                for(var j = 0; j < this.teams[i].characters.length; j++){
+                    this.tree.insert(this.teams[i].characters[j]);
+                }
+            }
+        }
+    },    
     checkcollisions :function(){
         this.collision_count++;
         if(this.collision_count < this.collision_time) return;
@@ -34,12 +53,24 @@ Game.prototype = {
                     //if(!c.sprite.visible && i != myteam) continue;
                     if(c.collision_count >= 2) continue;
 
-                    this.checkcollision(c);
+                    //this.checkcollisionBrute(c);
+                    this.checkcollisionQuad(c);
                 }
             }
         }
     },
-    checkcollision: function(c){
+    checkcollisionQuad: function(c){
+      var items = this.tree.retrieve(c);
+      for(var i = 0; i < items.length; i++){
+        var c2 = items[i];
+        if(c == c2) return;
+        if(c2.override) continue;
+        if(!c2.sprite.visible) continue;
+        if(c2.collision_count >= 2) continue;
+        c.collide(c2);
+      }
+    },
+    checkcollisionBrute: function(c){
       for(var i = 0; i < this.teams.length; i++){
             for(var j = 0; j < this.teams[i].characters.length; j++){
                 for(var k = 0; k < this.teams[i].characters[j].length; k++){
@@ -111,6 +142,7 @@ Game.prototype = {
         if(gamestate != GameState.InPlay) return;
         gameCount++;
 
+        this.updateTree();
         this.checkcollisions();
         this.updateOpponent();
         this.teams.forEach(function(team){
@@ -336,6 +368,7 @@ Team.prototype = {
                     type: CharacterType.Hut, team: this.team, color: this.color};
         var character = characters.spawn(input);
         this.characters[input.type].push(character);
+        game.tree.insert(character);
 
         /*for(var i = -1; i < 1; i++){
             for(var j = -1; j < 1; j++){
@@ -356,6 +389,7 @@ Team.prototype = {
                 };
         var character = characters.spawn(input);
         this.characters[input.type].push(character);
+        game.tree.insert(character);
     },
     spawnSinglePlayer:function(){
         if(gamemode == GameMode.MultiPlayer) return;
@@ -389,6 +423,7 @@ Team.prototype = {
         }else if(gamemode != GameMode.MultiPlayer){*/
             var character = characters.spawn(input);
             this.characters[input.type].push(character);
+            game.tree.insert(character);
         //}
     },
     update: function(){

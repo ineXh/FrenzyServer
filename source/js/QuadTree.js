@@ -1,5 +1,5 @@
-var maxDepth = 5;
-var maxChildren = 4;
+var maxDepth = 4;
+var maxChildren = 5;
 function QuadTree(bound){
     this.pool = new QuadNodePool();
     this.maxDepth       = maxDepth;
@@ -141,7 +141,8 @@ QuadNode.prototype = {
     }, // end findlocation
     intersect : function(item, bound){
         // Assume bound position is its top left corner
-        if(bound.anchor == undefined) bound.anchor = {x: 0, y: 0};        
+        if(bound.anchor == undefined) bound.anchor = {x: 0, y: 0};    
+        if(bound.pos == undefined) debugger;
         // is the left side of the item completely on the right of the bound
         var right   = (item.pos.x  - Math.abs(item.width)*(item.anchor.x)) >=
                       (bound.pos.x + Math.abs(bound.width)*(1-bound.anchor.x));

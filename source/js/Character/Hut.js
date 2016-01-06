@@ -5,6 +5,8 @@ function Hut(){
     this.create();
 }
 Hut.prototype.create = function(){
+    this.anchor = {x: 0.5, y: 0.5};
+    
     this.pos = new PVector(0,0,0);
     this.vel = new PVector(0,0,0);
     this.accel = new PVector(0,0,0);

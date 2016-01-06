@@ -205,6 +205,7 @@ Cow.prototype.create = function(){
 	this.back_attack_frame = 22;
 	this.total_frame = cow_front_frames.length;
 
+	this.anchor = {x: 0.5, y: 0.5};
 	this.pos = new PVector(0,0);
 	this.vel = new PVector(0,0);
 	// Simulated Postion for Other Clients

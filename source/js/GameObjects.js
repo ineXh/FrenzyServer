@@ -1,5 +1,5 @@
-var balls = [];
-var tree;
+//var balls = [];
+//var tree;
 
 function GameObjects(){
 	this.init();
@@ -56,7 +56,7 @@ GameObjects.prototype = {
             cow_front_frames.push(PIXI.Texture.fromImage('assets/cow/ba' + i + '.png'));
         }
 
-        /*characters = new Characters();
+        characters = new Characters();
         //path = new Path();
         game = new Game();
         stagesetup = new Stagesetup();
@@ -68,8 +68,8 @@ GameObjects.prototype = {
 
         menu.mainmenu.playlogo();
         //startChat();
-        particles = new Particles();*/
-        var bounds = {pos: new PVector(0,0),
+        particles = new Particles();
+        /*var bounds = {pos: new PVector(0,0),
                     width: width, height: height};//new Rectangle(0,0, quadCanvas.width, quadCanvas.height);
         tree = new QuadTree(bounds);
 
@@ -79,18 +79,18 @@ GameObjects.prototype = {
                 width/50, true, cow_texture);
             balls.push(ball);
             tree.insert(ball);
-        }
+        }*/
 
 
 		assetsloaded = true;
 	},
 	update: function(time){
         //checkbutecollisions();        
-        balls.forEach(function(b){
+        /*balls.forEach(function(b){
             b.update(time);
         })
         updateTree();
-        checkquadcollisions();
+        checkquadcollisions();*/
 	},
 }; // end GameObjects
 var checkquadcollisions = function(){
@@ -134,7 +134,7 @@ var checkbutecollisions = function(){
         }
     }
 }
-var treecount = 0;
+/*var treecount = 0;
 var treetime = 3;
 function updateTree(){
     treecount++;
@@ -143,4 +143,4 @@ function updateTree(){
         tree.clear();
         tree.insert(balls);
     }
-}
+}*/
