@@ -31,8 +31,6 @@ QuadTree.prototype = {
             Array.prototype.push.apply(out, node.children);
         })
         return out;
-
-
         /*var out = [];
         var node;
         for(var i = item.tree_node.length-1; i >= 0 ; i--){
@@ -173,6 +171,7 @@ QuadNode.prototype = {
             });
             this.children.length = 0;
         }
+<<<<<<< HEAD
     }, // end insert
     /*findlocations : function(item){
         var left,right, bot, top;
@@ -211,6 +210,9 @@ QuadNode.prototype = {
         }
 
     },*/
+=======
+    }, // end insert    
+>>>>>>> index wip
     findlocations : function(item){
         var top_left = this.intersect(item, {pos   : new PVector(this.bound.pos.x,
                                                                  this.bound.pos.y),
@@ -319,6 +321,15 @@ var getNodeIndex = function(parent, depth, loc){
     var index = n + parent.level_index*4 + loc + 1;
     return index;//(parent_index + Math.pow(4, depth) + loc);
     //return parent_index
+}
+
+var getNodeIndex = function(parent_index, depth, loc){
+    var index = 0;
+    for(var i = 0; i < depth; i++){
+        index += Math.pow(4, i);
+    }
+    index += loc +1;
+    return index;
 }
 
 function QuadNodePool() {
