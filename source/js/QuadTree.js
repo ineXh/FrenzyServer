@@ -1,13 +1,15 @@
 var maxDepth = 5;
-var maxChildren = 1;
+var maxChildren = 4;
 function QuadTree(bound){
+    this.pool = new QuadNodePool();
     this.maxDepth       = maxDepth;
     this.maxChildren    = maxChildren;
     this.init(bound);
 }
 QuadTree.prototype = {
     init: function(bound){
-        this.root = new QuadNode(bound, 0);
+        this.root = this.pool.borrow();//new QuadNode(bound, 0);
+        this.root.init(bound, 0, this.pool);
     },
     insert: function(item){
         var root = this.root;
@@ -26,18 +28,19 @@ QuadTree.prototype = {
         this.root.clear();
     }
 } // end QuadTree
-function QuadNode(bound, depth){
+function QuadNode(){
     this.maxDepth       = maxDepth;
     this.maxChildren    = maxChildren;
-    this.init(bound, depth);
+    //this.init(bound, depth);
 }
 QuadNode.prototype = {
-    init: function(bound, depth){
+    init: function(bound, depth, pool){
         this.bound = bound;
         this.depth = depth;
+        this.pool = pool;
         this.children = [];
         this.nodes = [];
-        this.draw();
+        //this.draw();
     },
     draw: function(){
         this.container = new PIXI.Container();
@@ -46,7 +49,7 @@ QuadNode.prototype = {
         this.container.x = this.bound.pos.x;
         this.container.y = this.bound.pos.y;
         grid.drawRect(0, 0, this.bound.width, this.bound.height);
-        var text = new PIXI.Text("Depth: " + this.depth, {font: '32px Arial', fill: 'black'})
+        var text = new PIXI.Text("" + this.depth, {font: '32px Arial', fill: 'black'})
         text.x = 0;
         text.y = 0;
         this.container.addChild(text);
@@ -55,30 +58,40 @@ QuadNode.prototype = {
     },
     subdivide : function(){
         var depth = this.depth + 1;
+        var node;
         // top left
-        this.nodes.push(new QuadNode({pos: new PVector(this.bound.pos.x, 
-                                                       this.bound.pos.y),
+        node = this.pool.borrow();//new QuadNode(bound, 0);
+        node.init({pos: new PVector(this.bound.pos.x, 
+                                    this.bound.pos.y),
                                    width : this.bound.width/2,
-                                   height: this.bound.height/2}, depth));
-        // top right
-        this.nodes.push(new QuadNode({pos: new PVector(this.bound.pos.x + this.bound.width/2,
-                                                       this.bound.pos.y),
-                                   width : this.bound.width/2,
-                                   height: this.bound.height/2}, depth));
-        // bot left
-        this.nodes.push(new QuadNode({pos: new PVector(this.bound.pos.x, 
-                                                       this.bound.pos.y + this.bound.height/2),
-                                   width : this.bound.width/2,
-                                   height: this.bound.height/2}, depth));
-        // bot right
-        this.nodes.push(new QuadNode({pos: new PVector(this.bound.pos.x + this.bound.width/2,
-                                                       this.bound.pos.y + this.bound.height/2),
-                                   width : this.bound.width/2,
-                                   height: this.bound.height/2}, depth));
+                                   height: this.bound.height/2}, depth, this.pool);
 
+        this.nodes.push(node);
+        // top right
+        node = this.pool.borrow();
+        node.init({pos: new PVector(this.bound.pos.x + this.bound.width/2,
+                                    this.bound.pos.y),
+                                   width : this.bound.width/2,
+                                   height: this.bound.height/2}, depth, this.pool);
+
+        this.nodes.push(node);
+        // bot left
+        node = this.pool.borrow();
+        node.init({pos: new PVector(this.bound.pos.x,
+                                    this.bound.pos.y + this.bound.height/2),
+                                   width : this.bound.width/2,
+                                   height: this.bound.height/2}, depth, this.pool);
+        this.nodes.push(node);
+        // bot right
+        node = this.pool.borrow();
+        node.init({pos: new PVector(this.bound.pos.x + this.bound.width/2,
+                                    this.bound.pos.y + this.bound.height/2),
+                                   width : this.bound.width/2,
+                                   height: this.bound.height/2}, depth, this.pool);
+        this.nodes.push(node);
     }, // end subdivide
     insert : function(item){
-        if(item == undefined) debugger;
+        //if(item == undefined) debugger;
         if (this.nodes.length) {
             var locations = this.findlocations(item);
             if(locations.top_left){
@@ -145,15 +158,42 @@ QuadNode.prototype = {
         return !( right || left || bot || top);    
     },
     retrieve : function(item){
-
+        var out = [];
+        if (this.nodes.length) {
+            var locations = this.findlocations(item);
+            if(locations.top_left){
+                Array.prototype.push.apply(out, this.nodes[QuadNode.TOP_LEFT].retrieve(item));
+                //out.push.apply(this.nodes[QuadNode.TOP_LEFT].retrieve(item));
+            }
+            if(locations.top_right){
+                Array.prototype.push.apply(out, this.nodes[QuadNode.TOP_RIGHT].retrieve(item));
+                //out.push.apply(this.nodes[QuadNode.TOP_RIGHT].retrieve(item));
+            }
+            if(locations.bot_left){
+                Array.prototype.push.apply(out, this.nodes[QuadNode.BOTTOM_LEFT].retrieve(item));
+                //out.push.apply(this.nodes[QuadNode.BOTTOM_LEFT].retrieve(item));
+            }
+            if(locations.bot_right){
+                Array.prototype.push.apply(out, this.nodes[QuadNode.BOTTOM_RIGHT].retrieve(item));
+                //out.push.apply(this.nodes[QuadNode.BOTTOM_RIGHT].retrieve(item));
+            }
+        }
+        Array.prototype.push.apply(out, this.children);
+        //out.push.apply(out, this.children);
+        return out;
     }, // end retrieve
-    clear: function(){
+    clean: function(){
         this.children.length = 0;
-        this.nodes.forEach(function(node){
+        if(this.container != undefined) stage.removeChild(this.container);
+    }, // end clean
+    clear: function(){
+        for (var i = this.nodes.length - 1; i >= 0; i--) {
+            var node = this.nodes[i];
+            node.clean();
             node.clear();
-        })
-        this.nodes.length = 0;
-        stage.removeChild(this.container);
+            this.pool.returnNode(node);
+            this.nodes.splice(i,1);
+        }        
     }, // end clear    
 } // end QuadNode
 
@@ -161,3 +201,38 @@ QuadNode.TOP_LEFT = 0;
 QuadNode.TOP_RIGHT = 1;
 QuadNode.BOTTOM_LEFT = 2;
 QuadNode.BOTTOM_RIGHT = 3;
+
+function QuadNodePool() {
+    this.complete = false;
+    this.loadPool();
+}
+QuadNodePool.prototype = {
+    loadPool: function(){
+        this.createNode();
+    },   
+    borrow : function(){
+        return this.borrowNode.call(this);
+    },
+    return: function(node){
+        return this.returnNode.call(this, node);
+    },
+    createNode: function(){
+        this.nodes = [];
+        for(var i = 0; i <= maxDepth; i++){
+            this.addNode(Math.pow(4, i));    
+        }        
+    },
+    addNode: function(amount){
+        for(var i = 0; i < amount; i++){
+            this.nodes.push(new QuadNode());
+            //console.log("addNode");
+        }
+    }, // end addNode
+    borrowNode : function(){
+        if(this.nodes.length >= 1)   return this.nodes.shift();
+        else return null;
+    }, // end borrowNode
+    returnNode: function(node){
+        this.nodes.push(node);
+    }, // end returnNode
+} // end QuadNodePool
