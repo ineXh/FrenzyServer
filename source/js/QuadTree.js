@@ -22,7 +22,13 @@ QuadTree.prototype = {
         }
     }, // end insert
     retrieve: function(item){
-        return this.root.retrieve(item).slice(0);
+        //return this.root.retrieve(item).slice(0);
+        /*var out = [];
+        var node;
+        for(var i = item.tree_node.length-1; i >= 0 ; i--){
+            //node = this.root[]
+        }
+        //Array.prototype.push.apply(out, this.children);*/
     }, // end retrieve
     clear: function(){
         this.root.clear();
@@ -40,7 +46,7 @@ QuadNode.prototype = {
         this.pool = pool;
         this.children = [];
         this.nodes = [];
-        //this.draw();
+        this.draw();
     },
     draw: function(){
         this.container = new PIXI.Container();
@@ -96,15 +102,27 @@ QuadNode.prototype = {
             var locations = this.findlocations(item);
             if(locations.top_left){
                 this.nodes[QuadNode.TOP_LEFT].insert(item)
+                //if(item.tree_node[this.depth] == undefined) item.tree_node[this.depth] = [];
+                //item.tree_node[this.depth][QuadNode.TOP_LEFT] = true;
+                //item.tree_node[this.depth].push(QuadNode.TOP_LEFT);
             }
             if(locations.top_right){
                 this.nodes[QuadNode.TOP_RIGHT].insert(item)
+                //if(item.tree_node[this.depth] == undefined) item.tree_node[this.depth] = [];
+                //item.tree_node[this.depth][QuadNode.TOP_RIGHT] = true;
+                //item.tree_node[this.depth].push(QuadNode.TOP_RIGHT);
             }
             if(locations.bot_left){
                 this.nodes[QuadNode.BOTTOM_LEFT].insert(item)
+                //if(item.tree_node[this.depth] == undefined) item.tree_node[this.depth] = [];
+                //item.tree_node[this.depth][QuadNode.BOTTOM_LEFT] = true;
+                //item.tree_node[this.depth].push(QuadNode.BOTTOM_LEFT);
             }
             if(locations.bot_right){
                 this.nodes[QuadNode.BOTTOM_RIGHT].insert(item)
+                //if(item.tree_node[this.depth] == undefined) item.tree_node[this.depth] = [];
+                //item.tree_node[this.depth][QuadNode.BOTTOM_RIGHT] = true;
+                //item.tree_node[this.depth].push(QuadNode.BOTTOM_RIGHT);
             }
             return;
         }
@@ -119,7 +137,7 @@ QuadNode.prototype = {
             });
             this.children.length = 0;
         }
-    }, // end insert
+    }, // end insert    
     findlocations : function(item){
         var top_left = this.intersect(item, {pos   : new PVector(this.bound.pos.x, 
                                                                  this.bound.pos.y),
@@ -202,6 +220,15 @@ QuadNode.TOP_LEFT = 0;
 QuadNode.TOP_RIGHT = 1;
 QuadNode.BOTTOM_LEFT = 2;
 QuadNode.BOTTOM_RIGHT = 3;
+
+var getNodeIndex = function(parent_index, depth, loc){
+    var index = 0;
+    for(var i = 0; i < depth; i++){
+        index += Math.pow(4, i);
+    }
+    index += loc +1;
+    return index;
+}
 
 function QuadNodePool() {
     this.complete = false;

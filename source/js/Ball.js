@@ -14,6 +14,7 @@ Ball.prototype = {
 
   init: function(x, y, r){
     this.anchor = {x: 0.5, y: 0.5};
+    this.tree_node = [];
     this.clr = getRndColor();
     this.x = x;
     this.y = y;
