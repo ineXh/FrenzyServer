@@ -74,7 +74,7 @@ function onTouchStart(event){
     //$( "#draggable" ).position()
 	//console.log(event.changedTouches[0]);
     event.preventDefault();
-    
+
     // onTouchStart for 2nd + finger
     if(MousePos.touched){
       onMultiTouchStart(event)
@@ -112,7 +112,7 @@ function onTouchMove(event){
     event.preventDefault();
     if(!MousePos.touched) return;
     //console.log('onTouchMove ' + MousePos.touched)
-    
+
     //console.log(event.changedTouches)
 	getMouse(event, event.changedTouches[0]);
     //stage.x -= MousePos.px - MousePos.x;
@@ -143,7 +143,7 @@ function onTouchEnd(event){
       pan_end();
       zoom_end();
       MousePos.multitouched = false;
-    } 
+    }
 	//path.addPoint(MousePos.x, MousePos.y);
 	//path.drawPath();
 }
@@ -436,4 +436,10 @@ function search_array(array,key,valuetofind) {
 }
 function sameSign(n1,n2){
   return (n1 * n2) > 0;
-} 
+}
+Math.log = (function() {
+  var log = Math.log;
+  return function(n, base) {
+    return log(n)/(base ? log(base) : 1);
+  };
+})();

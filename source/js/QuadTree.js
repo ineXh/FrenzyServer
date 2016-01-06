@@ -1,5 +1,6 @@
 var maxDepth = 4;
 var maxChildren = 5;
+
 function QuadTree(bound){
     this.pool = new QuadNodePool();
     this.maxDepth       = maxDepth;
@@ -9,7 +10,7 @@ function QuadTree(bound){
 QuadTree.prototype = {
     init: function(bound){
         this.root = this.pool.borrow();//new QuadNode(bound, 0);
-        this.root.init(bound, 0, this.pool);
+        this.root.init(bound, 0, this.pool, null, 0);
     },
     insert: function(item){
         var root = this.root;
@@ -22,7 +23,7 @@ QuadTree.prototype = {
         }
     }, // end insert
     retrieve: function(item){
-        //return this.root.retrieve(item).slice(0);
+        return this.root.retrieve(item).slice(0);
         /*var out = [];
         var node;
         for(var i = item.tree_node.length-1; i >= 0 ; i--){
@@ -37,25 +38,38 @@ QuadTree.prototype = {
 function QuadNode(){
     this.maxDepth       = maxDepth;
     this.maxChildren    = maxChildren;
+    this.index = 0;
     //this.init(bound, depth);
 }
 QuadNode.prototype = {
-    init: function(bound, depth, pool){
+    init: function(bound, depth, pool, parent, loc){
         this.bound = bound;
         this.depth = depth;
         this.pool = pool;
-        this.children = [];
+
         this.nodes = [];
+        this.parent = parent;
+        this.loc = loc;
+        this.children = [];
+        this.index = getNodeIndex(parent, depth, loc);
+        if(this.index < 0) debugger;
+        if(depth == 0){
+            this.level_index = 0;
+        }else{
+            this.level_index = this.index - getNodeLargestIndex(depth-1)-1;
+            if(this.level_index < 0) debugger;
+        }
+
         this.draw();
     },
     draw: function(){
         this.container = new PIXI.Container();
         var grid = new PIXI.Graphics();
-        grid.lineStyle(2, 0x0000FF, 1);
+        grid.lineStyle(width/500, 0x0000FF, 1);
         this.container.x = this.bound.pos.x;
         this.container.y = this.bound.pos.y;
         grid.drawRect(0, 0, this.bound.width, this.bound.height);
-        var text = new PIXI.Text("" + this.depth, {font: '32px Arial', fill: 'black'})
+        var text = new PIXI.Text("" + this.index, {font: '32px Arial', fill: 'black'})
         text.x = 0;
         text.y = 0;
         this.container.addChild(text);
@@ -67,10 +81,11 @@ QuadNode.prototype = {
         var node;
         // top left
         node = this.pool.borrow();//new QuadNode(bound, 0);
-        node.init({pos: new PVector(this.bound.pos.x, 
+        node.init({pos: new PVector(this.bound.pos.x,
                                     this.bound.pos.y),
                                    width : this.bound.width/2,
-                                   height: this.bound.height/2}, depth, this.pool);
+                                   height: this.bound.height/2}, depth, this.pool,
+                                    this, QuadNode.TOP_LEFT);
 
         this.nodes.push(node);
         // top right
@@ -78,7 +93,8 @@ QuadNode.prototype = {
         node.init({pos: new PVector(this.bound.pos.x + this.bound.width/2,
                                     this.bound.pos.y),
                                    width : this.bound.width/2,
-                                   height: this.bound.height/2}, depth, this.pool);
+                                   height: this.bound.height/2}, depth, this.pool,
+                                   this, QuadNode.TOP_RIGHT);
 
         this.nodes.push(node);
         // bot left
@@ -86,14 +102,16 @@ QuadNode.prototype = {
         node.init({pos: new PVector(this.bound.pos.x,
                                     this.bound.pos.y + this.bound.height/2),
                                    width : this.bound.width/2,
-                                   height: this.bound.height/2}, depth, this.pool);
+                                   height: this.bound.height/2}, depth, this.pool,
+                                   this, QuadNode.BOTTOM_LEFT);
         this.nodes.push(node);
         // bot right
         node = this.pool.borrow();
         node.init({pos: new PVector(this.bound.pos.x + this.bound.width/2,
                                     this.bound.pos.y + this.bound.height/2),
                                    width : this.bound.width/2,
-                                   height: this.bound.height/2}, depth, this.pool);
+                                   height: this.bound.height/2}, depth, this.pool,
+                                   this, QuadNode.BOTTOM_RIGHT);
         this.nodes.push(node);
     }, // end subdivide
     insert : function(item){
@@ -137,9 +155,9 @@ QuadNode.prototype = {
             });
             this.children.length = 0;
         }
-    }, // end insert    
+    }, // end insert
     findlocations : function(item){
-        var top_left = this.intersect(item, {pos   : new PVector(this.bound.pos.x, 
+        var top_left = this.intersect(item, {pos   : new PVector(this.bound.pos.x,
                                                                  this.bound.pos.y),
                                              width : this.bound.width/2,
                                              height: this.bound.height/2});
@@ -159,8 +177,10 @@ QuadNode.prototype = {
     }, // end findlocation
     intersect : function(item, bound){
         // Assume bound position is its top left corner
-        if(bound.anchor == undefined) bound.anchor = {x: 0, y: 0};    
+
+        if(bound.anchor == undefined) bound.anchor = {x: 0, y: 0};
         if(bound.pos == undefined) debugger;
+
         // is the left side of the item completely on the right of the bound
         var right   = (item.pos.x  - Math.abs(item.width)*(item.anchor.x)) >=
                       (bound.pos.x + Math.abs(bound.width)*(1-bound.anchor.x));
@@ -168,13 +188,13 @@ QuadNode.prototype = {
         var left    = (item.pos.x  + Math.abs(item.width)*(1-item.anchor.x)) <=
                       (bound.pos.x - Math.abs(bound.width)*(bound.anchor.x));
         // is the top side of the item completely on the bottom of the bound
-        var bot     = (item.pos.y  - Math.abs(item.height)*(item.anchor.y)) >= 
+        var bot     = (item.pos.y  - Math.abs(item.height)*(item.anchor.y)) >=
                       (bound.pos.y + Math.abs(bound.height)*(1-bound.anchor.y));
         // is the bot side of the item completely on top of the bound
-        var top     = (item.pos.y  + Math.abs(item.height)*(1-item.anchor.y)) <= 
+        var top     = (item.pos.y  + Math.abs(item.height)*(1-item.anchor.y)) <=
                       (bound.pos.y - Math.abs(bound.height)*(bound.anchor.y));
         // if any of them were true, the item was not intersecting
-        return !( right || left || bot || top);    
+        return !( right || left || bot || top);
     },
     retrieve : function(item){
         var out = [];
@@ -212,22 +232,32 @@ QuadNode.prototype = {
             node.clear();
             this.pool.returnNode(node);
             this.nodes.splice(i,1);
-        }        
-    }, // end clear    
+        }
+    }, // end clear
 } // end QuadNode
 
 QuadNode.TOP_LEFT = 0;
 QuadNode.TOP_RIGHT = 1;
 QuadNode.BOTTOM_LEFT = 2;
 QuadNode.BOTTOM_RIGHT = 3;
-
-var getNodeIndex = function(parent_index, depth, loc){
+var getNodeLargestIndex = function(depth){
     var index = 0;
-    for(var i = 0; i < depth; i++){
+    for(var i = 1; i <= depth; i++){
         index += Math.pow(4, i);
     }
-    index += loc +1;
     return index;
+}
+
+var getNodeIndex = function(parent, depth, loc){
+    /*
+    index += loc +1;
+    return index;*/
+    if(depth == 0) return 0;
+    //if(depth == 2) debugger;
+    var n = getNodeLargestIndex(depth-1);
+    var index = n + parent.level_index*4 + loc + 1;
+    return index;//(parent_index + Math.pow(4, depth) + loc);
+    //return parent_index
 }
 
 function QuadNodePool() {
@@ -237,7 +267,7 @@ function QuadNodePool() {
 QuadNodePool.prototype = {
     loadPool: function(){
         this.createNode();
-    },   
+    },
     borrow : function(){
         return this.borrowNode.call(this);
     },
@@ -247,8 +277,8 @@ QuadNodePool.prototype = {
     createNode: function(){
         this.nodes = [];
         for(var i = 0; i <= maxDepth; i++){
-            this.addNode(Math.pow(4, i));    
-        }        
+            this.addNode(Math.pow(4, i));
+        }
     },
     addNode: function(amount){
         for(var i = 0; i < amount; i++){
