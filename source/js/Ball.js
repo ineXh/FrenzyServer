@@ -17,6 +17,7 @@ Ball.prototype = {
     this.clr = getRndColor();
     this.x = x;
     this.y = y;
+    
     this.pos = new PVector(x,y);//{x : 500 - + Math.floor((Math.random() * 4) + 1)*25, y: 425 + Math.floor((Math.random() * 4) + 1)*25};
     this.vel = new PVector(Math.random()*width/10,Math.random()*height/10);//{x : 0, y: 1};
     this.accel = new PVector(1,0);//{x : 1, y: 0};
