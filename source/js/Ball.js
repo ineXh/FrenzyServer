@@ -13,7 +13,7 @@ function Ball(x, y, r, draw, texture){
 Ball.prototype = {
 
   init: function(x, y, r){
-
+    this.anchor = {x: 0.5, y: 0.5};
     this.clr = getRndColor();
     this.x = x;
     this.y = y;
@@ -24,7 +24,7 @@ Ball.prototype = {
     this.r = r;//width/80;
     this.width = this.r*2;
     this.height = this.r*2;
-    this.maxspeed = width/100;
+    this.maxspeed = width/500;
     this.border = true;
 
   //  if(this.toDraw == undefined) this.toDraw = true;

@@ -69,8 +69,9 @@ GameObjects.prototype = {
         menu.mainmenu.playlogo();
         //startChat();
         particles = new Particles();*/
-        var bounds = {x: 0, y: 0, width: width, height: height};//new Rectangle(0,0, quadCanvas.width, quadCanvas.height);
-        tree = new QuadTree(bounds, false, 1, 1);
+        var bounds = {pos: new PVector(0,0),
+                    width: width, height: height};//new Rectangle(0,0, quadCanvas.width, quadCanvas.height);
+        tree = new QuadTree(bounds);
 
         stage0.addChild(stage);
         for(var i  = 0; i < 10; i++){
@@ -109,14 +110,15 @@ var checkquadcollisions = function(){
     }
     for(var i = 0; i < 1; i++){ // balls.length
         var b1 = balls[i];
-        items = tree.retrieve(b1);
+        /*items = tree.retrieve(b1);
         b1.sprite.tint = 0xFF0000;
         for(var j = 0; j < items.length; j++){
             var b2 = items[j];
             if(b1 == b2) continue;
             //if(b2 == undefined) debugger;
             b2.sprite.tint = 0x00FF00;
-        }            
+        } 
+        */           
         //console.log(items)
     }
 }
@@ -129,7 +131,13 @@ var checkbutecollisions = function(){
         }
     }
 }
-function updateTree(){   
-    tree.clear();
-    tree.insert(balls);
+var treecount = 0;
+var treetime = 30;
+function updateTree(){
+    treecount++;
+    if(treecount%treetime == 0){
+        treecount = 0;   
+        tree.clear();
+        tree.insert(balls);
+    }
 }

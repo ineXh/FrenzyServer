@@ -1,5 +1,5 @@
 var maxDepth = 5;
-var maxChildren = 4;
+var maxChildren = 1;
 function QuadTree(bound){
     this.maxDepth       = maxDepth;
     this.maxChildren    = maxChildren;
@@ -15,6 +15,8 @@ QuadTree.prototype = {
             item.forEach(function(it){
                 root.insert(it);
             });
+        }else{
+            this.root.insert(item);
         }
     }, // end insert
     retrieve: function(item){
@@ -35,6 +37,21 @@ QuadNode.prototype = {
         this.depth = depth;
         this.children = [];
         this.nodes = [];
+        this.draw();
+    },
+    draw: function(){
+        this.container = new PIXI.Container();
+        var grid = new PIXI.Graphics();
+        grid.lineStyle(2, 0x0000FF, 1);
+        this.container.x = this.bound.pos.x;
+        this.container.y = this.bound.pos.y;
+        grid.drawRect(0, 0, this.bound.width, this.bound.height);
+        var text = new PIXI.Text("Depth: " + this.depth, {font: '32px Arial', fill: 'black'})
+        text.x = 0;
+        text.y = 0;
+        this.container.addChild(text);
+        this.container.addChild(grid);
+        stage.addChild(this.container);
     },
     subdivide : function(){
         var depth = this.depth + 1;
@@ -61,6 +78,7 @@ QuadNode.prototype = {
 
     }, // end subdivide
     insert : function(item){
+        if(item == undefined) debugger;
         if (this.nodes.length) {
             var locations = this.findlocations(item);
             if(locations.top_left){
@@ -79,13 +97,14 @@ QuadNode.prototype = {
         }
         // if this node has no child nodes, then the item is directly added here
         this.children.push(item);
-        if(!(this.depth <= this.maxDepth) &&
+        if((this.depth < this.maxDepth) &&
             (this.children.length > this.maxChildren)){
             this.subdivide();
             var insert = this.insert.bind(this);
             this.children.forEach(function(c){
                 insert(c);
             });
+            this.children.length = 0;
         }
     }, // end insert
     findlocations : function(item){
@@ -109,14 +128,13 @@ QuadNode.prototype = {
     }, // end findlocation
     intersect : function(item, bound){
         // Assume bound position is its top left corner
-        bound.anchor.x = 0;
-        bound.anchor.y = 0;
+        if(bound.anchor == undefined) bound.anchor = {x: 0, y: 0};        
         // is the left side of the item completely on the right of the bound
         var right   = (item.pos.x  - Math.abs(item.width)*(item.anchor.x)) >=
                       (bound.pos.x + Math.abs(bound.width)*(1-bound.anchor.x));
         // is the right side of the item completely on the left of the bound
         var left    = (item.pos.x  + Math.abs(item.width)*(1-item.anchor.x)) <=
-                      (bound.pos.x - Math.abs(r1.width)*(r1.anchor.x));
+                      (bound.pos.x - Math.abs(bound.width)*(bound.anchor.x));
         // is the top side of the item completely on the bottom of the bound
         var bot     = (item.pos.y  - Math.abs(item.height)*(item.anchor.y)) >= 
                       (bound.pos.y + Math.abs(bound.height)*(1-bound.anchor.y));
@@ -130,11 +148,13 @@ QuadNode.prototype = {
 
     }, // end retrieve
     clear: function(){
+        this.children.length = 0;
         this.nodes.forEach(function(node){
             node.clear();
         })
         this.nodes.length = 0;
-    }, // end clear
+        stage.removeChild(this.container);
+    }, // end clear    
 } // end QuadNode
 
 QuadNode.TOP_LEFT = 0;
