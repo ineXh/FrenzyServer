@@ -1,5 +1,5 @@
-var maxDepth = 4;
-var maxChildren = 5;
+var maxDepth = 2;
+var maxChildren = 4;
 
 function QuadTree(bound){
     this.pool = new QuadNodePool();
@@ -16,9 +16,11 @@ QuadTree.prototype = {
         var root = this.root;
         if(item instanceof Array){
             item.forEach(function(it){
+                console.log('insert');
                 root.insert(it);
             });
         }else{
+            console.log('insert');
             this.root.insert(item);
         }
     }, // end insert
@@ -42,6 +44,7 @@ QuadTree.prototype = {
         var depth = Math.floor(Math.log(index, 4));
     },
     clear: function(){
+        console.log('clear')
         this.root.clear();
     }
 } // end QuadTree
@@ -70,7 +73,7 @@ QuadNode.prototype = {
             if(this.level_index < 0) debugger;
         }
 
-        //this.draw();
+        this.draw();
     },
     draw: function(){
         this.container = new PIXI.Container();
@@ -159,6 +162,7 @@ QuadNode.prototype = {
         item.tree_nodes.push(this);
         if((this.depth < this.maxDepth) &&
             (this.children.length > this.maxChildren)){
+            console.log('this.children.length ' + this.children.length)
             this.subdivide();
             var insert = this.insert.bind(this);
             var node = this;

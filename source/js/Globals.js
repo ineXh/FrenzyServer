@@ -78,7 +78,7 @@ var myteam = -1;
 var myteamcolor;
 var startlocation = -1;
 var maxpath = 4;
-var max_unit_count = 100;
+var max_unit_count = 2;
 var cow_max_hp = 10;
 var hut_max_hp = 25;
 // Multiplayer

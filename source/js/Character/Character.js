@@ -206,6 +206,7 @@ Cow.prototype.create = function(){
 	this.total_frame = cow_front_frames.length;
 
 	this.anchor = {x: 0.5, y: 0.5};
+	this.tree_nodes = [];
 	this.pos = new PVector(0,0);
 	this.vel = new PVector(0,0);
 	// Simulated Postion for Other Clients
@@ -220,6 +221,8 @@ Cow.prototype.create = function(){
 
 	this.r = big_dim*0.05;
 	this.scale = this.r / this.sprite.width;
+	this.width = this.r*2;
+    this.height = this.r*2;
 	this.sprite.scale.set(this.scale);
 	this.sprite.anchor.x = 0.5;
 	this.sprite.anchor.y = 0.5;
@@ -242,7 +245,7 @@ Cow.prototype.create = function(){
     this.attack_stat = this.attack_base;
     this.defense_base = 1;
     this.defense_stat = this.defense_base;
-    this.speed_base = 3*big_dim/1000
+    this.speed_base = 3*big_dim/1000 / 5;
     this.maxspeed = this.speed_base;
 
     // used to sync with the client this unit belongs to

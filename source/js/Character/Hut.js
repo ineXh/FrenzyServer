@@ -6,7 +6,8 @@ function Hut(){
 }
 Hut.prototype.create = function(){
     this.anchor = {x: 0.5, y: 0.5};
-    
+    this.tree_nodes = [];
+
     this.pos = new PVector(0,0,0);
     this.vel = new PVector(0,0,0);
     this.accel = new PVector(0,0,0);
@@ -17,6 +18,8 @@ Hut.prototype.create = function(){
     this.r = big_dim*0.1;
     this.scale = this.r / this.sprite.width;
     this.sprite.scale.set(this.scale);
+    this.width = this.r*2;
+    this.height = this.r*2;
     this.sprite.anchor.x = 0.5;
     this.sprite.anchor.y = 0.5;
     this.maxspeed = 2*big_dim/1000;

@@ -18,7 +18,7 @@ Game.prototype = {
                     width: stage_width, height: stage_height};
         this.tree = new QuadTree(bounds);
         this.treecount = 0;
-        this.treetime = 30;
+        this.treetime = 1;
 
         this.updateOpponent_count = 0;
         this.updateOpponent_time = 20;
@@ -27,17 +27,21 @@ Game.prototype = {
         this.players.splice(0,this.players.length)
     },
     updateTree: function(){
-        this.treecount++;
+        /*this.treecount++;
         if(this.treecount%this.treetime == 0){
-            this.treecount = 0;   
+            this.treecount = 0;*/
             this.tree.clear();
-            for(var i = 0; i < this.teams.length; i++){
-                for(var j = 0; j < this.teams[i].characters.length; j++){
-                    this.tree.insert(this.teams[i].characters[j]);
+            for(var i = 0; i < 1; i++){ //this.teams.length
+                for(var j = 1; j < 2; j++){ //this.teams[i].characters.length
+                    for(var k = 0; k < this.teams[i].characters[j].length; k++){
+                        this.tree.insert(this.teams[i].characters[j][k]);
+                    }
                 }
             }
-        }
-    },    
+        //}
+    },
+    //game.tree.clear()
+    //game.tree.insert(this.teams[i].characters[j]);
     checkcollisions :function(){
         this.collision_count++;
         if(this.collision_count < this.collision_time) return;
@@ -239,7 +243,7 @@ Game.prototype = {
         }
     },
     onTouchMove:function(event){
-        if(gamestate == GameState.InPlay){            
+        if(gamestate == GameState.InPlay){
             //pan();
             //center.x += MousePos.px - MousePos.x;
             if(this.minimaptouched
@@ -368,7 +372,7 @@ Team.prototype = {
                     type: CharacterType.Hut, team: this.team, color: this.color};
         var character = characters.spawn(input);
         this.characters[input.type].push(character);
-        game.tree.insert(character);
+        //game.tree.insert(character);
 
         /*for(var i = -1; i < 1; i++){
             for(var j = -1; j < 1; j++){
@@ -423,7 +427,7 @@ Team.prototype = {
         }else if(gamemode != GameMode.MultiPlayer){*/
             var character = characters.spawn(input);
             this.characters[input.type].push(character);
-            game.tree.insert(character);
+            //game.tree.insert(character);
         //}
     },
     update: function(){
