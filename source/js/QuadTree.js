@@ -23,7 +23,14 @@ QuadTree.prototype = {
         }
     }, // end insert
     retrieve: function(item){
-        return this.root.retrieve(item).slice(0);
+        //return this.root.retrieve(item).slice(0);
+        var out = [];
+        item.tree_nodes.forEach(function(node){
+            Array.prototype.push.apply(out, node.children);
+        })
+        return out;
+
+
         /*var out = [];
         var node;
         for(var i = item.tree_node.length-1; i >= 0 ; i--){
@@ -31,6 +38,9 @@ QuadTree.prototype = {
         }
         //Array.prototype.push.apply(out, this.children);*/
     }, // end retrieve
+    retrieveIndex: function(index){
+        var depth = Math.floor(Math.log(index, 4));
+    },
     clear: function(){
         this.root.clear();
     }
@@ -52,7 +62,7 @@ QuadNode.prototype = {
         this.loc = loc;
         this.children = [];
         this.index = getNodeIndex(parent, depth, loc);
-        if(this.index < 0) debugger;
+        //if(this.index < 0) debugger;
         if(depth == 0){
             this.level_index = 0;
         }else{
@@ -60,7 +70,7 @@ QuadNode.prototype = {
             if(this.level_index < 0) debugger;
         }
 
-        this.draw();
+        //this.draw();
     },
     draw: function(){
         this.container = new PIXI.Container();
@@ -146,11 +156,15 @@ QuadNode.prototype = {
         }
         // if this node has no child nodes, then the item is directly added here
         this.children.push(item);
+        item.tree_nodes.push(this);
         if((this.depth < this.maxDepth) &&
             (this.children.length > this.maxChildren)){
             this.subdivide();
             var insert = this.insert.bind(this);
+            var node = this;
             this.children.forEach(function(c){
+                var index = c.tree_nodes.indexOf(node);
+                if(index >= 0) c.tree_nodes.splice(index, 1);
                 insert(c);
             });
             this.children.length = 0;

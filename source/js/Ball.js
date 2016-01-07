@@ -14,11 +14,11 @@ Ball.prototype = {
 
   init: function(x, y, r){
     this.anchor = {x: 0.5, y: 0.5};
-    this.tree_node = [];
+    this.tree_nodes = [];
     this.clr = getRndColor();
     this.x = x;
     this.y = y;
-    
+
     this.pos = new PVector(x,y);//{x : 500 - + Math.floor((Math.random() * 4) + 1)*25, y: 425 + Math.floor((Math.random() * 4) + 1)*25};
     this.vel = new PVector(Math.random()*width/10,Math.random()*height/10);//{x : 0, y: 1};
     this.accel = new PVector(1,0);//{x : 1, y: 0};
@@ -102,7 +102,7 @@ Ball.prototype = {
     this.vel.add(this.accel);
     this.vel.mult(damping);
     this.vel.limit(this.maxspeed);
-    this.pos.add(this.vel);    
+    this.pos.add(this.vel);
     this.accel.mult(0);
     if(this.border)   this.stayinBorder();
     this.x = this.pos.x;

@@ -74,9 +74,9 @@ GameObjects.prototype = {
         tree = new QuadTree(bounds);
 
         stage0.addChild(stage);
-        for(var i  = 0; i < 10; i++){
+        for(var i  = 0; i < 1000; i++){
             var ball = new Ball(getRandomInt(0, width), getRandomInt(0, height),
-                width/30, true, cow_texture);
+                width/60, true, cow_texture);
             balls.push(ball);
             tree.insert(ball);
         }*/
@@ -85,7 +85,7 @@ GameObjects.prototype = {
 		assetsloaded = true;
 	},
 	update: function(time){
-        //checkbutecollisions();        
+        //checkbutecollisions();
         /*balls.forEach(function(b){
             b.update(time);
         })
@@ -99,6 +99,7 @@ var checkquadcollisions = function(){
     for(var i = 0; i < balls.length; i++){
         var b1 = balls[i];
         items = tree.retrieve(b1);
+        if(items == undefined) continue;
         for(var j = 0; j < items.length; j++){
             var b2 = items[j];
             if(b1 == b2) continue;
@@ -112,6 +113,7 @@ var checkquadcollisions = function(){
     }
     for(var i = 0; i < 1; i++){ // balls.length
         var b1 = balls[i];
+        if(items == undefined) continue;
         items = tree.retrieve(b1);
         b1.sprite.tint = 0xFF0000;
         for(var j = 0; j < items.length; j++){
@@ -119,8 +121,8 @@ var checkquadcollisions = function(){
             if(b1 == b2) continue;
             //if(b2 == undefined) debugger;
             b2.sprite.tint = 0x00FF00;
-        } 
-                   
+        }
+
         //console.log(items)
     }
     //console.log('count ' + count)
@@ -139,11 +141,12 @@ var treetime = 3;
 function updateTree(){
     treecount++;
     if(treecount%treetime == 0){
-        treecount = 0;   
+        treecount = 0;
         tree.clear();
         balls.forEach(function(b){
-            b.tree_node.length = 0;
+            b.tree_nodes.length = 0;
         })
         tree.insert(balls);
     }
+
 }*/
