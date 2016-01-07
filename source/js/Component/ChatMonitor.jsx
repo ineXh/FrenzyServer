@@ -93,8 +93,8 @@ window.ChatMonitor = React.createClass({
         $( "#chatwindow" ).resizable({
           maxHeight: 1000,
           maxWidth: 1000,
-          minHeight: 250,//150,
-          minWidth: 200});//200});//{ cancel: "#chatmonitor" }*/
+          minHeight: 50,//150,
+          minWidth: 50});//200});//{ cancel: "#chatmonitor" }*/
         $( "#chatmonitor" )[0].addEventListener("touchstart", function(event) {scrollStartPos=this.scrollTop+event.touches[0].pageY*1.5;
             event.preventDefault();
         },false);
@@ -216,8 +216,8 @@ window.ChatMonitor = React.createClass({
                   </form>
             </div>
             ) : (
-            <div>
-            <input id="chatbutton" onClick={this.restore}
+            <div id="chatbutton">
+            <input onClick={this.restore}
             onDrag ={this.drag}
             type="image" src="assets/chat2.png" width="72" height="72"></input>
             </div>

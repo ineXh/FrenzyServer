@@ -86,6 +86,7 @@ GameUI.prototype = {
         this.update_count++;
         if(this.update_count < this.update_time) return;
         this.update_count = 0;
+        //if(!game.teams[myteam].changed_upgrades) return;
         this.character_text.text = '' + game.teams[myteam].characters[0].length + '/'+ game.teams[myteam].max_unit_count;
         this.coin_text.text = '' + game.teams[myteam].coins;
         this.upgrade_text.text = '' + game.teams[myteam].attack_upgrades + ', '                        + game.teams[myteam].defense_upgrades + ', ' + game.teams[myteam].speed_upgrades;

@@ -9,10 +9,10 @@ Communications.prototype = {
 	connect: function(){
 		return new Promise(function(resolve, reject){
 
-			//communication.socket = io.connect('http://localhost:80/',
+			communication.socket = io.connect('http://localhost:80/',
 			//communication.socket = io.connect('http://10.224.63.58:80/',
 			//communication.socket = io.connect('http://192.168.0.104:80/',
-			communication.socket = io.connect('http://75.1.30.179:80/',
+			//communication.socket = io.connect('http://75.1.30.179:80/',
 				{reconnection: false});
 			//this.socket = io.connect('http://104.197.217.162:80/');
 			//if(!this.socket.connected) return false;

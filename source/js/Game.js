@@ -12,7 +12,7 @@ Game.prototype = {
         this.minimap = new MiniMap();
         this.ui = new GameUI(this);
         this.collision_count = 0;
-        this.collision_time = 3;
+        this.collision_time = 5;
 
         var bounds = {pos: new PVector(0,0),
                     width: stage_width, height: stage_height};
@@ -34,9 +34,6 @@ Game.prototype = {
             for(var i = 0; i < this.teams.length; i++){ //
                 for(var j = 0; j < this.teams[i].characters.length; j++){ //
                      this.tree.insert(this.teams[i].characters[j]);
-                    /*for(var k = 0; k < this.teams[i].characters[j].length; k++){
-                        this.tree.insert(this.teams[i].characters[j][k]);
-                    }*/
                 }
             }
         }
@@ -364,6 +361,7 @@ Team.prototype = {
         this.attack_upgrades = 0;
         this.defense_upgrades = 0;
         this.speed_upgrades = 0;
+        this.changed_upgrades = false;
     }, // end Team reset
     clean: function(){
         this.Dead = false;
@@ -625,6 +623,7 @@ Team.prototype = {
                 this.speed_upgrades++;
             break;
         }
+        this.changed_upgrades = true;
         for(var i = 0; i < this.characters[CharacterType.Cow].length; i++){
             var character = this.characters[CharacterType.Cow][i];
             character.upgrade_update();

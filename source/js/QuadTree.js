@@ -38,6 +38,9 @@ QuadTree.prototype = {
         }
         //Array.prototype.push.apply(out, this.children);*/
     }, // end retrieve
+    retrieveBound: function(bound){
+
+    },
     retrieveIndex: function(index){
         var depth = Math.floor(Math.log(index, 4));
     },
