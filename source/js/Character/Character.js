@@ -245,7 +245,7 @@ Cow.prototype.create = function(){
     this.attack_stat = this.attack_base;
     this.defense_base = 1;
     this.defense_stat = this.defense_base;
-    this.speed_base = 3*big_dim/1000 / 5;
+    this.speed_base = 3*big_dim/1000 ;
     this.maxspeed = this.speed_base;
 
     // used to sync with the client this unit belongs to

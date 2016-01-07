@@ -27,18 +27,19 @@ Game.prototype = {
         this.players.splice(0,this.players.length)
     },
     updateTree: function(){
-        /*this.treecount++;
+        this.treecount++;
         if(this.treecount%this.treetime == 0){
-            this.treecount = 0;*/
+            this.treecount = 0;
             this.tree.clear();
-            for(var i = 0; i < 1; i++){ //this.teams.length
-                for(var j = 1; j < 2; j++){ //this.teams[i].characters.length
-                    for(var k = 0; k < this.teams[i].characters[j].length; k++){
+            for(var i = 0; i < this.teams.length; i++){ //
+                for(var j = 0; j < this.teams[i].characters.length; j++){ //
+                     this.tree.insert(this.teams[i].characters[j]);
+                    /*for(var k = 0; k < this.teams[i].characters[j].length; k++){
                         this.tree.insert(this.teams[i].characters[j][k]);
-                    }
+                    }*/
                 }
             }
-        //}
+        }
     },
     //game.tree.clear()
     //game.tree.insert(this.teams[i].characters[j]);

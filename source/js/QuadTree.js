@@ -1,4 +1,4 @@
-var maxDepth = 2;
+var maxDepth = 3;
 var maxChildren = 4;
 
 function QuadTree(bound){
@@ -16,11 +16,11 @@ QuadTree.prototype = {
         var root = this.root;
         if(item instanceof Array){
             item.forEach(function(it){
-                console.log('insert');
+                //console.log('insert');
                 root.insert(it);
             });
         }else{
-            console.log('insert');
+            //console.log('insert');
             this.root.insert(item);
         }
     }, // end insert
@@ -44,7 +44,7 @@ QuadTree.prototype = {
         var depth = Math.floor(Math.log(index, 4));
     },
     clear: function(){
-        console.log('clear')
+        //console.log('clear')
         this.root.clear();
     }
 } // end QuadTree
@@ -162,7 +162,7 @@ QuadNode.prototype = {
         item.tree_nodes.push(this);
         if((this.depth < this.maxDepth) &&
             (this.children.length > this.maxChildren)){
-            console.log('this.children.length ' + this.children.length)
+            //console.log('this.children.length ' + this.children.length)
             this.subdivide();
             var insert = this.insert.bind(this);
             var node = this;
@@ -277,10 +277,16 @@ QuadNode.prototype = {
         return out;
     }, // end retrieve
     clean: function(){
+        var node = this;
+        this.children.forEach(function(c){
+            var index = c.tree_nodes.indexOf(node);
+            if(index >= 0) c.tree_nodes.splice(index, 1);
+        });
         this.children.length = 0;
         if(this.container != undefined) stage.removeChild(this.container);
     }, // end clean
     clear: function(){
+        this.clean(); // important to clear children of the root
         for (var i = this.nodes.length - 1; i >= 0; i--) {
             var node = this.nodes[i];
             node.clean();
