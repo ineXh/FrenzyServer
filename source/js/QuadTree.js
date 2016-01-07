@@ -71,7 +71,7 @@ QuadNode.prototype = {
             if(this.level_index < 0) debugger;
         }
 
-        this.draw();
+        //this.draw();
     },
     draw: function(){
         this.container = new PIXI.Container();
