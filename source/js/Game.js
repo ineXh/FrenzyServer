@@ -12,16 +12,16 @@ Game.prototype = {
         this.minimap = new MiniMap();
         this.ui = new GameUI(this);
         this.collision_count = 0;
-        this.collision_time = 2;
+        this.collision_time = 1;
 
         var bounds = {pos: new PVector(0,0),
                     width: stage_width, height: stage_height};
         this.tree = new QuadTree(bounds);
         this.treecount = 0;
-        this.treetime = 1;
+        this.treetime = 3;
 
         this.updateOpponent_count = 0;
-        this.updateOpponent_time = 20;
+        this.updateOpponent_time = 300;
     },
     clean: function(){
         this.players.splice(0,this.players.length)
@@ -30,10 +30,10 @@ Game.prototype = {
         this.treecount++;
         if(this.treecount%this.treetime == 0){
             this.treecount = 0;
-            this.tree.clear();
+            //this.tree.clear();
             for(var i = 0; i < this.teams.length; i++){ //
                 for(var j = 0; j < this.teams[i].characters.length; j++){ //
-                     this.tree.insert(this.teams[i].characters[j]);
+                     //this.tree.insert(this.teams[i].characters[j]);
                     /*for(var k = 0; k < this.teams[i].characters[j].length; k++){
                         this.tree.insert(this.teams[i].characters[j][k]);
                     }*/
@@ -47,6 +47,7 @@ Game.prototype = {
         this.collision_count++;
         if(this.collision_count < this.collision_time) return;
         this.collision_count = 0;
+        this.count = 0;
         //this.resetcollisioncounts();
         for(var i = 0; i < this.teams.length; i++){
             for(var j = 0; j < this.teams[i].characters.length; j++){
@@ -58,8 +59,8 @@ Game.prototype = {
                     //if(!c.sprite.visible && i != myteam) continue;
                     if(c.collision_count >= 2) continue;
 
-                    //this.checkcollisionBrute(c);
-                    this.checkcollisionQuad(c);
+                    this.checkcollisionBrute(c);
+                    //this.checkcollisionQuad(c);
                 }
             }
         }
@@ -73,6 +74,8 @@ Game.prototype = {
         if(!c2.sprite.visible) continue;
         if(c2.collision_count >= 2) continue;
         c.collide(c2);
+        this.count++;
+        console.log('this.count ' + this.count);
       }
     },
     checkcollisionBrute: function(c){
@@ -87,6 +90,8 @@ Game.prototype = {
                     //if(!c2.sprite.visible && i != myteam) continue;
                     if(c2.collision_count >= 2) continue;
                     c.collide(c2);
+                    this.count++;
+                    console.log('this.count ' + this.count);
                 }
             }
         }

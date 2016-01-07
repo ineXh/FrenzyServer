@@ -171,7 +171,6 @@ QuadNode.prototype = {
             });
             this.children.length = 0;
         }
-<<<<<<< HEAD
     }, // end insert
     /*findlocations : function(item){
         var left,right, bot, top;
@@ -210,9 +209,8 @@ QuadNode.prototype = {
         }
 
     },*/
-=======
-    }, // end insert    
->>>>>>> index wip
+
+
     findlocations : function(item){
         var top_left = this.intersect(item, {pos   : new PVector(this.bound.pos.x,
                                                                  this.bound.pos.y),
