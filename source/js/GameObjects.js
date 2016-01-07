@@ -74,9 +74,9 @@ GameObjects.prototype = {
         tree = new QuadTree(bounds);
 
         stage0.addChild(stage);
-        for(var i  = 0; i < 1000; i++){
+        for(var i  = 0; i < 10; i++){
             var ball = new Ball(getRandomInt(0, width), getRandomInt(0, height),
-                width/60, true, cow_texture);
+                width/30, true, cow_texture);
             balls.push(ball);
             tree.insert(ball);
         }*/
@@ -136,6 +136,7 @@ var checkbutecollisions = function(){
         }
     }
 }
+
 /*var treecount = 0;
 var treetime = 3;
 function updateTree(){

@@ -170,6 +170,43 @@ QuadNode.prototype = {
             this.children.length = 0;
         }
     }, // end insert
+    /*findlocations : function(item){
+        var left,right, bot, top;
+        var out = {top_left: false, top_right: false, bot_left: false, bot_right: false};
+        if(this.bound.anchor == undefined) this.bound.anchor = {x: 0, y: 0};
+        // is the right side of the item completely on the left of the bound
+        left    = (item.pos.x  + Math.abs(item.width)*(1-item.anchor.x)) <=
+                 (this.bound.pos.x - Math.abs(this.bound.width)*(this.bound.anchor.x));
+        // is the bot side of the item completely on top of the bound
+        top     = (item.pos.y  + Math.abs(item.height)*(1-item.anchor.y)) <=
+                  (this.bound.pos.y - Math.abs(this.bound.height)*(this.bound.anchor.y));
+        // is the left side of the item completely on the right of the bound
+        right   = (item.pos.x  - Math.abs(item.width)*(item.anchor.x)) >=
+                  (this.bound.pos.x + Math.abs(this.bound.width)*(1-this.bound.anchor.x));
+        // is the top side of the item completely on the bottom of the bound
+        bot     = (item.pos.y  - Math.abs(item.height)*(item.anchor.y)) >=
+                  (this.bound.pos.y + Math.abs(this.bound.height)*(1-this.bound.anchor.y));
+        if(!( right || left || bot || top))
+            return out;
+        // is the right side of the item on the left side of the mid bound
+        left    = (item.pos.x  + Math.abs(item.width)*(1-item.anchor.x)) <=
+                 (this.bound.pos.x+this.bound.width/2 - Math.abs(this.bound.width/2)*(this.bound.anchor.x));
+        // is the bot side of the item on the top side of the mid bound
+        top     = (item.pos.y  + Math.abs(item.height)*(1-item.anchor.y)) <=
+                  (this.bound.pos.y+this.bound.height/2 - Math.abs(this.bound.height/2)*(this.bound.anchor.y));
+        if(left && top){
+            out.top_left = true;
+            return out;
+        }
+        // is the top side of the item completely on the bottom of the mid bound
+        bot     = (item.pos.y  - Math.abs(item.height)*(item.anchor.y)) >=
+                  (this.bound.pos.y+this.bound.height/2+ Math.abs(this.bound.height/2)*(1-this.bound.anchor.y));
+        if(left && bot){
+            out.bot_left = true;
+            return out;
+        }
+
+    },*/
     findlocations : function(item){
         var top_left = this.intersect(item, {pos   : new PVector(this.bound.pos.x,
                                                                  this.bound.pos.y),
