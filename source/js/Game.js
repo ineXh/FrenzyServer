@@ -18,10 +18,10 @@ Game.prototype = {
                     width: stage_width, height: stage_height};
         this.tree = new QuadTree(bounds);
         this.treecount = 0;
-        this.treetime = 50;
+        this.treetime = 60;
 
         this.updateOpponent_count = 0;
-        this.updateOpponent_time = 300;
+        this.updateOpponent_time = 60;
     },
     clean: function(){
         this.players.splice(0,this.players.length)
@@ -372,7 +372,7 @@ Team.prototype = {
     startsingle:function(){
         this.restartPath();
         var input = {   x: this.startlocation_pos.x,// + width/2,
-                                y: this.startlocation_pos.y,// + height/2,
+                        y: this.startlocation_pos.y,// + height/2,
                     type: CharacterType.Hut, team: this.team, color: this.color};
         var character = characters.spawn(input);
         this.characters[input.type].push(character);
@@ -390,8 +390,8 @@ Team.prototype = {
     },
     startmultiplayer:function(player){
         this.restartPath();
-        var input = {   x: this.startlocation_pos.x + width/2,
-                                y: this.startlocation_pos.y + height/2,
+        var input = {   x: this.startlocation_pos.x,
+                        y: this.startlocation_pos.y,
                     type: CharacterType.Hut, team: this.team,
                     color: this.color, id: player.base_id
                 };

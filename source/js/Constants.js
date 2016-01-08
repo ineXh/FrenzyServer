@@ -78,6 +78,13 @@ UpgradeType.Attack = 0;
 UpgradeType.Defense = 1;
 UpgradeType.Speed = 2;
 
+function PathType(){}
+PathType.Center = 0;
+PathType.Team0 = 1;
+PathType.Team1 = 2;
+PathType.Team2 = 3;
+PathType.Team3 = 4;
+
 function MovementSetType(){}
 MovementSetType.Charge = 0;
 MovementSetType.Stand = 1;
