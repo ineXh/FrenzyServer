@@ -15,7 +15,15 @@ Computer.prototype = {
     if(this.update_count%this.update_time != 0) return;
     this.update_count = 0;
   },
-  set_path: function(){
-  	game.getTeam(this.team).path.startPath(MousePos.stage_x, MousePos.stage_y);
+  set_path: function(path_type){
+  	switch(path_type){
+  		case PathType.Center:
+  			var team = game.getTeam(this.team);
+  			team.path.startPath(team.startlocation_pos.x, team.startlocation_pos.y);
+  			team.path.endPath(stage_width/2, stage_height/2);
+  			this.path_center = true;
+  			break;	
+  	}
+  	
   }
 }

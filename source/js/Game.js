@@ -54,7 +54,7 @@ Game.prototype = {
                     if(c.override) continue;
                     if(!c.sprite.visible) continue;
                     //if(!c.sprite.visible && i != myteam) continue;
-                    if(c.collision_count >= 2) continue;
+                    if(c.collision_count >= 3) continue;
 
                     //this.checkcollisionBrute(c);
                     this.checkcollisionQuad(c);
@@ -69,7 +69,7 @@ Game.prototype = {
         if(c == c2) return;
         if(c2.override) continue;
         if(!c2.sprite.visible) continue;
-        if(c2.collision_count >= 2) continue;
+        if(c2.collision_count >= 3) continue;
         c.collide(c2);
         this.count++;
         //console.log('this.count ' + this.count);
@@ -297,6 +297,7 @@ function spawnUnitMsg(x, y, msg, type){
 function Team(team){
     this.team = team;
     this.path = new Path(team);
+    this.computer = new Computer(team);
     this.color = (team == 0)? Red:
                  (team == 1)? Blue:
                  (team == 2)? Teal:
@@ -376,6 +377,7 @@ Team.prototype = {
                     type: CharacterType.Hut, team: this.team, color: this.color};
         var character = characters.spawn(input);
         this.characters[input.type].push(character);
+        if(this.team != myteam) this.computer.init();
         //game.tree.insert(character);
 
         /*for(var i = -1; i < 1; i++){
@@ -445,6 +447,7 @@ Team.prototype = {
         }
         this.spawnSinglePlayer();
         this.sendPeriodicSync();
+        this.computer.update();
         //this.sendForceSync();
     }, // end update
     check_dead:function(c){

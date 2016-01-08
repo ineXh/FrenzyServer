@@ -1,5 +1,5 @@
-var maxDepth = 3;
-var maxChildren = 4;
+var maxDepth = 5;
+var maxChildren = 8;
 
 function QuadTree(bound){
     this.pool = new QuadNodePool();
