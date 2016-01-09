@@ -35,6 +35,14 @@ Path.prototype = {
     stage.removeChild(this.path);
     stage.addChild(this.path);
   },
+  clear: function(){
+    this.path_started = false;
+    this.points.length = 0;
+    this.num_lines = 0;
+    for(var i = this.lines.length-1; i >= 0; i--){
+      this.line_pool.push(this.lines.shift());
+    }
+  },
   createArrow: function(){
     var line = new PIXI.Container();
     line.pivot.x = 0;
@@ -80,7 +88,7 @@ Path.prototype = {
     return this.points[this.points.length-1 - n];
   },
   getEndLine : function(){
-    //return this.path.children[this.path.children.length-1];    
+    //return this.path.children[this.path.children.length-1];
     return this.lines[this.lines.length-1];
   },
   getLastTwoPoints: function(){
@@ -122,10 +130,10 @@ Path.prototype = {
   cancelPath: function(){
     //console.log('cancelPath');
     this.path_started = false;
-         
+
     // return last line
     this.returnlastline();
-    this.returnLastDeletedPath();  
+    this.returnLastDeletedPath();
   },
   returnLastDeletedPath : function(){
     /*this.addPoint(this.temp_0x, this.temp_0y);
@@ -138,7 +146,7 @@ Path.prototype = {
       this.path.addChild(line);*/
       //console.log('returnLastDeletedPath')
       this.startPath(this.temp_0x, this.temp_0y);
-      this.endPath(this.temp_1x, this.temp_1y);      
+      this.endPath(this.temp_1x, this.temp_1y);
       // need to shuffle last line back to first line
       this.points.unshift(this.points.pop());
       this.points.unshift(this.points.pop());
@@ -159,7 +167,7 @@ Path.prototype = {
         line.x = x;
         line.y = y;
         line.children[0].width = 0;
-        
+
     this.lines.push(line);
 
     line.children[0].tint = game.getTeam(this.team).color;

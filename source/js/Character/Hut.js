@@ -280,8 +280,10 @@ Hut.prototype.progress_update = function(){
     //this.progress.lineStyle(width/2000, 0x00, 1);
     this.progress.beginFill(0xFF0000, 0.5);
 
-    // additional 5 counts of upgrade time per level
-    this.progress_angle += 2*PI / (100 + this.progress_level * 25);
+    // additional 25 counts of upgrade time per level
+    var time = (100 + this.progress_level * 25);
+    if(time >= 400) time = 400;
+    this.progress_angle += 2*PI / time;
     if(this.progress_angle >= 3*PI/2)   this.progress_angle = 3*PI/2;
     this.progress.moveTo(0, 0);
     this.progress.lineTo(0, -this.progress_r);

@@ -228,6 +228,17 @@ Cow.prototype.create = function(){
 	this.sprite.anchor.y = 0.5;
 
 	this.type = CharacterType.Cow;
+
+    this.healthbar = new HealthBar(this);
+
+    this.reset();
+    // used to sync with the client this unit belongs to
+	this.override = false;
+	this.predict = new PVector(0, 0);
+
+    this.status = [];
+}
+Cow.prototype.reset = function(){
 	this.seekOpponent_count = 0;
     this.seekOpponent_time = 5;
     this.attack_count = 0;
@@ -237,8 +248,7 @@ Cow.prototype.create = function(){
     this.border = true;
     this.maxhp = cow_max_hp;
     this.hp = this.maxhp;
-    this.healthbar = new HealthBar(this);
-    // Damage Taken by this character on this client
+	// Damage Taken by this character on this client
     this.dmg = 0;
 
     this.attack_base = 2;
@@ -247,16 +257,11 @@ Cow.prototype.create = function(){
     this.defense_stat = this.defense_base;
     this.speed_base = 3*big_dim/1000 ;
     this.maxspeed = this.speed_base;
-
-    // used to sync with the client this unit belongs to
-	this.override = false;
-	this.predict = new PVector(0, 0);
-
-    this.status = [];
 }
 Cow.prototype.init = function(input){
 	//console.log(input)
 	if(input.id != undefined) this.id = input.id;
+	this.reset();
 	this.team = input.team;
 	this.sprite.tint = input.color;
 	this.upgrade_update();

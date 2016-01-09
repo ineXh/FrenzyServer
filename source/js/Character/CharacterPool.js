@@ -5,8 +5,8 @@ function CharacterPool() {
 }
 CharacterPool.prototype = {
     loadPool: function(){
-        this.createCow();
-        this.createHut();
+        this.createCow(200);
+        this.createHut(5);
     },
     initList:function(){
         var list = [];
@@ -29,9 +29,9 @@ CharacterPool.prototype = {
     returnCharacter: function(characterType, character){
         return this.returnCharacterLookup[characterType].call(this, character);
     },
-    createCow: function(){
+    createCow: function(amount){
         this.cows = [];
-        this.addCow(5000);
+        this.addCow(amount);
     },
     addCow: function(amount){
         for(var i = 0; i < amount; i++){
@@ -46,9 +46,9 @@ CharacterPool.prototype = {
     returnCow: function(character){
         this.cows.push(character);
     }, // end returnCow
-    createHut: function(){
+    createHut: function(amount){
         this.huts = [];
-        this.addHut(8);
+        this.addHut(amount);
     },
     addHut: function(amount){
         for(var i = 0; i < amount; i++){

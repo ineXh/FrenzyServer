@@ -15,7 +15,7 @@ GameUI.prototype = {
         this.character_sprite.position.y = height*0.025;
         this.container.addChild(this.character_sprite);
 
-        this.character_text = new PIXI.extras.BitmapText("12",
+        this.character_text = new PIXI.extras.BitmapText("0",
           { font: '36px pixel-love',  align: 'left' }); //Space Invaders//fill:"black",//Alpha Taurus Pro
         //Android //Fipps //
         this.character_text.position.x = width*0.845;//this.sprite.x - this.sprite.width/10;
@@ -32,7 +32,7 @@ GameUI.prototype = {
         this.coin_sprite.position.y = height*0.025;
         this.container.addChild(this.coin_sprite);
 
-        this.coin_text = new PIXI.extras.BitmapText("12",
+        this.coin_text = new PIXI.extras.BitmapText("0",
           { font: '36px pixel-love',  align: 'left' }); //Space Invaders//fill:"black",//Alpha Taurus Pro
         //Android //Fipps //
         this.coin_text.position.x = width*0.745;//this.sprite.x - this.sprite.width/10;
@@ -45,7 +45,7 @@ GameUI.prototype = {
         this.attack_sprite.scale.set(big_dim*0.03 / this.attack_sprite.width);
         this.attack_sprite.anchor.x = 0.5;
         this.attack_sprite.anchor.y = 0;
-        this.attack_sprite.position.x = width*0.5;
+        this.attack_sprite.position.x = width*0.4;
         this.attack_sprite.position.y = height*0.025;
         this.container.addChild(this.attack_sprite);
 
@@ -53,7 +53,7 @@ GameUI.prototype = {
         this.defense_sprite.scale.set(big_dim*0.03 / this.defense_sprite.width);
         this.defense_sprite.anchor.x = 0.5;
         this.defense_sprite.anchor.y = 0;
-        this.defense_sprite.position.x = width*0.52;
+        this.defense_sprite.position.x = width*0.42;
         this.defense_sprite.position.y = height*0.025;
         this.container.addChild(this.defense_sprite);
 
@@ -61,13 +61,13 @@ GameUI.prototype = {
         this.speed_sprite.scale.set(big_dim*0.03 / this.speed_sprite.width);
         this.speed_sprite.anchor.x = 0.5;
         this.speed_sprite.anchor.y = 0;
-        this.speed_sprite.position.x = width*0.54;
+        this.speed_sprite.position.x = width*0.44;
         this.speed_sprite.position.y = height*0.025;
         this.container.addChild(this.speed_sprite);
 
-        this.upgrade_text = new PIXI.extras.BitmapText("12",
+        this.upgrade_text = new PIXI.extras.BitmapText("0, 0, 0",
           { font: '36px pixel-love',  align: 'left' });
-        this.upgrade_text.position.x = width*0.56;
+        this.upgrade_text.position.x = width*0.46;
         this.upgrade_text.position.y = height*0.03;
         this.upgrade_text.tint =  0xFF000077;
         this.upgrade_text.scale.set(1);
