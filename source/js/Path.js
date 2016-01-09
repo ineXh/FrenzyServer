@@ -42,7 +42,8 @@ Path.prototype = {
     for(var i = this.lines.length-1; i >= 0; i--){
       var line = this.lines[i];
       this.path.removeChild(line);
-      this.line_pool.push(this.lines.splice(i,1));
+      this.line_pool.push(line);
+      this.lines.splice(i,1);
     }
   },
   createArrow: function(){
