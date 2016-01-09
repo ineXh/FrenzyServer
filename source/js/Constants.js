@@ -85,6 +85,8 @@ PathType.Team1 = 2;
 PathType.Team2 = 3;
 PathType.Team3 = 4;
 
+PathType.Clear = 10;
+
 function MovementSetType(){}
 MovementSetType.Charge = 0;
 MovementSetType.Stand = 1;

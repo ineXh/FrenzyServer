@@ -198,13 +198,11 @@ function Cow(){
 }
 Cow.prototype.create = function(){
 	//this.id = cow_id++;
-	this.animationtype = AnimationType.Walk_Front;
 	this.front_walk_frame = 0;
 	this.front_attack_frame = 8;
 	this.back_walk_frame = 14;
 	this.back_attack_frame = 22;
 	this.total_frame = cow_front_frames.length;
-
 	this.anchor = {x: 0.5, y: 0.5};
 	this.tree_nodes = [];
 	this.pos = new PVector(0,0);
@@ -229,9 +227,11 @@ Cow.prototype.create = function(){
 
 	this.type = CharacterType.Cow;
 
+    this.reset();
+
     this.healthbar = new HealthBar(this);
 
-    this.reset();
+
     // used to sync with the client this unit belongs to
 	this.override = false;
 	this.predict = new PVector(0, 0);
@@ -239,6 +239,7 @@ Cow.prototype.create = function(){
     this.status = [];
 }
 Cow.prototype.reset = function(){
+	this.animationtype = AnimationType.Walk_Front;
 	this.seekOpponent_count = 0;
     this.seekOpponent_time = 5;
     this.attack_count = 0;
@@ -257,11 +258,14 @@ Cow.prototype.reset = function(){
     this.defense_stat = this.defense_base;
     this.speed_base = 3*big_dim/1000 ;
     this.maxspeed = this.speed_base;
+    // used to sync with the client this unit belongs to
+	this.override = false;
 }
 Cow.prototype.init = function(input){
 	//console.log(input)
 	if(input.id != undefined) this.id = input.id;
 	this.reset();
+	this.sprite.play();
 	this.team = input.team;
 	this.sprite.tint = input.color;
 	this.upgrade_update();

@@ -78,7 +78,7 @@ var myteam = -1;
 var myteamcolor;
 var startlocation = -1;
 var maxpath = 4;
-var max_unit_count = 20;
+var max_unit_count = 6;
 var cow_max_hp = 10;
 var hut_max_hp = 25;
 // Multiplayer
@@ -100,4 +100,4 @@ var gameChats = [];
 var ChatRoom = 'Global';
 
 // SinglePlayer
-var SinglePlayer_Spawn_Period = 50;
+var SinglePlayer_Spawn_Period = 400;

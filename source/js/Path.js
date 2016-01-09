@@ -40,7 +40,9 @@ Path.prototype = {
     this.points.length = 0;
     this.num_lines = 0;
     for(var i = this.lines.length-1; i >= 0; i--){
-      this.line_pool.push(this.lines.shift());
+      var line = this.lines[i];
+      this.path.removeChild(line);
+      this.line_pool.push(this.lines.splice(i,1));
     }
   },
   createArrow: function(){
@@ -99,10 +101,15 @@ Path.prototype = {
     return data;
   },
   borrowline : function(){
-    if(this.line_pool.length >= 1)  return this.line_pool.shift();
-    else{
+    if(this.line_pool.length >= 1){
+      var line = this.line_pool.shift();
+      this.path.addChild(line);
+      return line;
+    }else{
       this.returnfirstline();
-      return this.line_pool.shift();
+      var line = this.line_pool.shift();
+      this.path.addChild(line);
+      return line;
     }
 
   },

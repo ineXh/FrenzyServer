@@ -3,7 +3,6 @@ function Computer(team){
 	this.active = false;
 	this.update_time = 300;
 	this.update_count = 0;
-	this.init();
 }
 Computer.prototype = {
   init: function(){
@@ -11,6 +10,7 @@ Computer.prototype = {
   	this.path_center = false;
   },
   update: function(){
+    if(!this.active) return;
   	this.update_count++;
     if(this.update_count%this.update_time != 0) return;
     this.update_count = 0;
@@ -18,12 +18,18 @@ Computer.prototype = {
     this.upgrade_logic();
   },
   path_logic: function(){
+    if(game.getTeam(this.team).characters[CharacterType.Cow].length < max_unit_count/2){
+      this.set_path(PathType.Clear);
+      this.path_center = false;
+      return;
+    }
+    if(this.path_center) return;
     this.set_path(PathType.Center);
   },
   set_path: function(path_type){
-  	switch(path_type){
+  	var team = game.getTeam(this.team);
+    switch(path_type){
   		case PathType.Center:
-  			var team = game.getTeam(this.team);
         var dir = new PVector(stage_width/2  - team.startlocation_pos.x,
                               stage_height/2 - team.startlocation_pos.y);
         var mag = dir.mag();
@@ -46,6 +52,9 @@ Computer.prototype = {
 
   			this.path_center = true;
   			break;
+      case PathType.Clear:
+        team.path.clear();
+        break;
   	}
   }, // end set_path
   upgrade_logic: function(){
