@@ -8,18 +8,8 @@ ParticlesPool.prototype = {
 		//this.createChargeFlame();
 		//this.createFlame();
 		//this.createText();
-		//this.createIcon();
-        this.createCoin();
-	},
-	createIcon:function(){
-		this.Icons = [];
-	},
-	borrowIcon : function(){
-		if(this.Icons.length >= 1)	return this.Icons.shift();
-		else return null;
-	},
-	returnIcon: function(p){
-		this.Icons.push(p);
+		this.createIcon();
+        //this.createCoin();
 	},
 	createFlame: function(){
 		this.flames = [];
@@ -49,19 +39,7 @@ ParticlesPool.prototype = {
 
     createCoin: function(){
         this.coins = [];
-        this.addCoinSprites(5);
-    },
-    addCoinSprites : function(amount) {
-      for (var i = 0; i < amount; i++){
-        var sprite = new PIXI.Sprite(coin_texture);
-        //sprite.tint = RGBColor(getRandomInt(230, 255), getRandomInt(100, 200), 0);
-        //sprite.tint = 0xFFFFFF;
-        sprite.anchor.x = 0.5;
-        sprite.anchor.y = 0.5;
-        //clr = color(random(200,255),random(100,255),0);
-        var particle = new Particle(null, ParticleType.COIN, sprite);
-        this.coins.push(particle);
-      }
+        this.addSprites(8, ParticleType.COIN, coin_texture);
     },
     borrowCoin : function(){
         //console.log("borrow coin");
@@ -73,6 +51,34 @@ ParticlesPool.prototype = {
         this.coins.push(particle);
         //console.log("this.coins.length: " + this.coins.length);
     },
+    createIcon: function(){
+        this.icons = [];
+        this.addSprites(13, ParticleType.ICON, coin_texture);
+    },
+    borrowIcon : function(){
+        //console.log("borrow coin");
+        if(this.icons.length >= 1) return this.icons.shift();
+        else return null;
+    },
+    returnIcon: function(particle){
+        //console.log("return flame");
+        this.icons.push(particle);
+        //console.log("this.coins.length: " + this.coins.length);
+    },
+    addSprites : function(amount, type, texture) {
+      for (var i = 0; i < amount; i++){
+        var sprite = new PIXI.Sprite(texture);
+        //sprite.tint = RGBColor(getRandomInt(230, 255), getRandomInt(100, 200), 0);
+        //sprite.tint = 0xFFFFFF;
+        sprite.anchor.x = 0.5;
+        sprite.anchor.y = 0.5;
+        //clr = color(random(200,255),random(100,255),0);
+        var particle = new Particle(null, type, sprite);
+        this.icons.push(particle);
+      }
+    },
+
+
 
 	createText: function(){
 		this.texts = [];
@@ -224,7 +230,7 @@ Particle.prototype = {
 
   },
   particle_init: function(input){
-
+    if(input.texture != undefined) this.sprite.texture = input.texture;
   	this.sprite.x = input.x;
   	this.sprite.y = input.y;
     this.pos = new PVector(input.x, input.y);

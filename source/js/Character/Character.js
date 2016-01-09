@@ -252,6 +252,8 @@ Cow.prototype.reset = function(){
 	// Damage Taken by this character on this client
     this.dmg = 0;
 
+    this.opponent = null;
+
     this.attack_base = 2;
     this.attack_stat = this.attack_base;
     this.defense_base = 1;
@@ -279,6 +281,7 @@ Cow.prototype.init = function(input){
 	this.s_pos.y = input.y;
 	this.s_vel.x = 0;
 	this.s_vel.y = 0;
+	this.healthbar.update();
 	stage.addChild(this.sprite);
 	stage.addChild(this.healthbar.bar);
 } // gotoAndPlay // currentFramenumber
@@ -327,6 +330,7 @@ Cow.prototype.animationdisplay = function(){
 	}
 }
 Cow.prototype.clean = function(){
+	this.opponent = null;
 	this.sprite.stop();
 	stage.removeChild(this.sprite);
 	stage.removeChild(this.healthbar.bar);

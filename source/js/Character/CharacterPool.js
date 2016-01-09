@@ -5,7 +5,7 @@ function CharacterPool() {
 }
 CharacterPool.prototype = {
     loadPool: function(){
-        this.createCow(200);
+        this.createCow(max_unit_count*5);
         this.createHut(5);
     },
     initList:function(){

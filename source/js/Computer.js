@@ -18,6 +18,7 @@ Computer.prototype = {
     this.upgrade_logic();
   },
   path_logic: function(){
+    // Clear Path to Center if less than half units
     if(game.getTeam(this.team).characters[CharacterType.Cow].length < max_unit_count/2){
       this.set_path(PathType.Clear);
       this.path_center = false;
@@ -39,10 +40,10 @@ Computer.prototype = {
         y1 = team.startlocation_pos.y - dir.y*mag*0.2;
         x2 = team.startlocation_pos.x + dir.x*mag*0.8;
         y2 = team.startlocation_pos.y + dir.y*mag*0.8;
-        //console.log(dir)
         // Center Path
   			team.path.startPath(x1, y1);
   			team.path.endPath(x2, y2);
+        // Parallel offsets
         var offset = dim/10;
         team.path.startPath(x1 + offset *(y2-y1) / mag, y1 + offset*(x1-x2) / mag);
         team.path.endPath(x2 + offset *(y2-y1) / mag, y2 + offset*(x1-x2) / mag);

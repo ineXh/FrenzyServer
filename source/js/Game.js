@@ -615,17 +615,31 @@ Team.prototype = {
     },
     upgrade_finished : function(upgrade_type){
         //console.log('upgrade_finished ' + upgrade_type)
+        var texture;
         switch(upgrade_type){
             case UpgradeType.Attack:
+                texture = attack_upgrade_texture;
                 this.attack_upgrades++;
             break;
             case UpgradeType.Defense:
+                texture = defense_upgrade_texture;
                 this.defense_upgrades++;
             break;
             case UpgradeType.Speed:
+                texture = speed_upgrade_texture;
                 this.speed_upgrades++;
             break;
         }
+        particles.spawn({x: this.startlocation_pos.x, y: this.startlocation_pos.y - dim/8,
+                     lifespan_d: 5,
+                     ax: getRandomArbitrary(-1, 1)*-width*0.002,
+                     ay: getRandomArbitrary(0.5, 1)*-height*0.002,
+                     rs: dim*0.03,
+                     re: dim*0.08,
+                     texture: texture,
+                      container: stage},
+                     ParticleType.ICON);
+
         this.changed_upgrades = true;
         for(var i = 0; i < this.characters[CharacterType.Cow].length; i++){
             var character = this.characters[CharacterType.Cow][i];
@@ -666,8 +680,9 @@ var getCoin = function(team, opponent){
                      ay: getRandomArbitrary(0.5, 1)*-height*0.001,
                      rs: dim*0.04,
                      re: dim*0.04,
+                     texture: coin_texture,
                       container: stage},//particles.container
-                     ParticleType.COIN);
+                     ParticleType.ICON);
     }
     if(gamemode == GameMode.SinglePlayer) game.teams[team].coins++;
     else game.teams[team].sync_force = true;

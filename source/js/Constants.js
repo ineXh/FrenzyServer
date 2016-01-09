@@ -193,6 +193,7 @@ ParticleType.CHARGEFLAME 	= 3;
 ParticleType.ICON 		= 4;
 ParticleType.COIN      = 5;
 
+
 function BallType(){}
 BallType.Draw			= 0;
 BallType.NotDraw		= 1;
