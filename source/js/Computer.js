@@ -59,6 +59,9 @@ Computer.prototype = {
   	}
   }, // end set_path
   upgrade_logic: function(){
-
+    var team = game.getTeam(this.team);
+    var cost1 = team.upgrade_cost(UpgradeType.Attack);
+    var cost2 = team.upgrade_cost(UpgradeType.Defense);
+    var cost3 = team.upgrade_cost(UpgradeType.Speed);
   }, // end upgrade_logic
 } // end Computer

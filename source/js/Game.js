@@ -632,10 +632,10 @@ Team.prototype = {
         }
         particles.spawn({x: this.startlocation_pos.x, y: this.startlocation_pos.y - dim/8,
                      lifespan_d: 5,
-                     ax: getRandomArbitrary(-1, 1)*-width*0.002,
-                     ay: getRandomArbitrary(0.5, 1)*-height*0.002,
-                     rs: dim*0.03,
-                     re: dim*0.08,
+                     ax: getRandomArbitrary(-1, 1)*-width*0.001,
+                     ay: getRandomArbitrary(0.5, 1)*-height*0.001,
+                     rs: dim*0.04,
+                     re: dim*0.04,
                      texture: texture,
                       container: stage},
                      ParticleType.ICON);

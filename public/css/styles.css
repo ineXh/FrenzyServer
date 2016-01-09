@@ -123,6 +123,17 @@ margin-left:10px;
   line-height: 20px;
   color: #fff;
 }
+
+@media all and (max-height: 600px) {
+   .panel-heading{
+    background: #C73C3C;
+    font-size: 18px;
+    line-height: 20px;
+    color: #fff;
+  }
+}
+
+
 #gamelist {
     position: absolute;
     border-bottom: 1px solid #34495E;

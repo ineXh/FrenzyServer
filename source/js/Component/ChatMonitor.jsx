@@ -94,7 +94,8 @@ window.ChatMonitor = React.createClass({
           maxHeight: 1000,
           maxWidth: 1000,
           minHeight: 50,//150,
-          minWidth: 50});//200});//{ cancel: "#chatmonitor" }*/
+          minWidth: 50,
+          cancel: ".non-resizeable"});//200});//{ cancel: "#chatmonitor" }*/
         $( "#chatmonitor" )[0].addEventListener("touchstart", function(event) {scrollStartPos=this.scrollTop+event.touches[0].pageY*1.5;
             event.preventDefault();
         },false);
@@ -142,12 +143,17 @@ window.ChatMonitor = React.createClass({
     },
     minimize:function(e){
       e.preventDefault();
+      var win = document.getElementById("chatwindow");
+      win.style.width = "8%"
+      win.style.height = "8%"
       //console.log('minimize')
       this.setState({showMonitor: false});
     },
     restore: function(e){
       e.preventDefault();
+
       this.setState({showMonitor: true}, function(){
+        this.shrink(e);
         var cb = document.getElementById("chatinput");
         cb.focus();
       });
@@ -216,9 +222,8 @@ window.ChatMonitor = React.createClass({
                   </form>
             </div>
             ) : (
-            <div id="chatbutton">
+            <div id="chatbutton" className = "non-resizeable">
             <input onClick={this.restore}
-            onDrag ={this.drag}
             type="image" src="assets/chat2.png" width="72" height="72"></input>
             </div>
             )
